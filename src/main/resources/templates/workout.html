@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/navbar}">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center mb-4 primary">Workout Bundles</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card workout-card">
+                <img src="/images/beginner.jpg" class="card-img-top" alt="Workout Image">
+                <div class="card-body">
+                    <h5 class="card-title">Beginner</h5>
+                    <p class="card-text">Start your fitness journey with our beginner workouts.</p>
+                    <a th:href="@{/workouts/beginner}" class="btn btn-primary btn-block">View Workout</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card workout-card">
+                <img src="/images/intermediate.jpg" class="card-img-top" alt="Workout Image">
+                <div class="card-body">
+                    <h5 class="card-title">Intermediate</h5>
+                    <p class="card-text">Take your fitness to the next level with our intermediate workouts.</p>
+                    <a th:href="@{/workouts/intermediate}" class="btn btn-primary btn-block">View Workout</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card workout-card">
+                <img src="/images/advanced.jpg" class="card-img-top" alt="Workout Image">
+                <div class="card-body">
+                    <h5 class="card-title">Advanced</h5>
+                    <p class="card-text">Challenge yourself with our advanced workout programs.</p>
+                    <a th:href="@{/workouts/advanced}" class="btn btn-primary btn-block">View Workout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <footer th:replace="~{fragments/footer}"></footer>
+</body>
+</html>

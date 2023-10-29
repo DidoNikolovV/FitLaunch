@@ -180,6 +180,14 @@ nav .left {
     transition: background-color .15s linear;
 }
 
+.light {
+    color: #fff;
+}
+
+.primary {
+    color: #ff9900;
+}
+
 body {
     display: flex;
     flex-direction: column;
