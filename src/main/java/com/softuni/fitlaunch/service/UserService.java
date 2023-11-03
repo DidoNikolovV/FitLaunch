@@ -1,7 +1,6 @@
 package com.softuni.fitlaunch.service;
 
 
-import com.softuni.fitlaunch.model.dto.UserLoginDTO;
 import com.softuni.fitlaunch.model.dto.UserRegisterDTO;
 import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.repository.UserRepository;
@@ -14,12 +13,10 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final LoggedUser loggedUser;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, LoggedUser loggedUser) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.loggedUser = loggedUser;
     }
 
     public boolean register(UserRegisterDTO userRegisterDTO) {
@@ -43,14 +40,4 @@ public class UserService {
         return true;
     }
 
-    public boolean login(UserLoginDTO userLoginDTO) {
-        Optional<UserEntity> dbUser = userRepository.findByUsername(userLoginDTO.getUsername());
-
-        if(dbUser.isPresent() && passwordEncoder.matches(userLoginDTO.getPassword(), dbUser.get().getPassword())) {
-            loggedUser.login(userLoginDTO.getUsername());
-            return true;
-        }
-
-        return false;
-    }
 }

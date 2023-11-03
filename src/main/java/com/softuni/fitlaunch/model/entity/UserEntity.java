@@ -1,9 +1,9 @@
 package com.softuni.fitlaunch.model.entity;
 
-import com.softuni.fitlaunch.model.enums.UserRoleEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,12 +20,13 @@ public class UserEntity extends BaseEntity{
     @Column(nullable = false)
     private String password;
 
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<UserRoleEntity> roleList;
+    private List<UserRoleEntity> roles = new ArrayList<>();
 
     public String getUsername() {
         return username;
@@ -55,13 +56,12 @@ public class UserEntity extends BaseEntity{
         return this;
     }
 
-
-    public List<UserRoleEntity> getRoleList() {
-        return roleList;
+    public List<UserRoleEntity> getRoles() {
+        return roles;
     }
 
-    public UserEntity setRoleList(List<UserRoleEntity> roleList) {
-        this.roleList = roleList;
+    public UserEntity setRoles(List<UserRoleEntity> roles) {
+        this.roles = roles;
         return this;
     }
 }

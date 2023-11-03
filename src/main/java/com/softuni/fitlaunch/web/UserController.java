@@ -1,6 +1,5 @@
 package com.softuni.fitlaunch.web;
 
-import com.softuni.fitlaunch.model.dto.UserLoginDTO;
 import com.softuni.fitlaunch.model.dto.UserRegisterDTO;
 import com.softuni.fitlaunch.service.UserService;
 import jakarta.validation.Valid;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -22,35 +20,19 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/login")
-    public ModelAndView login(@ModelAttribute("userLoginDTO") UserLoginDTO userLoginDTO) {
+    @GetMapping("/users/login")
+    public ModelAndView login() {
         return new ModelAndView("login");
     }
 
-    @PostMapping("/login")
-    public ModelAndView login(@ModelAttribute("userLoginDTO") @Valid UserLoginDTO userLoginDTO,
-                              BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
-            return new ModelAndView("login");
-        }
 
-        boolean hasSuccessfullyLoggedIn = userService.login(userLoginDTO);
 
-        if(!hasSuccessfullyLoggedIn) {
-            ModelAndView modelAndView = new ModelAndView("login");
-            modelAndView.addObject("hasLoginError", true);
-            return modelAndView;
-        }
-
-        return new ModelAndView("redirect:/");
-    }
-
-    @GetMapping("/register")
+    @GetMapping("/users/register")
     public ModelAndView register(@ModelAttribute("userRegisterDTO") UserRegisterDTO userRegisterDTO) {
         return new ModelAndView("register");
     }
 
-    @PostMapping("/register")
+    @PostMapping("/users/register")
     public ModelAndView register(@ModelAttribute("userRegisterDTO") @Valid UserRegisterDTO userRegisterDTO,
                                  BindingResult bindingResult) {
 
