@@ -5,7 +5,7 @@ import com.softuni.fitlaunch.model.enums.UserRoleEnum;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "user_roles")
 public class UserRoleEntity {
 
     @Id

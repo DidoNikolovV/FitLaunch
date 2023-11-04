@@ -17,16 +17,18 @@ public class UserEntity extends BaseEntity{
     @Column(nullable = false, unique = true)
     private String email;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name= "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<UserRoleEntity> roles = new ArrayList<>();
+
     @Column(nullable = false)
     private String password;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<UserRoleEntity> roles = new ArrayList<>();
 
     public String getUsername() {
         return username;
@@ -56,12 +58,13 @@ public class UserEntity extends BaseEntity{
         return this;
     }
 
-    public List<UserRoleEntity> getRoles() {
-        return roles;
-    }
+   public List<UserRoleEntity> getRoles() {
+       return roles;
+   }
 
     public UserEntity setRoles(List<UserRoleEntity> roles) {
         this.roles = roles;
         return this;
     }
+
 }
