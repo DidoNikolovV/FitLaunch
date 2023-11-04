@@ -39,31 +39,38 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link text-light" th:if="${@loggedUser.isLogged()}" th:href="@{/workouts}">Workouts</a>
+<!--                    th:if="${@loggedUser.isLogged()}"-->
+                    <a class="nav-link text-light"  th:href="@{/workouts}">Workouts</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light" th:unless="${@loggedUser.isLogged()}" th:href="@{/users/login}">Login</a>
+<!--                    th:unless="${@loggedUser.isLogged()}"-->
+                    <a class="nav-link text-light"  th:href="@{/users/login}">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light" th:unless="${@loggedUser.isLogged()}" th:href="@{/users/register}">Register</a>
+<!--                    th:unless="${@loggedUser.isLogged()}"-->
+                    <a class="nav-link text-light"  th:href="@{/users/register}">Register</a>
                 </li>
                 <li class="nav-item">
                     <div class="form-inline my-2 my-lg-0 border px-3">
                         <form th:method="post"
                               th:action="@{/users/logout}">
-                            <input th:if="${@loggedUser.isLogged()}" type="submit" class="btn btn-link" value="Logout"/>
+<!--                            th:if="${@loggedUser.isLogged()}"-->
+                            <input  type="submit" class="btn btn-link" value="Logout"/>
                         </form>
                     </div>
                 </li>
-                <li class="nav-item col-md-4" th:if="${@loggedUser.isLogged()}">
-                    <span th:text="'Welcome, ' + ${@loggedUser.username}"></span>
+                <li class="nav-item col-md-4">
+<!--                    th:if="${@loggedUser.isLogged()}"-->
+<!--                    <div th:text="Welcome, Anonymous"></div>-->
+<!--                    ${@loggedUser.username}"-->
                 </li>
 
 <!--                <li class="nav-item">-->
 <!--                    <a class="nav-link text-light" href="#">Logout</a>-->
 <!--                </li>-->
                 <li class="nav-item">
-                    <a class="nav-link text-light" th:if="${@loggedUser.isLogged()}" th:href="@{/shop}">Shop</a>
+<!--                    th:if="${@loggedUser.isLogged()}"-->
+                    <a class="nav-link text-light"  th:href="@{/shop}">Shop</a>
                 </li>
             </ul>
         </div>
