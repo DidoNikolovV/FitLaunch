@@ -121,11 +121,9 @@ nav .left {
 .btn {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #ff6600;
-    color: #fff;
+    color: #f3f3f3;
     text-decoration: none;
-    font-weight: bold;
-    border-radius: 5px;
+    /*border-radius: 5px;*/
     transition: background-color 0.3s;
 }
 
@@ -135,9 +133,9 @@ nav .left {
     background-color: #ff6600;
 }
 
-.btn:hover {
-    background-color: #ff9900;
-}
+/*.btn:hover {*/
+/*    background-color: #ff9900;*/
+/*}*/
 
 .classes {
     padding: 40px;

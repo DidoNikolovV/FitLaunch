@@ -18,19 +18,20 @@ public class FitLaunchUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        userRepository
-                .findByUsername(username)
-                .map(this::map)
-                .orElseThrow(() -> new UsernameNotFoundException("User " + username + " doesn't exists"));
-        return null;
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository
+                .findByEmail(email)
+                .map(FitLaunchUserDetailsService::map)
+                .orElseThrow(() -> new UsernameNotFoundException("User " + email + " doesn't exists"));
     }
 
-    private UserDetails map(UserEntity userEntity) {
-        return User
+    private static UserDetails map(UserEntity userEntity) {
+        UserDetails userDetails = User
                 .withUsername(userEntity.getUsername())
                 .password(userEntity.getPassword())
                 .authorities(List.of()) // TODO - add roles
                 .build();
+
+        return userDetails;
     }
 }

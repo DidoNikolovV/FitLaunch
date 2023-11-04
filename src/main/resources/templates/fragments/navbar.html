@@ -36,42 +36,39 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto col-12 justify-content-between">
                 <li class="nav-item">
-<!--                    th:if="${@loggedUser.isLogged()}"-->
-                    <a class="nav-link text-light"  th:href="@{/workouts}">Workouts</a>
+                    <a class="nav-link" href="/workouts/all">Workouts</a>
                 </li>
-                <li class="nav-item">
-<!--                    th:unless="${@loggedUser.isLogged()}"-->
-                    <a class="nav-link text-light"  th:href="@{/users/login}">Login</a>
+
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" href="/workouts/add">Add Workout</a>
                 </li>
-                <li class="nav-item">
-<!--                    th:unless="${@loggedUser.isLogged()}"-->
-                    <a class="nav-link text-light"  th:href="@{/users/register}">Register</a>
-                </li>
-                <li class="nav-item">
+                <li class="nav-item" sec:authorize="isAuthenticated()">
                     <div class="form-inline my-2 my-lg-0 border px-3">
+                        <div class="logged-user">
+                            Welcome, <th:block sec:authentication="name"></th:block>!
+                        </div>
                         <form th:method="post"
                               th:action="@{/users/logout}">
-<!--                            th:if="${@loggedUser.isLogged()}"-->
-                            <input  type="submit" class="btn btn-link" value="Logout"/>
+                            <input type="submit" class="btn btn-link" value="Logout"/>
                         </form>
                     </div>
                 </li>
-                <li class="nav-item col-md-4">
-<!--                    th:if="${@loggedUser.isLogged()}"-->
-<!--                    <div th:text="Welcome, Anonymous"></div>-->
-<!--                    ${@loggedUser.username}"-->
+
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link" href="/users/register">Register</a>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link" href="/users/login">Login</a>
                 </li>
 
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link text-light" href="#">Logout</a>-->
-<!--                </li>-->
                 <li class="nav-item">
-<!--                    th:if="${@loggedUser.isLogged()}"-->
-                    <a class="nav-link text-light"  th:href="@{/shop}">Shop</a>
+                    <a class="nav-link" href="/shop">Shop</a>
                 </li>
+
+
             </ul>
         </div>
     </div>
