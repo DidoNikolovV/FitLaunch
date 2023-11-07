@@ -7,26 +7,35 @@ import java.util.List;
 
 public class WorkoutDTO {
 
-    private LevelEnum level;
+    private Long id;
+
+    private String imgUrl;
+
     private String name;
+
+    private LevelEnum level;
+    private String description;
+
     private List<ExerciseDTO> exercises;
 
     public WorkoutDTO() {
         this.exercises = new ArrayList<>();
     }
 
-    public WorkoutDTO(LevelEnum level, String name, List<ExerciseDTO> exercises) {
-        this.level = level;
+    public WorkoutDTO(Long id, String name, String imgUrl, LevelEnum level, String description) {
+        this.id = id;
         this.name = name;
-        this.exercises = exercises;
-    }
-
-    public LevelEnum getLevel() {
-        return level;
-    }
-
-    public WorkoutDTO setLevel(LevelEnum level) {
+        this.imgUrl = imgUrl;
         this.level = level;
+        this.description = description;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public WorkoutDTO setId(Long id) {
+        this.id = id;
         return this;
     }
 
@@ -39,6 +48,33 @@ public class WorkoutDTO {
         return this;
     }
 
+    public LevelEnum getLevel() {
+        return level;
+    }
+
+    public WorkoutDTO setLevel(LevelEnum level) {
+        this.level = level;
+        return this;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public WorkoutDTO setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+        return this;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public WorkoutDTO setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
     public List<ExerciseDTO> getExercises() {
         return exercises;
     }
@@ -47,4 +83,5 @@ public class WorkoutDTO {
         this.exercises = exercises;
         return this;
     }
+
 }

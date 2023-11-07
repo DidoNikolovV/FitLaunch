@@ -1,43 +1,33 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/navbar}">
-</head>
+
 <body>
-<div class="container mt-5">
-    <h1 class="text-center mb-4 primary">Workout Bundles</h1>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card workout-card">
-                <img src="/images/beginner.jpg" class="card-img-top" alt="Workout Image">
+    <div th:replace="~{fragments/navbar}">
+    </div>
+
+    <div class="container-fluid my-5">
+        <h1 class="text-center mt-5 primary my-3">Workout Bundles</h1>
+        <div class="row mx-auto d-flex flex-row justify-content-center">
+            <div class="col-md-4" th:each="workout : ${workouts.getContent()}" th:object="${workout}">
+            <div class="card">
+                <img th:src="*{imgUrl}" class="card-img-top" alt="Workout Image">
                 <div class="card-body">
-                    <h5 class="card-title">Beginner</h5>
-                    <p class="card-text">Start your fitness journey with our beginner workouts.</p>
-                    <a th:href="@{/workouts/beginner}" class="btn btn-primary btn-block">View Workout</a>
+                    <h5 class="card-title" th:text="*{name}">Full Body</h5>
+                    <ul class="workout-details list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div class="card-text">
+                                <th:block th:text="*{level}">BEGINNER</th:block>
+                                <p class="card-text" th:text="*{description}">Start your fitness journey with our beginner workouts.</p>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card workout-card">
-                <img src="/images/intermediate.jpg" class="card-img-top" alt="Workout Image">
-                <div class="card-body">
-                    <h5 class="card-title">Intermediate</h5>
-                    <p class="card-text">Take your fitness to the next level with our intermediate workouts.</p>
-                    <a th:href="@{/workouts/intermediate}" class="btn btn-primary btn-block">View Workout</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card workout-card">
-                <img src="/images/advanced.jpg" class="card-img-top" alt="Workout Image">
-                <div class="card-body">
-                    <h5 class="card-title">Advanced</h5>
-                    <p class="card-text">Challenge yourself with our advanced workout programs.</p>
-                    <a th:href="@{/workouts/advanced}" class="btn btn-primary btn-block">View Workout</a>
+                <div class="card-footer">
+                    <a th:href="@{/workout/{id}(id=*{id})}" class="btn btn-primary btn-block card-link">View Workout</a>
                 </div>
             </div>
         </div>
     </div>
-</div>
     <footer th:replace="~{fragments/footer}"></footer>
 </body>
 </html>

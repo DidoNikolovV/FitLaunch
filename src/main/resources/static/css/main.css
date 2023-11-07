@@ -217,6 +217,23 @@ body {
     color: white;
 }
 
+/*.card-container {*/
+/*    display: flex;*/
+/*    flex-wrap: wrap;*/
+/*    justify-content: space-between; !* Adjust as needed to control space between cards *!*/
+/*}*/
+
+/*.card {*/
+/*    flex: 0 0 calc(33.33% - 20px); !* Adjust the width and margin as needed *!*/
+/*    margin: 10px; !* Adjust margin as needed *!*/
+/*    padding: 15px;*/
+/*    border: 1px solid #ddd;*/
+/*    background-color: #fff;*/
+/*    border-radius: 5px;*/
+/*    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);*/
+/*    text-align: center;*/
+/*}*/
+
 
 
 /* Set a flex-grow property for the main content to push the footer down */
@@ -228,6 +245,28 @@ body {
     width: 100%;
     text-align: center;
 }
+
+.container, .container-fluid {
+    padding-top: 20px;
+}
+
+.card-img-top-wrapper {
+    object-fit: fill;
+    height: 150px;
+    overflow:hidden;
+}
+
+.workout.offer, .workout-details .list-group-item {
+    background-image: linear-gradient(to bottom right, rgba(220, 220, 220, 0.9), rgba(255, 255, 255, 0.9));
+}
+
+.label-custom {
+    text-align: left; /* Adjust alignment as needed */
+    margin-right: 10px; /* Adjust spacing as needed */
+    font-weight: bold;
+    color: #ffffff; /* Text color */
+}
+
 
 footer {
     background-color: #343a40;

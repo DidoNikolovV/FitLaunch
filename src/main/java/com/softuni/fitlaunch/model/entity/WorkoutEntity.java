@@ -1,10 +1,8 @@
 package com.softuni.fitlaunch.model.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import com.softuni.fitlaunch.model.enums.LevelEnum;
+import jakarta.persistence.*;
 
 import java.util.List;
 
@@ -12,14 +10,30 @@ import java.util.List;
 @Table(name = "workouts")
 public class WorkoutEntity extends BaseEntity {
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
+    private String imgUrl;
+
+    @Column(nullable = false)
     private String name;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private LevelEnum level;
+
+    @Column(nullable = false)
+    private String description;
 
     @OneToMany(mappedBy = "workout")
     private List<ExerciseEntity> exercises;
 
-    @Column(name = "is_completed", nullable = false)
-    private boolean isCompleted;
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public WorkoutEntity setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+        return this;
+    }
 
     public String getName() {
         return name;
@@ -39,12 +53,21 @@ public class WorkoutEntity extends BaseEntity {
         return this;
     }
 
-    public boolean isCompleted() {
-        return isCompleted;
+    public LevelEnum getLevel() {
+        return level;
     }
 
-    public WorkoutEntity setCompleted(boolean completed) {
-        isCompleted = completed;
+    public WorkoutEntity setLevel(LevelEnum level) {
+        this.level = level;
+        return this;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public WorkoutEntity setDescription(String description) {
+        this.description = description;
         return this;
     }
 }

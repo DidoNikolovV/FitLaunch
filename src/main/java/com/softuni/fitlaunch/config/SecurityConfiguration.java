@@ -34,6 +34,7 @@ public class SecurityConfiguration {
                         // Allow anyone to see the home page, the registration page and the login form
                         .requestMatchers("/", "/users/login", "/users/register", "/users/login-error").permitAll()
                         .requestMatchers("/workouts/all").permitAll()
+                        .requestMatchers("/error").permitAll()
                         .requestMatchers("/workouts").hasRole(UserRoleEnum.ADMIN.name())
                         // all other requests are authenticated
                         .anyRequest().authenticated()
@@ -47,7 +48,7 @@ public class SecurityConfiguration {
                             // Names of the input fields (in our case login.html)
                             .usernameParameter("email")
                             .passwordParameter("password")
-                            .defaultSuccessUrl("/")
+                            .defaultSuccessUrl("/", true)
                             .failureForwardUrl("/users/login-error");
                 }
         ).logout(
