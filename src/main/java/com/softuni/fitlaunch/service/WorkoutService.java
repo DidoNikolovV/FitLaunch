@@ -30,13 +30,13 @@ public class WorkoutService {
     public Page<WorkoutDTO> getAllWorkouts(Pageable pageable) {
         return workoutRepository
                 .findAll(pageable)
-                .map(WorkoutService::mapAsSummary);
+                .map(WorkoutService::mapAsWorkoutDTO);
     }
 
     public List<ExerciseDTO> getAllExercises() {
         return exerciseRepository.findAll()
                 .stream()
-                .map(WorkoutService::mapAsDTO)
+                .map(WorkoutService::mapAsExerciseDTO)
                 .toList();
     }
 
@@ -44,11 +44,15 @@ public class WorkoutService {
         return Arrays.stream(LevelEnum.values()).collect(Collectors.toList());
     }
 
-//    public Long createWorkout(CreateWorkoutDTO createWorkoutDTO) {
-//
-//    }
+    public Long createWorkout(CreateWorkoutDTO createWorkoutDTO) {
+        WorkoutEntity newWorkout = map(createWorkoutDTO);
 
-    private static WorkoutDTO mapAsSummary(WorkoutEntity workoutEntity) {
+        newWorkout = workoutRepository.save(newWorkout);
+
+        return newWorkout.getId();
+    }
+
+    private static WorkoutDTO mapAsWorkoutDTO(WorkoutEntity workoutEntity) {
         return new WorkoutDTO(
                 workoutEntity.getId(),
                 workoutEntity.getName(),
@@ -58,12 +62,30 @@ public class WorkoutService {
         );
     }
 
+    private static WorkoutEntity map(CreateWorkoutDTO workoutDTO) {
 
-    private static ExerciseDTO mapAsDTO(ExerciseEntity exerciseEntity) {
+        List<ExerciseEntity> exercises = workoutDTO.getExercises().stream().map(WorkoutService::mapAsExerciseEntity).toList();
+
+        return new WorkoutEntity()
+                .setName(workoutDTO.getName())
+                .setLevel(workoutDTO.getLevel())
+                .setDescription(workoutDTO.getDescription())
+                .setImgUrl(workoutDTO.getImgUrl())
+                .setExercises(exercises);
+    }
+
+
+    private static ExerciseDTO mapAsExerciseDTO(ExerciseEntity exerciseEntity) {
         return new ExerciseDTO(
                 exerciseEntity.getId(),
                 exerciseEntity.getName()
         );
+    }
+
+    private static ExerciseEntity mapAsExerciseEntity(ExerciseDTO exerciseDTO) {
+        return new ExerciseEntity()
+                .setId(exerciseDTO.getId())
+                .setName(exerciseDTO.getName());
     }
 
 }

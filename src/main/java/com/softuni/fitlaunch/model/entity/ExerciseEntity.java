@@ -9,12 +9,27 @@ import java.util.List;
 @Table(name = "exercises")
 public class ExerciseEntity extends BaseEntity{
 
+    private Long id;
+
+
+
+    @Override
+    public ExerciseEntity setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
     @Column(nullable = false, unique = true)
     private String name;
 
 
     @ManyToOne
     private WorkoutEntity workout;
+
+    @Override
+    public Long getId() {
+        return id;
+    }
 
     public String getName() {
         return name;

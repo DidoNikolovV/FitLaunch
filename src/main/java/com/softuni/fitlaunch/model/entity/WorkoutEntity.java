@@ -10,6 +10,10 @@ import java.util.List;
 @Table(name = "workouts")
 public class WorkoutEntity extends BaseEntity {
 
+
+
+    private Long id;
+
     @Column(nullable = false)
     private String imgUrl;
 
@@ -30,8 +34,21 @@ public class WorkoutEntity extends BaseEntity {
         return imgUrl;
     }
 
+
+
     public WorkoutEntity setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+        return this;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public WorkoutEntity setId(Long id) {
+        this.id = id;
         return this;
     }
 
