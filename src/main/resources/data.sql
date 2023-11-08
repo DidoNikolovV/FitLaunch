@@ -22,5 +22,20 @@ VALUES
     (3, 'Challenge yourself with our advanced workout programs.', '/images/advanced.jpg', 'ADVANCED', 'Pull'),
     (4, 'Start your fitness journey with our beginner workouts.', '/images/beginner.jpg', 'BEGINNER', 'LEGS');
 
+INSERT INTO exercises(`id`, `name`)
+VALUES
+    (1, 'Push-ups'),
+    (2, 'Squats'),
+    (3, 'Planks'),
+    (4, 'Jumping Jacks'),
+    (5, 'Burpees'),
+    (6, 'Lunges'),
+    (7, 'Bicycle Crunches'),
+    (8, 'Mountain Climbers'),
+    (9, 'Leg Raises'),
+    (10, 'Pull-ups'),
+    (11, 'Dumbbell Curls'),
+    (12, 'Deadlifts');
+
 
 

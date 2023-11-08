@@ -10,15 +10,24 @@ import jakarta.persistence.ManyToOne;
 import java.util.List;
 
 public class ExerciseDTO {
+
+    private Long id;
+
     private String name;
-    private int reps;
 
-    private WorkoutEntity workout;
+    public ExerciseDTO(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
-    private List<MusclesEnum> targetMuscle;
+    public Long getId() {
+        return id;
+    }
 
-    @Column(name = "is_completed", nullable = false)
-    private boolean isCompleted;
+    public ExerciseDTO setId(Long id) {
+        this.id = id;
+        return this;
+    }
 
     public String getName() {
         return name;
@@ -26,42 +35,6 @@ public class ExerciseDTO {
 
     public ExerciseDTO setName(String name) {
         this.name = name;
-        return this;
-    }
-
-    public int getReps() {
-        return reps;
-    }
-
-    public ExerciseDTO setReps(int reps) {
-        this.reps = reps;
-        return this;
-    }
-
-    public WorkoutEntity getWorkout() {
-        return workout;
-    }
-
-    public ExerciseDTO setWorkout(WorkoutEntity workout) {
-        this.workout = workout;
-        return this;
-    }
-
-    public List<MusclesEnum> getTargetMuscle() {
-        return targetMuscle;
-    }
-
-    public ExerciseDTO setTargetMuscle(List<MusclesEnum> targetMuscle) {
-        this.targetMuscle = targetMuscle;
-        return this;
-    }
-
-    public boolean isCompleted() {
-        return isCompleted;
-    }
-
-    public ExerciseDTO setCompleted(boolean completed) {
-        isCompleted = completed;
         return this;
     }
 }

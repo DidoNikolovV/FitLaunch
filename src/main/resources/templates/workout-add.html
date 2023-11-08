@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link rel="stylesheet" th:href="@{/css/reset-css.css}"/>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+  <link rel="stylesheet" th:href="@{/js/bootstrap.min.js}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+</head>
+<body>
+<div>
+  <nav th:replace="~{fragments/navbar}"></nav>
+</div>
+
+  <div class="container my-5">
+    <h2 class="text-center">Create Workout</h2>
+    <form th:object="${createWorkoutDTO}" th:action="@{/workouts/add}" th:method="post">
+      <div class="form-group">
+        <label for="name" class="text-white">Workout Name</label>
+        <input type="text" class="form-control" id="name" th:field="*{name}">
+      </div>
+      <div class="form-group">
+        <label for="level" class="text-white">Level</label>
+        <select class="form-control" id="level" name="level">
+          <option value="">Select Level</option>
+          <option th:each="level : ${T(com.softuni.fitlaunch.model.enums.LevelEnum).values()}"
+                  th:value="${level}"
+                  th:text="${level}"></option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="description" class="text-white">Description</label>
+        <textarea class="form-control" id="description" th:field="*{description}" rows="4"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="imgUrl" class="text-white">Image URL</label>
+        <input type="text" class="form-control" id="imgUrl" th:field="*{imgUrl}">
+      </div>
+      <div class="form-group">
+        <label class="text-white font-weight-bold">Exercises</label>
+        <div class="d-flex flex-wrap">
+          <!-- Loop through your exercises and display them with a "+" button -->
+          <div th:each="exercise : ${exercises}">
+            <div class="exercise-item">
+              <p th:text="${exercise.name}" class="text-white badge badge-primary exercise-label"></p>
+              <button type="button" class="btn btn-success btn-sm add-exercise-button custom-plus" th:attr="data-exercise-id=${exercise.id}" onclick="addExercise(this)">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="selectedExercises" class="text-white">Selected Exercises</label>
+        <ul class="list-group d-flex flex-wrap" id="selectedExercises">
+          <!-- Here, we'll dynamically add selected exercises using JavaScript -->
+        </ul>
+      </div>
+      <button type="submit" class="btn btn-primary">Create Workout</button>
+    </form>
+  </div>
+
+  <div>
+    <footer th:replace="~{fragments/footer}"></footer>
+  </div>
+
+  <script>
+    function addExercise(button) {
+      let exerciseId = button.getAttribute("data-exercise-id");
+      let exerciseName = button.previousElementSibling.textContent;
+
+      let listItem = document.createElement("li");
+      listItem.className = "list-group-item";
+      listItem.textContent = exerciseName;
+
+      let selectedExercises = document.getElementById("selectedExercises");
+      selectedExercises.appendChild(listItem);
+
+      button.previousElementSibling.style.display = "none";
+      button.style.display = "none";
+    }
+
+  </script>
+</body>
+</html>

@@ -2,6 +2,7 @@ package com.softuni.fitlaunch.web;
 
 
 import com.softuni.fitlaunch.model.dto.WorkoutDTO;
+import com.softuni.fitlaunch.model.enums.LevelEnum;
 import com.softuni.fitlaunch.service.WorkoutService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/workouts")
@@ -29,8 +32,10 @@ public class WorkoutsController {
     ) Pageable pageable) {
 
         Page<WorkoutDTO> allWorkouts = workoutService.getAllWorkouts(pageable);
+        List<LevelEnum> allLevels = workoutService.getAllLevels();
 
         model.addAttribute("workouts", allWorkouts);
+        model.addAttribute("levels", allLevels);
 
         return "workouts";
     }
