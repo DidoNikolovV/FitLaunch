@@ -4,6 +4,7 @@ package com.softuni.fitlaunch.service;
 import com.softuni.fitlaunch.model.dto.CreateWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
 import com.softuni.fitlaunch.model.dto.WorkoutDTO;
+import com.softuni.fitlaunch.model.dto.WorkoutDetailsDTO;
 import com.softuni.fitlaunch.model.entity.ExerciseEntity;
 import com.softuni.fitlaunch.model.entity.WorkoutEntity;
 import com.softuni.fitlaunch.model.enums.LevelEnum;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,6 +46,11 @@ public class WorkoutService {
         return Arrays.stream(LevelEnum.values()).collect(Collectors.toList());
     }
 
+    public Optional<WorkoutDetailsDTO> getWorkoutDetails(Long workoutId) {
+        return workoutRepository.findById(workoutId)
+                .map(WorkoutService::mapAsDetails);
+    }
+
     public Long createWorkout(CreateWorkoutDTO createWorkoutDTO) {
         WorkoutEntity newWorkout = map(createWorkoutDTO);
 
@@ -59,6 +66,20 @@ public class WorkoutService {
                 workoutEntity.getImgUrl(),
                 workoutEntity.getLevel(),
                 workoutEntity.getDescription()
+        );
+    }
+
+    private static WorkoutDetailsDTO mapAsDetails(WorkoutEntity workoutEntity) {
+
+        List<ExerciseDTO> exercises = workoutEntity.getExercises().stream().map(WorkoutService::mapAsExerciseDTO).toList();
+
+        return new WorkoutDetailsDTO(
+                workoutEntity.getId(),
+                workoutEntity.getName(),
+                workoutEntity.getLevel(),
+                workoutEntity.getDescription(),
+                workoutEntity.getImgUrl(),
+                exercises
         );
     }
 

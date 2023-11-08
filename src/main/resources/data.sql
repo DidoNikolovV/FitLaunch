@@ -37,5 +37,21 @@ VALUES
     (11, 'Dumbbell Curls'),
     (12, 'Deadlifts');
 
+INSERT INTO workouts_exercises(`workout_id`, `exercise_id`)
+VALUES
+    (1, 1),
+    (1, 2),
+    (1, 3),
+    (2, 1),
+    (2, 2),
+    (2, 5),
+    (3, 10),
+    (3, 11),
+    (3, 12),
+    (4, 2),
+    (4, 6),
+    (4, 12);
+
+
 
 

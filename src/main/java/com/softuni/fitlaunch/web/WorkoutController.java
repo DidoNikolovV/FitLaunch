@@ -3,10 +3,12 @@ package com.softuni.fitlaunch.web;
 
 import com.softuni.fitlaunch.model.dto.CreateWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
+import com.softuni.fitlaunch.model.dto.WorkoutDetailsDTO;
 import com.softuni.fitlaunch.service.WorkoutService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import com.softuni.fitlaunch.service.exception.ObjectNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,8 +59,15 @@ public class WorkoutController {
         return "redirect:/workout/" + newWorkoutID;
     }
 
+
     @GetMapping("/{id}")
-    public String details(@PathVariable("id") Long id) {
+    public String details(@PathVariable("id") Long id, Model model) {
+
+        WorkoutDetailsDTO workoutDetailsDTO = workoutService.getWorkoutDetails(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Workout with id " + id + " not found!" ));
+
+        model.addAttribute("workout", workoutDetailsDTO);
+
         return "details";
     }
 

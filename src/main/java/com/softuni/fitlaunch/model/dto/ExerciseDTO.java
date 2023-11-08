@@ -15,10 +15,14 @@ public class ExerciseDTO {
 
     private String name;
 
+    List<WorkoutDTO> workouts;
+
     public ExerciseDTO(Long id, String name) {
         this.id = id;
         this.name = name;
     }
+
+
 
     public Long getId() {
         return id;
@@ -35,6 +39,15 @@ public class ExerciseDTO {
 
     public ExerciseDTO setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public List<WorkoutDTO> getWorkouts() {
+        return workouts;
+    }
+
+    public ExerciseDTO setWorkouts(List<WorkoutDTO> workouts) {
+        this.workouts = workouts;
         return this;
     }
 }

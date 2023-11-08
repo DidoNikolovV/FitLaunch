@@ -4,14 +4,12 @@ package com.softuni.fitlaunch.model.entity;
 import com.softuni.fitlaunch.model.enums.LevelEnum;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "workouts")
 public class WorkoutEntity extends BaseEntity {
-
-
-
     private Long id;
 
     @Column(nullable = false)
@@ -27,8 +25,16 @@ public class WorkoutEntity extends BaseEntity {
     @Column(nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "workout")
-    private List<ExerciseEntity> exercises;
+//    @ManyToMany(mappedBy = "workouts", fetch = FetchType.EAGER)
+//    private List<ExerciseEntity> exercises;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name= "workouts_exercises",
+            joinColumns = @JoinColumn(name = "workout_id"),
+            inverseJoinColumns = @JoinColumn(name = "exercise_id")
+    )
+    private List<ExerciseEntity> exercises = new ArrayList<>();
 
     public String getImgUrl() {
         return imgUrl;
