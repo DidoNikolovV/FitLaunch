@@ -45,12 +45,12 @@
 
                 <!-- Admin Dropdown -->
                 <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
-                    <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button"
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Admin
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/workouts">Add Workout</a>
+                        <a class="dropdown-item" href="/workouts/add">Add Workout</a>
                         <!-- Add more admin options if needed -->
                     </div>
                 </li>
@@ -80,6 +80,11 @@
         </div>
     </div>
 </nav>
+    <script>
+        $(document).ready(function() {
+            $('.dropdown-toggle').dropdown();
+        });
+    </script>
 
 </body>
 </html>

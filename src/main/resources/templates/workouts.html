@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <body>
     <div th:replace="~{fragments/navbar}">
     </div>
@@ -15,19 +14,18 @@
                     <h5 class="card-title" th:text="*{name}">Full Body</h5>
                     <ul class="workout-details list-group list-group-flush">
                         <li class="list-group-item">
-                            <div class="card-text">
-                                <th:block th:text="*{level}">BEGINNER</th:block>
-                                <p class="card-text" th:text="*{description}">Start your fitness journey with our beginner workouts.</p>
-                            </div>
+                            <th:block th:text="*{level}">BEGINNER</th:block>
+                            <p class="card-text" th:text="*{description}">Start your fitness journey with our beginner workouts.</p>
                         </li>
                     </ul>
                 </div>
                 <div class="card-footer">
-                    <a th:href="@{/workout/{id}(id=*{id})}" class="btn btn-primary btn-block card-link">View Workout</a>
+                    <a th:href="@{/workouts/{id}(id=*{id})}" class="btn btn-primary btn-block card-link">View Workout</a>
                 </div>
             </div>
         </div>
     </div>
     <footer th:replace="~{fragments/footer}"></footer>
+    </div>
 </body>
 </html>

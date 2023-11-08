@@ -284,6 +284,12 @@ body {
     padding: 0.1rem 0.4rem; /* Adjust the padding as needed */
 }
 
+.custom-bg-dark {
+    background-color: #333; /* Replace with your desired dark color */
+    color: #fff; /* Change text color to white or a suitable contrast color */
+}
+
+
 
 footer {
     background-color: #343a40;
