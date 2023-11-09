@@ -36,24 +36,25 @@
         <input type="text" class="form-control bg-light" id="imgUrl" th:field="*{imgUrl}">
       </div>
 
-      <label>Select exercises:</label>
-      <div th:each="exercise : ${exercises}">
-        <input type="checkbox" th:id="'exercise-' + ${exercise.id}" name="selectedExerciseIds" th:value="${exercise.id}" />
-        <label th:for="'exercise-' + ${exercise.id}" th:text="${exercise.name}">Exercise Name</label>
+      <div class="form-group">
+      <label class="text-white">Select Exercises:</label>
+      <div class="row">
+        <div th:each="exercise : ${exercises}" class="col-md-4 mb-3">
+          <div class="card-exercise d-flex align-items-center justify-content-end">
+            <div class="card-body">
+              <input type="checkbox" class="form-check-input" th:id="'exercise-' + ${exercise.id}" name="selectedExerciseIds" th:value="${exercise.id}" />
+              <label class="form-check-label" th:for="'exercise-' + ${exercise.id}">
+<!--                <img th:src="${exercise.imageUrl}" alt="Exercise Image" class="img-thumbnail">-->
+                <span th:text="${exercise.name}"></span>
+              </label>
+            </div>
+          </div>
+        </div>
       </div>
-      <button type="submit">Create Workout</button>
-<!--      <div class="form-group">-->
-<!--        <label class="text-white font-weight-bold">Exercises</label>-->
-<!--        <div class="d-flex flex-wrap">-->
-<!--          &lt;!&ndash; Loop through your exercises and display them with a "+" button &ndash;&gt;-->
-<!--          <div th:each="exercise : ${exercises}">-->
-<!--            <div class="exercise-item">-->
-<!--              <p th:text="${exercise.name}" class="text-white badge badge-primary exercise-label"></p>-->
-<!--              <button type="button" class="btn btn-success btn-sm add-exercise-button custom-plus" th:attr="data-exercise-id=${exercise.id}" onclick="addExercise(this)">+</button>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
+    </div>
+
+
+      <button type="submit" class="btn btn-primary btn-create-workout">Create Workout</button>
     </form>
   </div>
 

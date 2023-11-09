@@ -218,26 +218,40 @@ body {
     color: white;
 }
 
-/*.card-container {*/
-/*    display: flex;*/
-/*    flex-wrap: wrap;*/
-/*    justify-content: space-between; !* Adjust as needed to control space between cards *!*/
-/*}*/
+.card-exercise {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #343a40;
+    background-clip: border-box;
+    color: #fff;
+    border: 1px solid #6c757d;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+}
 
-/*.card {*/
-/*    flex: 0 0 calc(33.33% - 20px); !* Adjust the width and margin as needed *!*/
-/*    margin: 10px; !* Adjust margin as needed *!*/
-/*    padding: 15px;*/
-/*    border: 1px solid #ddd;*/
-/*    background-color: #fff;*/
-/*    border-radius: 5px;*/
-/*    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);*/
-/*    text-align: center;*/
-/*}*/
+.card-exercise:hover {
+    background-color: #495057; /* Darker background color on hover */
+}
+
+.card-exercise .card-body {
+    padding: 15px;
+}
+
+.card-exercise img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
 
 
-
-/* Set a flex-grow property for the main content to push the footer down */
 .hero, .classes {
     flex-grow: 1;
 }
@@ -255,6 +269,19 @@ body {
     object-fit: fill;
     height: 150px;
     overflow:hidden;
+}
+
+/* Custom CSS for Create Workout Button */
+.btn-create-workout {
+    width: 100%; /* Make the button full-width */
+    background-color: #007bff; /* Primary color */
+    color: #ffffff; /* White text color */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition on hover */
+}
+
+.btn-create-workout:hover {
+    background-color: #0056b3; /* Darker color on hover */
+    color: #ffffff; /* White text color on hover */
 }
 
 .workout.offer, .workout-details .list-group-item {
