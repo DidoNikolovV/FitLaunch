@@ -25,6 +25,8 @@ public class CreateWorkoutDTO {
     @NotNull
     private List<ExerciseDTO> exercises;
 
+    private List<Long> selectedExerciseIds;
+
     public CreateWorkoutDTO() {
         this.name = null;
         this.level = null;
@@ -33,12 +35,12 @@ public class CreateWorkoutDTO {
         this.exercises = new ArrayList<>();
     }
 
-    public CreateWorkoutDTO(String name, LevelEnum level, String description, String imgUrl, List<ExerciseDTO> exercises) {
+    public CreateWorkoutDTO(String name, LevelEnum level, String description, String imgUrl, List<Long> selectedExerciseIds) {
         this.name = name;
         this.level = level;
         this.description = description;
         this.imgUrl = imgUrl;
-        this.exercises = exercises;
+        this.selectedExerciseIds = selectedExerciseIds;
     }
 
     public String getName() {
@@ -86,4 +88,12 @@ public class CreateWorkoutDTO {
         return this;
     }
 
+    public List<Long> getSelectedExerciseIds() {
+        return selectedExerciseIds;
+    }
+
+    public CreateWorkoutDTO setSelectedExerciseIds(List<Long> selectedExerciseIds) {
+        this.selectedExerciseIds = selectedExerciseIds;
+        return this;
+    }
 }

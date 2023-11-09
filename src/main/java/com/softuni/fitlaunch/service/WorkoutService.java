@@ -53,7 +53,7 @@ public class WorkoutService {
 
     public Long createWorkout(CreateWorkoutDTO createWorkoutDTO) {
         WorkoutEntity newWorkout = map(createWorkoutDTO);
-
+        newWorkout.setExercises(createWorkoutDTO.getExercises().stream().map(WorkoutService::mapAsExerciseEntity).collect(Collectors.toList()));
         newWorkout = workoutRepository.save(newWorkout);
 
         return newWorkout.getId();

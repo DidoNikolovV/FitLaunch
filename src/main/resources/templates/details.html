@@ -16,14 +16,14 @@
         <div th:object="${workout}" class="row">
             <div class="col-md-6">
                 <div class="card mb-4">
-                    <div class="card-body">
+                    <div class="card-body bg-dark">
                         <h5 class="card-title text-primary" th:text="*{name}"></h5>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-dark text-white">
+                            <li class="list-group-item text-white bg-dark">
                                 <span class="font-weight-bold">Level:</span>
                                 <th:block th:text="*{level}">Beginner</th:block>
                             </li>
-                            <li class="list-group-item bg-dark text-white">
+                            <li class="list-group-item text-white bg-dark">
                                 <span class="font-weight-bold">Description:</span>
                                 <th:block th:text="*{description}">This is a great workout for...</th:block>
                             </li>
@@ -35,10 +35,10 @@
     </div>
 
     <div class="exercises card">
-        <div class="card-body">
-            <h5 class="card-title">Exercises</h5>
+        <div class="card-body bg-dark">
+            <h5 class="card-title text-primary">Exercises</h5>
             <ul class="list-group">
-                <li th:each="exercise: ${workout.exercises}" class="list-group-item bg-dark text-white">
+                <li th:each="exercise: ${workout.exercises}" class="list-group-item primary bg-dark">
                     <span th:text="${exercise.name}"></span>
                 </li>
             </ul>

@@ -4,16 +4,14 @@ package com.softuni.fitlaunch.web;
 import com.softuni.fitlaunch.model.dto.CreateWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
 import com.softuni.fitlaunch.model.dto.WorkoutDetailsDTO;
+import com.softuni.fitlaunch.service.ExerciseService;
 import com.softuni.fitlaunch.service.WorkoutService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import com.softuni.fitlaunch.service.exception.ObjectNotFoundException;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -24,9 +22,11 @@ public class WorkoutController {
 
 
     private final WorkoutService workoutService;
+    private final ExerciseService exerciseService;
 
-    public WorkoutController(WorkoutService workoutService) {
+    public WorkoutController(WorkoutService workoutService, ExerciseService exerciseService) {
         this.workoutService = workoutService;
+        this.exerciseService = exerciseService;
     }
 
     @GetMapping("/add")
@@ -44,9 +44,12 @@ public class WorkoutController {
     }
 
     @PostMapping("/add")
-    public String add(@Valid CreateWorkoutDTO createWorkoutDTO,
+    public String add(@ModelAttribute @Valid CreateWorkoutDTO createWorkoutDTO,
                       BindingResult bindingResult,
                       RedirectAttributes rAtt) {
+
+        List<Long> selectedExercisesIds = createWorkoutDTO.getSelectedExerciseIds();
+        List<ExerciseDTO> selectedExercises = exerciseService.getExercisesByIds(selectedExercisesIds);
 
         if(bindingResult.hasErrors()) {
             rAtt.addFlashAttribute("createWorkoutDTO", createWorkoutDTO);
@@ -54,9 +57,13 @@ public class WorkoutController {
             return "redirect:/workout/add";
         }
 
+
+
+        createWorkoutDTO.setExercises(selectedExercises);
+
         long newWorkoutID = workoutService.createWorkout(createWorkoutDTO);
 
-        return "redirect:/workout/" + newWorkoutID;
+        return "redirect:/workouts/" + newWorkoutID;
     }
 
 

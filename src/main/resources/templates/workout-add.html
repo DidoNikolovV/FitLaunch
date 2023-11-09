@@ -16,7 +16,7 @@
     <form th:object="${createWorkoutDTO}" th:action="@{/workouts/add}" th:method="post">
       <div class="form-group">
         <label for="name" class="text-white">Workout Name</label>
-        <input type="text" class="form-control" id="name" th:field="*{name}">
+        <input type="text" class="form-control bg-light" id="name" th:field="*{name}">
       </div>
       <div class="form-group">
         <label for="level" class="text-white">Level</label>
@@ -29,32 +29,31 @@
       </div>
       <div class="form-group">
         <label for="description" class="text-white">Description</label>
-        <textarea class="form-control" id="description" th:field="*{description}" rows="4"></textarea>
+        <textarea class="form-control bg-light" id="description" th:field="*{description}" rows="4"></textarea>
       </div>
       <div class="form-group">
         <label for="imgUrl" class="text-white">Image URL</label>
-        <input type="text" class="form-control" id="imgUrl" th:field="*{imgUrl}">
-      </div>
-      <div class="form-group">
-        <label class="text-white font-weight-bold">Exercises</label>
-        <div class="d-flex flex-wrap">
-          <!-- Loop through your exercises and display them with a "+" button -->
-          <div th:each="exercise : ${exercises}">
-            <div class="exercise-item">
-              <p th:text="${exercise.name}" class="text-white badge badge-primary exercise-label"></p>
-              <button type="button" class="btn btn-success btn-sm add-exercise-button custom-plus" th:attr="data-exercise-id=${exercise.id}" onclick="addExercise(this)">+</button>
-            </div>
-          </div>
-        </div>
+        <input type="text" class="form-control bg-light" id="imgUrl" th:field="*{imgUrl}">
       </div>
 
-      <div class="form-group">
-        <label for="selectedExercises" class="text-white">Selected Exercises</label>
-        <ul class="list-group d-flex flex-wrap" id="selectedExercises">
-          <!-- Here, we'll dynamically add selected exercises using JavaScript -->
-        </ul>
+      <label>Select exercises:</label>
+      <div th:each="exercise : ${exercises}">
+        <input type="checkbox" th:id="'exercise-' + ${exercise.id}" name="selectedExerciseIds" th:value="${exercise.id}" />
+        <label th:for="'exercise-' + ${exercise.id}" th:text="${exercise.name}">Exercise Name</label>
       </div>
-      <button type="submit" class="btn btn-primary">Create Workout</button>
+      <button type="submit">Create Workout</button>
+<!--      <div class="form-group">-->
+<!--        <label class="text-white font-weight-bold">Exercises</label>-->
+<!--        <div class="d-flex flex-wrap">-->
+<!--          &lt;!&ndash; Loop through your exercises and display them with a "+" button &ndash;&gt;-->
+<!--          <div th:each="exercise : ${exercises}">-->
+<!--            <div class="exercise-item">-->
+<!--              <p th:text="${exercise.name}" class="text-white badge badge-primary exercise-label"></p>-->
+<!--              <button type="button" class="btn btn-success btn-sm add-exercise-button custom-plus" th:attr="data-exercise-id=${exercise.id}" onclick="addExercise(this)">+</button>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
     </form>
   </div>
 
