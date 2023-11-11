@@ -2,6 +2,7 @@ package com.softuni.fitlaunch.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,9 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class UserEntity extends BaseEntity{
+
+    @Column(unique = true, nullable = false)
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -28,7 +32,16 @@ public class UserEntity extends BaseEntity{
     @Column(nullable = false)
     private String password;
 
+    @Override
+    public Long getId() {
+        return id;
+    }
 
+    @Override
+    public UserEntity setId(Long id) {
+        this.id = id;
+        return this;
+    }
 
     public String getUsername() {
         return username;

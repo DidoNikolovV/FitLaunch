@@ -37,7 +37,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/workouts/all").permitAll()
                         .requestMatchers(HttpMethod.GET, "/workout/**").permitAll()
                         .requestMatchers("/error").permitAll()
-                        .requestMatchers("/workouts").hasRole(UserRoleEnum.ADMIN.name())
+                        .requestMatchers("/workouts", "/users/all").hasRole(UserRoleEnum.ADMIN.name())
                         // all other requests are authenticated
                         .anyRequest().authenticated()
 
