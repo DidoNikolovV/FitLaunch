@@ -14,8 +14,6 @@ public class ClothEntity extends BaseEntity{
     @Column(nullable = false)
     private String imgUrl;
 
-    @Column(nullable = false)
-    private String category;
 
     @Column(nullable = false)
     private BigDecimal price;
@@ -42,14 +40,6 @@ public class ClothEntity extends BaseEntity{
         return this;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public ClothEntity setCategory(String category) {
-        this.category = category;
-        return this;
-    }
 
     public BigDecimal getPrice() {
         return price;

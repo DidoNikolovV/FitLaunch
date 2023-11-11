@@ -1,6 +1,7 @@
 package com.softuni.fitlaunch.model.entity;
 
 
+import com.softuni.fitlaunch.model.enums.GenderEnum;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -10,18 +11,34 @@ import java.util.List;
 public class ShopEntity extends BaseEntity {
 
 
-    @Column(unique = true, nullable = false)
-    private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToOne
+    private ShopGenderEntity gender;
+
 
     @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
     private List<ClothEntity> clothes;
 
-    public String getName() {
-        return name;
+    @Override
+    public Long getId() {
+        return id;
     }
 
-    public ShopEntity setName(String name) {
-        this.name = name;
+    @Override
+    public ShopEntity setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public ShopGenderEntity getGender() {
+        return gender;
+    }
+
+    public ShopEntity setGender(ShopGenderEntity gender) {
+        this.gender = gender;
         return this;
     }
 

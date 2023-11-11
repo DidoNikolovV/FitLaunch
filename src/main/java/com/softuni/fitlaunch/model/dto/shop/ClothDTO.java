@@ -1,6 +1,7 @@
 package com.softuni.fitlaunch.model.dto.shop;
 
 import com.softuni.fitlaunch.model.entity.ShopEntity;
+import com.softuni.fitlaunch.model.enums.GenderEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -14,7 +15,7 @@ public class ClothDTO {
     private Long id;
 
     @NotNull
-    private String name;
+    private GenderEnum gender;
 
     @NotNull
 
@@ -31,8 +32,9 @@ public class ClothDTO {
     public ClothDTO() {
     }
 
-    public ClothDTO(String name, String imgUrl, String category, BigDecimal price, ShopDTO shop) {
-        this.name = name;
+    public ClothDTO(Long id, GenderEnum gender, String imgUrl, String category, BigDecimal price, ShopDTO shop) {
+        this.id = id;
+        this.gender = gender;
         this.imgUrl = imgUrl;
         this.category = category;
         this.price = price;
@@ -50,12 +52,12 @@ public class ClothDTO {
 
     private ShopDTO shop;
 
-    public String getName() {
-        return name;
+    public GenderEnum getGender() {
+        return gender;
     }
 
-    public ClothDTO setName(String name) {
-        this.name = name;
+    public ClothDTO setName(GenderEnum gender) {
+        this.gender = gender;
         return this;
     }
 

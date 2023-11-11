@@ -52,6 +52,26 @@ VALUES
     (4, 6),
     (4, 12);
 
+-- Insert data into genders table
+INSERT INTO genders (`id`, `gender`)
+VALUES
+       (1, 'MEN'),
+       (2, 'WOMAN');
+
+-- Insert data into shop table
+INSERT INTO shop (`id`, `gender_id`) VALUES
+                                      (1, 1),
+                                      (2, 2);
+
+-- Insert data into cloths table
+INSERT INTO cloths (id, img_url, name, price, shop_id) VALUES
+                                                                      (1, '/images/mens-cloth', 'Men Shirt 1',  29.99, 1),
+                                                                      (2, '/images/mens-cloth', 'Men Jeans 1',  39.99, 1),
+                                                                      (3, '/images/mens-cloth', 'Women Dress 1',  49.99, 2);
+
+
+
+
 
 
 
