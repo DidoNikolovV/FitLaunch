@@ -1,5 +1,6 @@
-package com.softuni.fitlaunch.model.dto;
+package com.softuni.fitlaunch.model.dto.workout;
 
+import com.softuni.fitlaunch.model.dto.ExerciseDTO;
 import com.softuni.fitlaunch.model.enums.LevelEnum;
 
 import java.util.ArrayList;

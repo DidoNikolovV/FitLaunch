@@ -1,9 +1,9 @@
 package com.softuni.fitlaunch.web;
 
 
-import com.softuni.fitlaunch.model.dto.CreateWorkoutDTO;
+import com.softuni.fitlaunch.model.dto.workout.CreateWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
-import com.softuni.fitlaunch.model.dto.WorkoutDetailsDTO;
+import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
 import com.softuni.fitlaunch.service.ExerciseService;
 import com.softuni.fitlaunch.service.WorkoutService;
 import jakarta.validation.Valid;

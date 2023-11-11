@@ -1,10 +1,7 @@
-package com.softuni.fitlaunch.model.dto;
+package com.softuni.fitlaunch.model.dto.user;
 
 import com.softuni.fitlaunch.model.entity.UserRoleEntity;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserDTO {

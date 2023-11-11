@@ -1,8 +1,7 @@
 package com.softuni.fitlaunch.web;
 
-import com.softuni.fitlaunch.model.dto.UserDTO;
-import com.softuni.fitlaunch.model.dto.UserRegisterDTO;
-import com.softuni.fitlaunch.model.dto.UserRoleDTO;
+import com.softuni.fitlaunch.model.dto.user.UserDTO;
+import com.softuni.fitlaunch.model.dto.user.UserRegisterDTO;
 import com.softuni.fitlaunch.model.entity.UserRoleEntity;
 import com.softuni.fitlaunch.model.enums.UserRoleEnum;
 import com.softuni.fitlaunch.service.UserService;

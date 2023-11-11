@@ -1,10 +1,10 @@
 package com.softuni.fitlaunch.service;
 
 
-import com.softuni.fitlaunch.model.dto.CreateWorkoutDTO;
+import com.softuni.fitlaunch.model.dto.workout.CreateWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
-import com.softuni.fitlaunch.model.dto.WorkoutDTO;
-import com.softuni.fitlaunch.model.dto.WorkoutDetailsDTO;
+import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
+import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
 import com.softuni.fitlaunch.model.entity.ExerciseEntity;
 import com.softuni.fitlaunch.model.entity.WorkoutEntity;
 import com.softuni.fitlaunch.model.enums.LevelEnum;

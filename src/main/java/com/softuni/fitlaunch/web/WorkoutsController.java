@@ -1,7 +1,7 @@
 package com.softuni.fitlaunch.web;
 
 
-import com.softuni.fitlaunch.model.dto.WorkoutDTO;
+import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import com.softuni.fitlaunch.model.enums.LevelEnum;
 import com.softuni.fitlaunch.service.WorkoutService;
 import org.springframework.data.domain.Page;

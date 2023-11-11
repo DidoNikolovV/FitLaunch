@@ -1,4 +1,4 @@
-package com.softuni.fitlaunch.model.dto;
+package com.softuni.fitlaunch.model.dto.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

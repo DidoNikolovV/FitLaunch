@@ -1,11 +1,6 @@
 package com.softuni.fitlaunch.model.dto;
 
-import com.softuni.fitlaunch.model.entity.WorkoutEntity;
-import com.softuni.fitlaunch.model.enums.MusclesEnum;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.ManyToOne;
+import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 
 import java.util.List;
 

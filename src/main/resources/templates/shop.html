@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragments/head}">
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background-size: cover;
+      background-position: center;
+      height: 300px;
+      position: relative;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    .card-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .card-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div th:replace="~{fragments/navbar}"></div>
+<!--  <div class="container-fluid">-->
+<!--    <div class="card">-->
+<!--      <a href="/women-details">-->
+<!--        <img src="women-image.jpg" class="card-img-top" alt="Women's Image">-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title">WOMEN</h5>-->
+<!--        </div>-->
+<!--      </a>-->
+<!--    </div>-->
+
+<!--    <div class="card">-->
+<!--      <a href="/men-details">-->
+<!--        <img src="men-image.jpg" class="card-img-top" alt="Men's Image">-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title">MENS</h5>-->
+<!--        </div>-->
+<!--      </a>-->
+<!--    </div>-->
+<!--  </div>-->
+  <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <a th:href="@{/shop/{id}(id={id})}" class="text-decoration-none">
+      <div class="card bg-transparent text-white" style="width: 18rem; position: relative;">
+        <img class="card-img-top" src="/images/mens-cloth.jpg" alt="Card image cap" style="height: 100%; object-fit: cover;">
+        <div class="card-img-overlay d-flex align-items-center justify-content-center">
+          <p class="card-text" style="font-size: 1.8rem;">MENS</p>
+        </div>
+      </div>
+    </a>
+  </div>
+
+
+
+
+
+
+
+  <div>
+    <footer th:replace="~{fragments/footer}"></footer>
+  </div>
+</body>
+</html>

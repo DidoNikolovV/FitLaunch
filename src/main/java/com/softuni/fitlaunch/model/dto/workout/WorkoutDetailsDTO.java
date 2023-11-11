@@ -1,9 +1,7 @@
-package com.softuni.fitlaunch.model.dto;
+package com.softuni.fitlaunch.model.dto.workout;
 
+import com.softuni.fitlaunch.model.dto.ExerciseDTO;
 import com.softuni.fitlaunch.model.enums.LevelEnum;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 import java.util.List;
 

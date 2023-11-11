@@ -1,4 +1,4 @@
-package com.softuni.fitlaunch.model.dto;
+package com.softuni.fitlaunch.model.dto.user;
 
 import com.softuni.fitlaunch.model.enums.UserRoleEnum;
 
