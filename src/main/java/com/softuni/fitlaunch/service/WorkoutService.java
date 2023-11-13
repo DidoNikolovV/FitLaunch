@@ -71,34 +71,6 @@ public class WorkoutService {
         return newWorkout.getId();
     }
 
-//    public void uploadPicture(UploadPictureWorkoutDTO uploadPictureWorkoutDTO) {
-//        MultipartFile pictureFile = uploadPictureWorkoutDTO.getPicture();
-//
-//        String picturePath = getPicturePath(pictureFile);
-//
-//
-//        try {
-//            File file = new File(BASE_IMAGES_PATH + picturePath);
-//            file.getParentFile().mkdirs();
-//            file.createNewFile();
-//
-//            OutputStream outputStream = new FileOutputStream(file);
-//            outputStream.write(pictureFile.getBytes());
-//
-//            Optional<WorkoutEntity> optionalWorkoutEntity = workoutRepository.findById(uploadPictureWorkoutDTO.getId());
-//
-//            if(optionalWorkoutEntity.isPresent()) {
-//                WorkoutEntity workoutEntity = optionalWorkoutEntity.get();
-//                workoutEntity.setImgUrl(picturePath);
-//                workoutRepository.save(workoutEntity);
-//            }
-//
-//        } catch(IOException ex) {
-//            System.out.println(ex.getMessage());
-//        }
-//
-//
-//    }
 
     private static WorkoutDTO mapAsWorkoutDTO(WorkoutEntity workoutEntity) {
         return new WorkoutDTO(

@@ -64,10 +64,10 @@ INSERT INTO shop (`id`, `gender_id`) VALUES
                                       (2, 2);
 
 -- Insert data into cloths table
-INSERT INTO cloths (id, img_url, name, price, shop_id) VALUES
-                                                                      (1, '/images/mens-cloth', 'Men Shirt 1',  29.99, 1),
-                                                                      (2, '/images/mens-cloth', 'Men Jeans 1',  39.99, 1),
-                                                                      (3, '/images/mens-cloth', 'Women Dress 1',  49.99, 2);
+INSERT INTO clothes (id, description, img_url, name, price, shop_id) VALUES
+                                                                      (1, 'Stay stylish and comfortable in this trendy cotton tee. Perfect for casual outings, the shirt features a classic design with a modern twist.', '/images/t-shirt.jpg', 'Men Shirt 1',  29.99, 1),
+                                                                      (2, 'Elevate your wardrobe with this versatile knit sweater. Crafted with attention to detail, it offers a cozy and sophisticated style.', '/images/t-shirt.jpg', 'Men Jeans 1',  39.99, 1),
+                                                                      (3, 'sample description', '/images/t-shirt.jpg', 'Women Dress 1', 49.99, 2);
 
 
 

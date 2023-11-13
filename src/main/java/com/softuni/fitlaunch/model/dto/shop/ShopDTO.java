@@ -5,6 +5,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -16,22 +17,18 @@ public class ShopDTO {
     @NotNull
     private String name;
 
-    private List<ClothDTO> clothes;
+    private Page<ClothDTO> clothes;
 
     public ShopDTO() {
     }
 
-    public ShopDTO(String name, List<ClothDTO> clothes) {
+    public ShopDTO(String name) {
         this.name = name;
-        this.clothes = clothes;
     }
 
-
-
-    public ShopDTO(Long id, String name, List<ClothDTO> clothes) {
+    public ShopDTO(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.clothes = clothes;
     }
 
     public Long getId() {
@@ -52,14 +49,12 @@ public class ShopDTO {
         return this;
     }
 
-    public List<ClothDTO> getClothes() {
+    public Page<ClothDTO> getClothes() {
         return clothes;
     }
 
-    public ShopDTO setClothes(List<ClothDTO> clothes) {
+    public ShopDTO setClothes(Page<ClothDTO> clothes) {
         this.clothes = clothes;
         return this;
     }
-
-
 }

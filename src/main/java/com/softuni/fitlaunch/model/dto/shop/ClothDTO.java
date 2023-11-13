@@ -15,31 +15,29 @@ public class ClothDTO {
     private Long id;
 
     @NotNull
-    private GenderEnum gender;
+    private String name;
+
 
     @NotNull
-
     private String imgUrl;
 
     @NotNull
-
-    private String category;
+    private String description;
 
     @NotNull
-
     private BigDecimal price;
+
 
     public ClothDTO() {
     }
 
-    public ClothDTO(Long id, GenderEnum gender, String imgUrl, String category, BigDecimal price, ShopDTO shop) {
-        this.id = id;
-        this.gender = gender;
+    public ClothDTO(String name, String imgUrl, String description, BigDecimal price) {
+        this.name = name;
         this.imgUrl = imgUrl;
-        this.category = category;
+        this.description = description;
         this.price = price;
-        this.shop = shop;
     }
+
 
     public Long getId() {
         return id;
@@ -50,16 +48,16 @@ public class ClothDTO {
         return this;
     }
 
-    private ShopDTO shop;
-
-    public GenderEnum getGender() {
-        return gender;
+    public String getName() {
+        return name;
     }
 
-    public ClothDTO setName(GenderEnum gender) {
-        this.gender = gender;
+    public ClothDTO setName(String name) {
+        this.name = name;
         return this;
     }
+
+
 
     public String getImgUrl() {
         return imgUrl;
@@ -70,12 +68,12 @@ public class ClothDTO {
         return this;
     }
 
-    public String getCategory() {
-        return category;
+    public String getDescription() {
+        return description;
     }
 
-    public ClothDTO setCategory(String category) {
-        this.category = category;
+    public ClothDTO setDescription(String description) {
+        this.description = description;
         return this;
     }
 
@@ -88,12 +86,5 @@ public class ClothDTO {
         return this;
     }
 
-    public ShopDTO getShop() {
-        return shop;
-    }
 
-    public ClothDTO setShop(ShopDTO shop) {
-        this.shop = shop;
-        return this;
-    }
 }

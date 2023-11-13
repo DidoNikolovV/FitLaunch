@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "cloths")
+@Table(name = "clothes")
 public class ClothEntity extends BaseEntity{
 
     @Column(nullable = false)
@@ -17,6 +17,9 @@ public class ClothEntity extends BaseEntity{
 
     @Column(nullable = false)
     private BigDecimal price;
+
+    @Column(nullable = false)
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "shop_id")
@@ -58,4 +61,15 @@ public class ClothEntity extends BaseEntity{
         this.shop = shop;
         return this;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public ClothEntity setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+
 }
