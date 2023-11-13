@@ -13,7 +13,7 @@
 
   <div class="container my-5">
     <h2 class="text-center text-white my-2">Create Workout</h2>
-    <form th:object="${createWorkoutDTO}" th:action="@{/workouts/add}" th:method="post">
+    <form th:object="${createWorkoutDTO}" th:action="@{/workouts/add}" th:method="post" enctype="multipart/form-data">
       <div class="form-group">
         <label for="name" class="text-white">Workout Name</label>
         <input type="text" class="form-control bg-light" id="name" th:field="*{name}">
@@ -31,10 +31,16 @@
         <label for="description" class="text-white">Description</label>
         <textarea class="form-control bg-light" id="description" th:field="*{description}" rows="4"></textarea>
       </div>
+
+
       <div class="form-group">
-        <label for="imgUrl" class="text-white">Image URL</label>
-        <input type="text" class="form-control bg-light" id="imgUrl" th:field="*{imgUrl}">
+        <input type="hidden" name="id" id="workoutId" th:value="${createWorkoutDTO.id}">
+        <label for="imgUrl" class="text-white">
+          <img src="/images/add-img.jpg" alt="Upload Image" style="max-width: 100%; height: auto;">
+        </label>
+        <input type="file" class="form-control bg-light" id="imgUrl" name="picture" th:field="*{imgUrl}" accept="image/*">
       </div>
+
 
       <div class="form-group">
       <label class="text-white">Select Exercises:</label>

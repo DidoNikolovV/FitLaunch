@@ -30,9 +30,7 @@ spring:
         period: 0
 
 fitlaunch:
-  remember:
-    me:
-      key: ${REMEMBER_ME_KEY:topsecret}
+  remember.me.key: ${REMEMBER_ME_KEY:secret}
 
 logging:
   level:

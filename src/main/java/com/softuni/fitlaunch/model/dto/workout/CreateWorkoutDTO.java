@@ -1,15 +1,19 @@
 package com.softuni.fitlaunch.model.dto.workout;
 
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
+import com.softuni.fitlaunch.model.dto.UploadPictureWorkoutDTO;
 import com.softuni.fitlaunch.model.enums.LevelEnum;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CreateWorkoutDTO {
+
+    private Long id;
 
     @NotEmpty
     private String name;
@@ -20,8 +24,8 @@ public class CreateWorkoutDTO {
     @NotEmpty @Size(min = 5, max = 512)
     private String description;
 
-    @NotEmpty
-    private String imgUrl;
+
+    private MultipartFile imgUrl;
 
     @NotNull
     private List<ExerciseDTO> exercises;
@@ -36,12 +40,23 @@ public class CreateWorkoutDTO {
         this.exercises = new ArrayList<>();
     }
 
-    public CreateWorkoutDTO(String name, LevelEnum level, String description, String imgUrl, List<Long> selectedExerciseIds) {
+    public CreateWorkoutDTO(Long id, String name, LevelEnum level, String description, MultipartFile imgUrl, List<ExerciseDTO> exercises, List<Long> selectedExerciseIds) {
+        this.id = id;
         this.name = name;
         this.level = level;
         this.description = description;
         this.imgUrl = imgUrl;
+        this.exercises = exercises;
         this.selectedExerciseIds = selectedExerciseIds;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public CreateWorkoutDTO setId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getName() {
@@ -71,11 +86,11 @@ public class CreateWorkoutDTO {
         return this;
     }
 
-    public String getImgUrl() {
+    public MultipartFile getImgUrl() {
         return imgUrl;
     }
 
-    public CreateWorkoutDTO setImgUrl(String imgUrl) {
+    public CreateWorkoutDTO setImgUrl(MultipartFile imgUrl) {
         this.imgUrl = imgUrl;
         return this;
     }

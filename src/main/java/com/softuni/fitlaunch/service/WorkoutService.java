@@ -1,6 +1,7 @@
 package com.softuni.fitlaunch.service;
 
 
+import com.softuni.fitlaunch.model.dto.UploadPictureWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.workout.CreateWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
@@ -10,17 +11,28 @@ import com.softuni.fitlaunch.model.entity.WorkoutEntity;
 import com.softuni.fitlaunch.model.enums.LevelEnum;
 import com.softuni.fitlaunch.repository.ExerciseRepository;
 import com.softuni.fitlaunch.repository.WorkoutRepository;
+import org.hibernate.result.Outputs;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class WorkoutService {
+    private static final String BASE_IMAGES_PATH = "/images/";
     private final WorkoutRepository workoutRepository;
     private final ExerciseRepository exerciseRepository;
 
@@ -59,6 +71,35 @@ public class WorkoutService {
         return newWorkout.getId();
     }
 
+//    public void uploadPicture(UploadPictureWorkoutDTO uploadPictureWorkoutDTO) {
+//        MultipartFile pictureFile = uploadPictureWorkoutDTO.getPicture();
+//
+//        String picturePath = getPicturePath(pictureFile);
+//
+//
+//        try {
+//            File file = new File(BASE_IMAGES_PATH + picturePath);
+//            file.getParentFile().mkdirs();
+//            file.createNewFile();
+//
+//            OutputStream outputStream = new FileOutputStream(file);
+//            outputStream.write(pictureFile.getBytes());
+//
+//            Optional<WorkoutEntity> optionalWorkoutEntity = workoutRepository.findById(uploadPictureWorkoutDTO.getId());
+//
+//            if(optionalWorkoutEntity.isPresent()) {
+//                WorkoutEntity workoutEntity = optionalWorkoutEntity.get();
+//                workoutEntity.setImgUrl(picturePath);
+//                workoutRepository.save(workoutEntity);
+//            }
+//
+//        } catch(IOException ex) {
+//            System.out.println(ex.getMessage());
+//        }
+//
+//
+//    }
+
     private static WorkoutDTO mapAsWorkoutDTO(WorkoutEntity workoutEntity) {
         return new WorkoutDTO(
                 workoutEntity.getId(),
@@ -83,16 +124,48 @@ public class WorkoutService {
         );
     }
 
-    private static WorkoutEntity map(CreateWorkoutDTO workoutDTO) {
+    private WorkoutEntity map(CreateWorkoutDTO workoutDTO) {
 
         List<ExerciseEntity> exercises = workoutDTO.getExercises().stream().map(WorkoutService::mapAsExerciseEntity).toList();
+
+        MultipartFile pictureFile = workoutDTO.getImgUrl();
+
+        String picturePath = getPicturePath(pictureFile);
+
+
+        try {
+            File file = new File(BASE_IMAGES_PATH + picturePath);
+            file.getParentFile().mkdirs();
+            file.createNewFile();
+
+            OutputStream outputStream = new FileOutputStream(file);
+            outputStream.write(pictureFile.getBytes());
+
+        } catch(IOException ex) {
+            System.out.println(ex.getMessage());
+        }
 
         return new WorkoutEntity()
                 .setName(workoutDTO.getName())
                 .setLevel(workoutDTO.getLevel())
                 .setDescription(workoutDTO.getDescription())
-                .setImgUrl(workoutDTO.getImgUrl())
+                .setImgUrl(picturePath)
                 .setExercises(exercises);
+
+
+    }
+
+    private String getPicturePath(MultipartFile pictureFile) {
+
+
+        String[] splitPictureName = pictureFile.getOriginalFilename().split("\\.");
+        String ext = splitPictureName[splitPictureName.length - 1];
+        String imgPath = splitPictureName[0];
+        String pathPattern = "%s." + ext;
+
+
+        return String.format(pathPattern,
+                BASE_IMAGES_PATH + imgPath);
     }
 
 
@@ -107,6 +180,16 @@ public class WorkoutService {
         return new ExerciseEntity()
                 .setId(exerciseDTO.getId())
                 .setName(exerciseDTO.getName());
+    }
+
+    private String getCurrentUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if(authentication != null && authentication.isAuthenticated()) {
+            return authentication.getName();
+        }
+
+        return null;
     }
 
 }

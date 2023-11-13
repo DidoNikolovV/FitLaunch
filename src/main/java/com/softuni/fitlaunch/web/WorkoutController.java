@@ -1,6 +1,7 @@
 package com.softuni.fitlaunch.web;
 
 
+import com.softuni.fitlaunch.model.dto.UploadPictureWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.workout.CreateWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
@@ -14,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -65,6 +67,14 @@ public class WorkoutController {
 
         return "redirect:/workouts/" + newWorkoutID;
     }
+
+//    @PostMapping("/upload-picture")
+//    public String uploadPicture( Model model) {
+//
+//        workoutService.uploadPicture(uploadPictureWorkoutDTO);
+//
+//        return "workout-add";
+//    }
 
 
     @GetMapping("/{id}")

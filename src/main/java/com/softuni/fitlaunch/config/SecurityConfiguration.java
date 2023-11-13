@@ -68,8 +68,8 @@ public class SecurityConfiguration {
                 rememberMe -> {
                     rememberMe
                             .key(rememberMeKey)
-                            .rememberMeParameter("rememberme")
-                            .rememberMeCookieName("rememberme");
+                            .rememberMeParameter("rememberMe")
+                            .rememberMeCookieName("rememberMe");
                 }
         ).build();
 
