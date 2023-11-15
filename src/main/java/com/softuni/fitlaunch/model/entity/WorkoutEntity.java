@@ -36,6 +36,9 @@ public class WorkoutEntity extends BaseEntity {
     )
     private List<ExerciseEntity> exercises = new ArrayList<>();
 
+    @OneToMany(mappedBy = "workout")
+    private List<WorkoutScheduleEntity> schedules;
+
     public String getImgUrl() {
         return imgUrl;
     }
@@ -91,6 +94,15 @@ public class WorkoutEntity extends BaseEntity {
 
     public WorkoutEntity setDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    public List<WorkoutScheduleEntity> getSchedules() {
+        return schedules;
+    }
+
+    public WorkoutEntity setSchedules(List<WorkoutScheduleEntity> schedules) {
+        this.schedules = schedules;
         return this;
     }
 }

@@ -28,6 +28,16 @@
                                 <th:block th:text="*{description}">This is a great workout for...</th:block>
                             </li>
                         </ul>
+                        <div class="d-flex justify-content-end">
+                            <form th:action="@{/workouts/schedule}" th:method="post">
+                                <input type="hidden" name="workoutId" th:value="${workout.id}" />
+                                <div class="form-group">
+                                    <label for="scheduleTime" class="text-white">Select Time:</label>
+                                    <input type="time" id="scheduleTime" name="scheduleTime" class="form-control" required />
+                                </div>
+                                <button type="submit" class="btn btn-primary">Schedule</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

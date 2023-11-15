@@ -32,6 +32,25 @@
           </div>
         </div>
       </div>
+
+      <div class="col-md-6">
+        <div class="card bg-dark">
+          <div class="card-body">
+            <h5 class="card-title text-white">Scheduled Workouts</h5>
+            <div th:each="scheduledWorkout : ${scheduledWorkouts}" class="mb-3">
+              <div class="card bg-secondary">
+                <div class="card-body">
+                  <h6 class="card-subtitle mb-2 text-white" th:text="${scheduledWorkout.workout.name}"></h6>
+                  <p class="card-text text-white">
+                    Scheduled Time: <span th:text="${scheduledWorkout.scheduledDate}"></span>
+                  </p>
+                  <a th:href="@{/workouts/start/{id}(id=${scheduledWorkout.workout.id})}" class="btn btn-primary">Start</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

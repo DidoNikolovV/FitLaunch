@@ -1,13 +1,18 @@
 package com.softuni.fitlaunch.web;
 
 
-import com.softuni.fitlaunch.model.dto.UploadPictureWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.workout.CreateWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
+import com.softuni.fitlaunch.service.CustomUserDetails;
 import com.softuni.fitlaunch.service.ExerciseService;
+import com.softuni.fitlaunch.service.WorkoutScheduleService;
 import com.softuni.fitlaunch.service.WorkoutService;
 import jakarta.validation.Valid;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import com.softuni.fitlaunch.service.exception.ObjectNotFoundException;
@@ -15,7 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -26,9 +31,12 @@ public class WorkoutController {
     private final WorkoutService workoutService;
     private final ExerciseService exerciseService;
 
-    public WorkoutController(WorkoutService workoutService, ExerciseService exerciseService) {
+    private final WorkoutScheduleService workoutScheduleService;
+
+    public WorkoutController(WorkoutService workoutService, ExerciseService exerciseService, WorkoutScheduleService workoutScheduleService) {
         this.workoutService = workoutService;
         this.exerciseService = exerciseService;
+        this.workoutScheduleService = workoutScheduleService;
     }
 
     @GetMapping("/add")
@@ -66,6 +74,21 @@ public class WorkoutController {
         long newWorkoutID = workoutService.createWorkout(createWorkoutDTO);
 
         return "redirect:/workouts/" + newWorkoutID;
+    }
+
+
+    @PostMapping("/schedule")
+    public String scheduleWorkout(
+            @RequestParam Long workoutId,
+            @RequestParam String scheduleTime) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Long userId = ((CustomUserDetails) authentication.getPrincipal()).getId();
+
+        workoutScheduleService.scheduleWorkout(userId, workoutId, scheduleTime);
+
+        return "redirect:/";
     }
 
 

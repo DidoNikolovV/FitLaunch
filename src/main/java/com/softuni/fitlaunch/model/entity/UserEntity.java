@@ -35,6 +35,10 @@ public class UserEntity extends BaseEntity{
     @Column(nullable = false)
     private String password;
 
+
+    @OneToMany(mappedBy = "user")
+    private List<WorkoutScheduleEntity> schedules;
+
     @Override
     public Long getId() {
         return id;
@@ -89,6 +93,15 @@ public class UserEntity extends BaseEntity{
 
     public UserEntity setUserProfile(UserProfileEntity userProfile) {
         this.userProfile = userProfile;
+        return this;
+    }
+
+    public List<WorkoutScheduleEntity> getSchedules() {
+        return schedules;
+    }
+
+    public UserEntity setSchedules(List<WorkoutScheduleEntity> schedules) {
+        this.schedules = schedules;
         return this;
     }
 }

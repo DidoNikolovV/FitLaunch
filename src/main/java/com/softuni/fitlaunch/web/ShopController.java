@@ -52,12 +52,12 @@ public class ShopController {
                               ) Pageable pageable) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        Long shopId = 1L;
-
         if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
             Long userId = ((CustomUserDetails) authentication.getPrincipal()).getId();
             model.addAttribute("userId", userId);
         }
+
+        Long shopId = 1L;
 
         Page<ClothDTO> menClothes = shopService.getMenClothes(shopId, pageable);
 

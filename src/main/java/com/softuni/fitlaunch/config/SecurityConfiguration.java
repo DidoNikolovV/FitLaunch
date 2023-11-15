@@ -28,7 +28,7 @@ public class SecurityConfiguration {
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         // Allow anyone to see the home page, the registration page and the login form
                         .requestMatchers("/", "/users/login", "/users/register", "/users/profile", "/users/login-error").permitAll()
-                        .requestMatchers("/workouts/all", "/shop","/shop-details").permitAll()
+                        .requestMatchers("/workouts/all", "/workouts/schedule", "/shop","/shop-details").permitAll()
                         .requestMatchers(HttpMethod.GET, "/workout/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/workouts", "/users/all").hasRole(UserRoleEnum.ADMIN.name())
