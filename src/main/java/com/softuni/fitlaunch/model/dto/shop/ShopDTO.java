@@ -1,5 +1,6 @@
 package com.softuni.fitlaunch.model.dto.shop;
 
+import com.softuni.fitlaunch.model.dto.ExerciseDTO;
 import com.softuni.fitlaunch.model.entity.ClothEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -17,7 +18,7 @@ public class ShopDTO {
     @NotNull
     private String name;
 
-    private Page<ClothDTO> clothes;
+    private List<ClothDTO> clothes;
 
     public ShopDTO() {
     }
@@ -49,11 +50,11 @@ public class ShopDTO {
         return this;
     }
 
-    public Page<ClothDTO> getClothes() {
+    public List<ClothDTO> getClothes() {
         return clothes;
     }
 
-    public ShopDTO setClothes(Page<ClothDTO> clothes) {
+    public ShopDTO setClothes(List<ClothDTO> clothes) {
         this.clothes = clothes;
         return this;
     }

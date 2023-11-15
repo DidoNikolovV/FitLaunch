@@ -154,14 +154,4 @@ public class WorkoutService {
                 .setName(exerciseDTO.getName());
     }
 
-    private String getCurrentUsername() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if(authentication != null && authentication.isAuthenticated()) {
-            return authentication.getName();
-        }
-
-        return null;
-    }
-
 }

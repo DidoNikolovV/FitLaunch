@@ -10,8 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.List;
-
 public class FitLaunchUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
@@ -29,11 +27,7 @@ public class FitLaunchUserDetailsService implements UserDetailsService {
     }
 
     private static UserDetails map(UserEntity userEntity) {
-        return User
-                .withUsername(userEntity.getUsername())
-                .password(userEntity.getPassword())
-                .authorities(userEntity.getRoles().stream().map(FitLaunchUserDetailsService::map).toList())
-                .build();
+        return CustomUserDetails.create(userEntity);
     }
 
     private static GrantedAuthority map(UserRoleEntity userRoleEntity) {

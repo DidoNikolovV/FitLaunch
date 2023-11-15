@@ -45,6 +45,15 @@
                 <li class="nav-item">
                     <a class="nav-link text-white h6" href="/shop">Shop</a>
                 </li>
+                <!-- Cart Icon -->
+
+
+                <li>
+                    <a href="/cart" class="btn btn-light">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span class="badge badge-danger" th:text="${cartSize}"></span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

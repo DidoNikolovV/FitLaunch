@@ -10,7 +10,7 @@ public class ExerciseDTO {
 
     private String name;
 
-    List<WorkoutDTO> workouts;
+    private List<WorkoutDTO> workouts;
 
     public ExerciseDTO(Long id, String name) {
         this.id = id;

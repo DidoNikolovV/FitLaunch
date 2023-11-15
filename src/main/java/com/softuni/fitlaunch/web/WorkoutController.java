@@ -68,14 +68,6 @@ public class WorkoutController {
         return "redirect:/workouts/" + newWorkoutID;
     }
 
-//    @PostMapping("/upload-picture")
-//    public String uploadPicture( Model model) {
-//
-//        workoutService.uploadPicture(uploadPictureWorkoutDTO);
-//
-//        return "workout-add";
-//    }
-
 
     @GetMapping("/{id}")
     public String details(@PathVariable("id") Long id, Model model) {

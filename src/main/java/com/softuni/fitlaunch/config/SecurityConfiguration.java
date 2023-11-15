@@ -18,12 +18,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfiguration {
 
-    private final String rememberMeKey;
-
-    public SecurityConfiguration(@Value("${fitlaunch.remember.me.key}") String rememberMeKey) {
-        this.rememberMeKey = rememberMeKey;
-    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         // Configuration goes here
@@ -63,13 +57,6 @@ public class SecurityConfiguration {
                             // invalidate the HTTP session
                             .invalidateHttpSession(true);
 
-                }
-        ).rememberMe(
-                rememberMe -> {
-                    rememberMe
-                            .key(rememberMeKey)
-                            .rememberMeParameter("rememberMe")
-                            .rememberMeCookieName("rememberMe");
                 }
         ).build();
 

@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 @Table(name = "clothes")
 public class ClothEntity extends BaseEntity{
 
+    private Long id;
+
     @Column(nullable = false)
     private String name;
 
@@ -24,6 +26,21 @@ public class ClothEntity extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "shop_id")
     private ShopEntity shop;
+
+    @ManyToOne
+    @JoinColumn(name = "cart_id")
+    private CartEntity cart;
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public ClothEntity setId(Long id) {
+        this.id = id;
+        return this;
+    }
 
     public String getName() {
         return name;
@@ -43,22 +60,12 @@ public class ClothEntity extends BaseEntity{
         return this;
     }
 
-
     public BigDecimal getPrice() {
         return price;
     }
 
     public ClothEntity setPrice(BigDecimal price) {
         this.price = price;
-        return this;
-    }
-
-    public ShopEntity getShop() {
-        return shop;
-    }
-
-    public ClothEntity setShop(ShopEntity shop) {
-        this.shop = shop;
         return this;
     }
 
@@ -71,5 +78,21 @@ public class ClothEntity extends BaseEntity{
         return this;
     }
 
+    public ShopEntity getShop() {
+        return shop;
+    }
 
+    public ClothEntity setShop(ShopEntity shop) {
+        this.shop = shop;
+        return this;
+    }
+
+    public CartEntity getCart() {
+        return cart;
+    }
+
+    public ClothEntity setCart(CartEntity cart) {
+        this.cart = cart;
+        return this;
+    }
 }

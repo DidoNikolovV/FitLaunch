@@ -69,6 +69,18 @@ INSERT INTO clothes (id, description, img_url, name, price, shop_id) VALUES
                                                                       (2, 'Elevate your wardrobe with this versatile knit sweater. Crafted with attention to detail, it offers a cozy and sophisticated style.', '/images/t-shirt.jpg', 'Men Jeans 1',  39.99, 1),
                                                                       (3, 'sample description', '/images/t-shirt.jpg', 'Women Dress 1', 49.99, 2);
 
+INSERT INTO shop_clothes(shop_id, cloth_id) VALUES
+                                                (1, 1),
+                                                (1, 2),
+                                                (2, 3);
+
+INSERT INTO shop_clothes(shop_id, cloth_id) VALUES
+                                                (1, 1),
+                                                (1, 2),
+                                                (2, 3);
+
+
+
 
 
 
