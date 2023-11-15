@@ -62,6 +62,10 @@ public class UserService {
         return userRepository.findAll().stream().map(UserService::mapAsUserDTO).toList();
     }
 
+    public UserEntity getUserById(Long id) {
+        return userRepository.findById(id).get();
+    }
+
     public void changeUserRole(Long userId, UserRoleEntity role) {
         Optional<UserEntity> optUser = userRepository.findById(userId);
 

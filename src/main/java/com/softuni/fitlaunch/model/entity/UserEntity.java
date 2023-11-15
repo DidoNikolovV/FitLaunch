@@ -29,6 +29,9 @@ public class UserEntity extends BaseEntity{
     )
     private List<UserRoleEntity> roles = new ArrayList<>();
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    public UserProfileEntity userProfile;
+
     @Column(nullable = false)
     private String password;
 
@@ -80,4 +83,12 @@ public class UserEntity extends BaseEntity{
         return this;
     }
 
+    public UserProfileEntity getUserProfile() {
+        return userProfile;
+    }
+
+    public UserEntity setUserProfile(UserProfileEntity userProfile) {
+        this.userProfile = userProfile;
+        return this;
+    }
 }

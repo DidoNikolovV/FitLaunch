@@ -68,7 +68,7 @@ public class ShopController {
 
     @PostMapping("/clothes-men")
     public String addCloth(
-            @RequestParam("selectedClothId") Long clothId) {
+            @RequestParam("id") Long id) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -77,7 +77,7 @@ public class ShopController {
         CartEntity cartEntity = cartService.getCartById(userId).orElse(new CartEntity());
 
         // Retrieve the selected cloth
-        ClothEntity clothEntity = shopService.getClothById(clothId).orElse(null);
+        ClothEntity clothEntity = shopService.getClothById(id).orElse(null);
 
         // Check if the cloth exists and add it to the cart
         if (clothEntity != null) {

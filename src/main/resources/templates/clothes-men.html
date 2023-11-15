@@ -24,7 +24,8 @@
             <div class="card-footer bg-light text-center bg-dark">
               <p class="card-text font-weight-bold" th:text="*{price}">$29.99</p>
               <button type="submit" class="btn btn-primary btn-sm">
-                <input type="hidden" name="selectedClothId" th:id="'cloth-' + *{id}" th:value="*{id}" />
+<!--                <input type="hidden" name="selectedClothId" th:id="'cloth-' + *{id}" th:value="*{id}" />-->
+                <input type="hidden" th:value="${cloth.id}" name="id" class="form-control">
                 Add to Cart
               </button>
             </div>

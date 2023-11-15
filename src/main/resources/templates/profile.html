@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragments/head}">
+
+</head>
+<body>
+  <div>
+    <nav th:replace="~{fragments/navbar}"></nav>
+  </div>
+
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6 mt-5">
+        <div class="card bg-dark text-white">
+          <img th:src="${userProfile.avatarUrl}" class="card-img-top" alt="User Avatar">
+          <div class="card-body">
+            <h5 class="card-title">User Profile</h5>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item bg-dark text-white">
+                <strong>Email:</strong> <span th:text="${userProfile.email}"></span>
+              </li>
+              <li class="list-group-item bg-dark text-white">
+                <strong>Last Login Date:</strong> <span th:text="${userProfile.lastLoginDate}"></span>
+              </li>
+              <li class="list-group-item bg-dark text-white">
+                <strong>Location:</strong> <span th:text="${userProfile.location}"></span>
+              </li>
+              <li class="list-group-item bg-dark text-white">
+                <strong>Name:</strong> <span th:text="${userProfile.name}"></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <footer th:replace="~{fragments/footer}"></footer>
+  </div>
+
+  </body>
+</html>

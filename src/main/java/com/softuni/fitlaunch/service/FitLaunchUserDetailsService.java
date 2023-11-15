@@ -23,12 +23,13 @@ public class FitLaunchUserDetailsService implements UserDetailsService {
         return userRepository
                 .findByEmail(email)
                 .map(FitLaunchUserDetailsService::map)
-                .orElseThrow(() -> new UsernameNotFoundException("User " + email + " doesn't exists"));
+                .orElseThrow(() -> new UsernameNotFoundException("User " + email + " doesn't exist"));
     }
 
     private static UserDetails map(UserEntity userEntity) {
         return CustomUserDetails.create(userEntity);
     }
+
 
     private static GrantedAuthority map(UserRoleEntity userRoleEntity) {
         return new SimpleGrantedAuthority(

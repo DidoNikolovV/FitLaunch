@@ -14,15 +14,8 @@ import java.security.Principal;
 @Controller
 public class HomeController {
 
-    private final CartService cartService;
-
-    public HomeController(CartService cartService) {
-        this.cartService = cartService;
-    }
-
     @GetMapping("/")
     public String index() {
-        cartService.createCart();
         return "index";
     }
 

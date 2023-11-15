@@ -2,10 +2,14 @@ package com.softuni.fitlaunch.web;
 
 import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.dto.user.UserRegisterDTO;
+import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.model.entity.UserRoleEntity;
 import com.softuni.fitlaunch.model.enums.UserRoleEnum;
+import com.softuni.fitlaunch.service.CustomUserDetails;
 import com.softuni.fitlaunch.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,6 +30,18 @@ public class UserController {
     @GetMapping("/users/login")
     public String login() {
         return "login";
+    }
+
+    @GetMapping("/profile")
+    public String profile(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
+            Long userId = ((CustomUserDetails) authentication.getPrincipal()).getId();
+            UserEntity user = userService.getUserById(userId);
+            model.addAttribute("user", user);
+        }
+        return "profile";
     }
 
     @PostMapping("/users/login-error")
