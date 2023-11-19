@@ -127,6 +127,13 @@ nav .left {
     transition: background-color 0.3s;
 }
 
+.plan-card.month:hover {
+    color: #101010;
+    background-color: #e2e6ea;
+    border-color: #dae0e5;
+    cursor: pointer;
+}
+
 .button-primary{
     border: none;
     width: 100%;
@@ -215,7 +222,7 @@ body {
     background-clip: border-box;
     border: none;
     border-radius: .25rem;
-    color: white;
+    color: black;
 }
 
 .card-exercise {
@@ -332,7 +339,29 @@ body {
     height: 100%;
 }
 
+.my-10 {
+    margin-top: 10%;
+}
 
+.plan-card-year {
+    border: 3px solid #0C57FB !important;
+}
+
+.save-badge {
+    position: absolute;
+    font-weight: bold;
+    text-align: center;
+    width: 130px;
+    height: 28px;
+    line-height: 28px;
+    border-radius: 4px;
+    top: -14px;
+    left: 50%;
+    margin-left: -65px;
+    background-color: #0C57FB;
+    color: #fff;
+    letter-spacing: 0.03rem;
+}
 
 footer {
     background-color: #343a40;

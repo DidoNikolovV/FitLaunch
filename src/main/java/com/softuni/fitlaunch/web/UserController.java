@@ -55,7 +55,6 @@ public class UserController {
     }
 
 
-
     @GetMapping("/users/register")
     public ModelAndView register(@ModelAttribute("userRegisterDTO") UserRegisterDTO userRegisterDTO) {
         return new ModelAndView("register");
@@ -100,6 +99,11 @@ public class UserController {
         userService.changeUserRole(userId, newRole);
 
         return "redirect:/users/all";
+    }
+
+    @GetMapping("/upgrade")
+    public String membershipPlans() {
+        return "upgrade";
     }
 
 

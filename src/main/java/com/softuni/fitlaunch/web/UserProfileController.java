@@ -35,10 +35,8 @@ public class UserProfileController {
             List<WorkoutScheduleEntity> scheduledWorkouts = workoutScheduleService.getScheduledWorkouts();
             model.addAttribute("userProfile", userProfile);
             model.addAttribute("scheduledWorkouts", scheduledWorkouts);
-
-
-
-//            model.addAttribute("userId", userId);
+        } else {
+            return "redirect:/users/login";
         }
         return "profile";
     }

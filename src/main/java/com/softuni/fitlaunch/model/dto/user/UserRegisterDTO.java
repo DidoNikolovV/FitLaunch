@@ -11,8 +11,8 @@ public class UserRegisterDTO {
     @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters long!")
     private String username;
 
-    @NotBlank
     @Email(message = "Invalid email!")
+    @NotBlank(message = "Invalid email!")
     private String email;
 
     @NotNull
