@@ -6,10 +6,13 @@ import com.softuni.fitlaunch.model.enums.LevelEnum;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class CreateWorkoutDTO {
 
@@ -32,15 +35,14 @@ public class CreateWorkoutDTO {
 
     private List<Long> selectedExerciseIds;
 
+    private List<Integer> sets;
+    private List<Integer> reps;
+
+
     public CreateWorkoutDTO() {
-        this.name = null;
-        this.level = null;
-        this.description = null;
-        this.imgUrl = null;
-        this.exercises = new ArrayList<>();
     }
 
-    public CreateWorkoutDTO(Long id, String name, LevelEnum level, String description, MultipartFile imgUrl, List<ExerciseDTO> exercises, List<Long> selectedExerciseIds) {
+    public CreateWorkoutDTO(Long id, String name, LevelEnum level, String description, MultipartFile imgUrl, List<ExerciseDTO> exercises, List<Long> selectedExerciseIds, List<Integer> sets, List<Integer> reps) {
         this.id = id;
         this.name = name;
         this.level = level;
@@ -48,6 +50,8 @@ public class CreateWorkoutDTO {
         this.imgUrl = imgUrl;
         this.exercises = exercises;
         this.selectedExerciseIds = selectedExerciseIds;
+        this.sets = sets;
+        this.reps = reps;
     }
 
     public Long getId() {
@@ -110,6 +114,24 @@ public class CreateWorkoutDTO {
 
     public CreateWorkoutDTO setSelectedExerciseIds(List<Long> selectedExerciseIds) {
         this.selectedExerciseIds = selectedExerciseIds;
+        return this;
+    }
+
+    public List<Integer> getSets() {
+        return sets;
+    }
+
+    public CreateWorkoutDTO setSets(List<Integer> sets) {
+        this.sets = sets;
+        return this;
+    }
+
+    public List<Integer> getReps() {
+        return reps;
+    }
+
+    public CreateWorkoutDTO setReps(List<Integer> reps) {
+        this.reps = reps;
         return this;
     }
 }

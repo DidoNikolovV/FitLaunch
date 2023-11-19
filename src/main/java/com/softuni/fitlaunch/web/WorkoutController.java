@@ -3,14 +3,13 @@ package com.softuni.fitlaunch.web;
 
 import com.softuni.fitlaunch.model.dto.workout.CreateWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
+import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
-import com.softuni.fitlaunch.service.CustomUserDetails;
-import com.softuni.fitlaunch.service.ExerciseService;
-import com.softuni.fitlaunch.service.WorkoutScheduleService;
-import com.softuni.fitlaunch.service.WorkoutService;
-import jakarta.validation.Valid;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
+import com.softuni.fitlaunch.model.dto.workout.WorkoutExerciseDTO;
+import com.softuni.fitlaunch.model.entity.ExerciseEntity;
+import com.softuni.fitlaunch.model.entity.WorkoutEntity;
+import com.softuni.fitlaunch.model.entity.WorkoutExerciseEntity;
+import com.softuni.fitlaunch.service.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -20,7 +19,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -33,10 +31,13 @@ public class WorkoutController {
 
     private final WorkoutScheduleService workoutScheduleService;
 
-    public WorkoutController(WorkoutService workoutService, ExerciseService exerciseService, WorkoutScheduleService workoutScheduleService) {
+    private final WorkoutExerciseService workoutExerciseService;
+
+    public WorkoutController(WorkoutService workoutService, ExerciseService exerciseService, WorkoutScheduleService workoutScheduleService, WorkoutExerciseService workoutExerciseService) {
         this.workoutService = workoutService;
         this.exerciseService = exerciseService;
         this.workoutScheduleService = workoutScheduleService;
+        this.workoutExerciseService = workoutExerciseService;
     }
 
     @GetMapping("/add")
@@ -54,12 +55,9 @@ public class WorkoutController {
     }
 
     @PostMapping("/add")
-    public String add(@ModelAttribute @Valid CreateWorkoutDTO createWorkoutDTO,
+    public String add(@ModelAttribute CreateWorkoutDTO createWorkoutDTO,
                       BindingResult bindingResult,
                       RedirectAttributes rAtt) {
-
-        List<Long> selectedExercisesIds = createWorkoutDTO.getSelectedExerciseIds();
-        List<ExerciseDTO> selectedExercises = exerciseService.getExercisesByIds(selectedExercisesIds);
 
         if(bindingResult.hasErrors()) {
             rAtt.addFlashAttribute("createWorkoutDTO", createWorkoutDTO);
@@ -68,10 +66,38 @@ public class WorkoutController {
         }
 
 
+        WorkoutEntity workout = new WorkoutEntity();
+        workout
+                .setName(createWorkoutDTO.getName())
+                .setLevel(createWorkoutDTO.getLevel())
+                .setDescription(createWorkoutDTO.getDescription());
 
-        createWorkoutDTO.setExercises(selectedExercises);
+        workoutService.createWorkout(workout, createWorkoutDTO);
 
-        long newWorkoutID = workoutService.createWorkout(createWorkoutDTO);
+        List<Integer> sets = createWorkoutDTO.getSets();
+        List<Integer> reps = createWorkoutDTO.getReps();
+
+
+        List<Long> selectedExercisesIds = createWorkoutDTO.getSelectedExerciseIds();
+        List<ExerciseEntity> selectedExercises = exerciseService.getExercisesByIds(selectedExercisesIds);
+
+        for (ExerciseEntity selectedExercise : selectedExercises) {
+            int selectedExerciseId = Integer.parseInt(String.valueOf(selectedExercisesIds.get(selectedExercisesIds.indexOf(selectedExercise.getId()))));
+
+            Integer selectedExerciseSets = sets.get(selectedExerciseId - 1);
+            Integer selectedExerciseReps = reps.get(selectedExerciseId - 1);
+
+            WorkoutExerciseEntity exercise = new WorkoutExerciseEntity()
+                    .setWorkout(workout)
+                    .setExercise(selectedExercise)
+                    .setSets(selectedExerciseSets)
+                    .setReps(selectedExerciseReps)
+                            .setVideoUrl(selectedExercise.getVideoUrl());
+
+            workoutExerciseService.saveWorkoutExercise(exercise);
+        }
+
+        long newWorkoutID =  workout.getId();
 
         return "redirect:/workouts/" + newWorkoutID;
     }
@@ -95,10 +121,13 @@ public class WorkoutController {
     @GetMapping("/{id}")
     public String details(@PathVariable("id") Long id, Model model) {
 
-        WorkoutDetailsDTO workoutDetailsDTO = workoutService.getWorkoutDetails(id)
-                .orElseThrow(() -> new ObjectNotFoundException("Workout with id " + id + " not found!" ));
+        WorkoutDetailsDTO workout = workoutService.getWorkoutDetails(id).orElse(null);
+//                .orElseThrow(() -> new ObjectNotFoundException("Workout with id " + id + " not found!" ));
+        List<WorkoutExerciseEntity> allWorkoutExercises = workoutExerciseService.getAllWorkoutExercisesByWorkoutId(workout.getId());
 
-        model.addAttribute("workout", workoutDetailsDTO);
+
+        model.addAttribute("workout", workout);
+        model.addAttribute("allWorkoutExercises", allWorkoutExercises);
 
         return "details";
     }

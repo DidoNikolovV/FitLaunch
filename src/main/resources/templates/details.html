@@ -11,34 +11,23 @@
     <nav th:replace="~{fragments/navbar}"></nav>
 </div>
 
-    <div class="container my-5">
-        <h2 class="text-center text-white">Details</h2>
-        <div th:object="${workout}" class="row">
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-body bg-dark">
-                        <h5 class="card-title text-primary" th:text="*{name}"></h5>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item text-white bg-dark">
-                                <span class="font-weight-bold">Level:</span>
-                                <th:block th:text="*{level}">Beginner</th:block>
-                            </li>
-                            <li class="list-group-item text-white bg-dark">
-                                <span class="font-weight-bold">Description:</span>
-                                <th:block th:text="*{description}">This is a great workout for...</th:block>
-                            </li>
-                        </ul>
-                        <div class="d-flex justify-content-end">
-                            <form th:action="@{/workouts/schedule}" th:method="post">
-                                <input type="hidden" name="workoutId" th:value="${workout.id}" />
-                                <div class="form-group">
-                                    <label for="scheduleTime" class="text-white">Select Time:</label>
-                                    <input type="time" id="scheduleTime" name="scheduleTime" class="form-control" required />
-                                </div>
-                                <button type="submit" class="btn btn-primary">Schedule</button>
-                            </form>
-                        </div>
-                    </div>
+<div class="container my-5">
+    <h2 class="text-center text-white">Details</h2>
+    <div th:object="${workout}" class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body bg-dark">
+                    <h5 class="card-title text-primary" th:text="*{name}"></h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item text-white bg-dark">
+                            <span class="font-weight-bold">Level:</span>
+                            <span th:text="${workout.level}">Beginner</span>
+                        </li>
+                        <li class="list-group-item text-white bg-dark">
+                            <span class="font-weight-bold">Description:</span>
+                            <span th:text="${workout.description}">This is a great workout for...</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -48,14 +37,42 @@
         <div class="card-body bg-dark">
             <h5 class="card-title text-primary">Exercises</h5>
             <ul class="list-group">
-                <li th:each="exercise: ${workout.exercises}" class="list-group-item primary bg-dark">
-                    <span th:text="${exercise.name}"></span>
+                <li th:each="exercise: ${allWorkoutExercises}" class="list-group-item primary bg-dark">
+                    <div class="d-flex justify-content-between">
+                        <span class="font-weight-bold" th:text="${exercise.getExercise().name}"></span>
+                        <div>
+                            <iframe th:src="'https://www.youtube.com/embed/' + ${exercise.getExercise().getVideoUrl()}"
+                                    height="100" width="180" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <div>
+                            <span class="font-weight-bold">Sets:</span>
+                            <span th:text="${exercise.sets}"></span>
+                        </div>
+                        <div>
+                            <span class="font-weight-bold">Reps:</span>
+                            <span th:text="${exercise.reps}"></span>
+                        </div>
+                    </div>
                 </li>
             </ul>
         </div>
     </div>
-
-    <footer th:replace="~{fragments/footer}"></footer>
 </div>
+
+
+
+
+
+<!--<form th:action="@{/workouts/schedule}" th:method="post">-->
+    <!--    <input type="hidden" name="workoutId" th:value="${workout.id}" />-->
+    <!--    <div class="form-group">-->
+    <!--        <label for="scheduleTime" class="text-white">Select Time:</label>-->
+    <!--        <input type="time" id="scheduleTime" name="scheduleTime" class="form-control" required />-->
+    <!--    </div>-->
+    <!--    <button type="submit" class="btn btn-primary">Schedule</button>-->
+    <!--</form>-->
+    <div>
+        <footer th:replace="~{fragments/footer}"></footer>
+    </div>
 </body>
 </html>

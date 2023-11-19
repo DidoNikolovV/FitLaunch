@@ -3,30 +3,37 @@ package com.softuni.fitlaunch.service;
 
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
 import com.softuni.fitlaunch.model.entity.ExerciseEntity;
+import com.softuni.fitlaunch.model.entity.WorkoutExerciseEntity;
 import com.softuni.fitlaunch.repository.ExerciseRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class ExerciseService {
     private final ExerciseRepository exerciseRepository;
 
-    public ExerciseService(ExerciseRepository exerciseRepository) {
+    private final ModelMapper modelMapper;
+
+    public ExerciseService(ExerciseRepository exerciseRepository, ModelMapper modelMapper) {
         this.exerciseRepository = exerciseRepository;
+        this.modelMapper = modelMapper;
     }
 
-    public List<ExerciseDTO> getExercisesByIds(List<Long> ids) {
-        List<ExerciseEntity> exercisesById = exerciseRepository.findAllById(ids);
+    public List<ExerciseEntity> getExercisesByIds(List<Long> ids) {
+        return exerciseRepository.findAllById(ids);
 
-        return exercisesById.stream().map(ExerciseService::mapAsExerciseDTO).collect(Collectors.toList());
     }
 
-    private static ExerciseDTO mapAsExerciseDTO(ExerciseEntity exerciseEntity) {
-        return new ExerciseDTO(
-                exerciseEntity.getId(),
-                exerciseEntity.getName()
-        );
+    public ExerciseEntity getExerciseById(Long id) {
+       return exerciseRepository.findById(id).orElse(null);
     }
+
+    public void saveExercise(ExerciseEntity exercise) {
+        exerciseRepository.save(exercise);
+    }
+
+
 }

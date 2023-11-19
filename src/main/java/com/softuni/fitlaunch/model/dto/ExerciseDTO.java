@@ -1,6 +1,8 @@
 package com.softuni.fitlaunch.model.dto;
 
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.Pattern;
 
 import java.util.List;
 
@@ -10,14 +12,25 @@ public class ExerciseDTO {
 
     private String name;
 
+    private Integer sets;
+
+    private Integer reps;
+
+    @Pattern(regexp = "https:www\\.youtube\\.com/watch\\?v=.*", message = "Invalid youtube url provided")
+    private String videoUrl;
+
     private List<WorkoutDTO> workouts;
 
-    public ExerciseDTO(Long id, String name) {
-        this.id = id;
-        this.name = name;
+    public ExerciseDTO() {
     }
 
-
+    public ExerciseDTO(Long id, String name, Integer sets, Integer reps, String videoUrl) {
+        this.id = id;
+        this.name = name;
+        this.sets = sets;
+        this.reps = reps;
+        this.videoUrl = videoUrl;
+    }
 
     public Long getId() {
         return id;
@@ -43,6 +56,33 @@ public class ExerciseDTO {
 
     public ExerciseDTO setWorkouts(List<WorkoutDTO> workouts) {
         this.workouts = workouts;
+        return this;
+    }
+
+    public Integer getSets() {
+        return sets;
+    }
+
+    public ExerciseDTO setSets(Integer sets) {
+        this.sets = sets;
+        return this;
+    }
+
+    public Integer getReps() {
+        return reps;
+    }
+
+    public ExerciseDTO setReps(Integer reps) {
+        this.reps = reps;
+        return this;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public ExerciseDTO setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
         return this;
     }
 }

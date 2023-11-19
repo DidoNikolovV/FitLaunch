@@ -1,7 +1,9 @@
 package com.softuni.fitlaunch.model.dto.workout;
 
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
+import com.softuni.fitlaunch.model.entity.WorkoutExerciseEntity;
 import com.softuni.fitlaunch.model.enums.LevelEnum;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,8 @@ public class WorkoutDTO {
 
     private LevelEnum level;
     private String description;
+
+    private List<WorkoutExerciseDTO> workoutExercises = new ArrayList<>();
 
     private List<ExerciseDTO> exercises;
 
@@ -73,6 +77,15 @@ public class WorkoutDTO {
 
     public WorkoutDTO setDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    public List<WorkoutExerciseDTO> getWorkoutExercises() {
+        return workoutExercises;
+    }
+
+    public WorkoutDTO setWorkoutExercises(List<WorkoutExerciseDTO> workoutExercises) {
+        this.workoutExercises = workoutExercises;
         return this;
     }
 
