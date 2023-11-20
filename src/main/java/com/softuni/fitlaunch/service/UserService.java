@@ -8,9 +8,11 @@ import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.model.entity.UserRoleEntity;
 import com.softuni.fitlaunch.repository.RoleRepository;
 import com.softuni.fitlaunch.repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +25,13 @@ public class UserService {
     
     private final RoleRepository roleRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
+    private final ModelMapper modelMapper;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+        this.modelMapper = modelMapper;
     }
 
     public boolean register(UserRegisterDTO userRegisterDTO) {
@@ -51,15 +56,15 @@ public class UserService {
         user.setEmail(userRegisterDTO.getEmail());
         user.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
         user.setRoles(List.of(role));
+        user.setMembership("Free");
 
         userRepository.save(user);
 
         return true;
     }
 
-    public List<UserDTO> getAllUsers() {
-
-        return userRepository.findAll().stream().map(UserService::mapAsUserDTO).toList();
+    public List<UserEntity> getAllUsers() {
+        return userRepository.findAll().stream().toList();
     }
 
     public UserEntity getUserById(Long id) {
@@ -100,13 +105,13 @@ public class UserService {
         );
     }
 
-    private static UserDTO mapAsUserDTO(UserEntity userEntity) {
-        return new UserDTO(
-                    userEntity.getId(),
-                    userEntity.getUsername(),
-                    userEntity.getEmail(),
-                    userEntity.getRoles()
-                    );
-    }
+//    private static UserDTO mapAsUserDTO(UserEntity userEntity) {
+//        return new UserDTO(
+//                    userEntity.getId(),
+//                    userEntity.getUsername(),
+//                    userEntity.getEmail(),
+//                    userEntity.getRoles()
+//                    );
+//    }
 
 }

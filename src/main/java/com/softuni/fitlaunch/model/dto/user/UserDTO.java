@@ -14,12 +14,15 @@ public class UserDTO {
 
     private List<UserRoleEntity> roles;
 
+    private String membership;
 
-    public UserDTO(Long id, String username, String email, List<UserRoleEntity> roles) {
+
+    public UserDTO(Long id, String username, String email, List<UserRoleEntity> roles, String membership) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.roles = roles;
+        this.membership = membership;
     }
 
     public Long getId() {
@@ -58,4 +61,12 @@ public class UserDTO {
         return this;
     }
 
+    public String getMembership() {
+        return membership;
+    }
+
+    public UserDTO setMembership(String membership) {
+        this.membership = membership;
+        return this;
+    }
 }

@@ -24,6 +24,9 @@ public class WorkoutExerciseEntity extends BaseEntity{
     @Column(name = "video_url")
     private String videoUrl;
 
+    @ManyToOne
+    private DayEntity day;
+
     public WorkoutEntity getWorkout() {
         return workout;
     }
@@ -66,6 +69,15 @@ public class WorkoutExerciseEntity extends BaseEntity{
 
     public WorkoutExerciseEntity setVideoUrl(String videoUrl) {
         this.videoUrl = videoUrl;
+        return this;
+    }
+
+    public DayEntity getDay() {
+        return day;
+    }
+
+    public WorkoutExerciseEntity setDay(DayEntity day) {
+        this.day = day;
         return this;
     }
 }

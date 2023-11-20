@@ -18,9 +18,12 @@ public class UserProfileEntity {
     private String joinedDate;
     private String lastLoginDate;
 
+    private String membership;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", unique = true)
     private UserEntity user;
+
 
     public Long getId() {
         return id;
@@ -91,6 +94,15 @@ public class UserProfileEntity {
 
     public UserProfileEntity setUser(UserEntity user) {
         this.user = user;
+        return this;
+    }
+
+    public String getMembership() {
+        return membership;
+    }
+
+    public UserProfileEntity setMembership(String membershipStatus) {
+        this.membership = membershipStatus;
         return this;
     }
 }

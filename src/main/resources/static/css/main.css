@@ -258,6 +258,11 @@ body {
     margin-bottom: 10px;
 }
 
+.card-deck .card:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease-in-out;
+}
+
 
 .hero, .classes {
     flex-grow: 1;
@@ -362,13 +367,17 @@ body {
     color: #fff;
     letter-spacing: 0.03rem;
 }
+.program-img {
+    height: 400px;
+    object-fit: cover;
+}
 
 footer {
     background-color: #343a40;
     color: #fff;
     text-align: center;
     font-size: 14px;
-    position: fixed;
+    /*position: fixed;*/
     left: 0;
     bottom: 0;
     width: 100%;

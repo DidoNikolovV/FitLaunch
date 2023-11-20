@@ -1,8 +1,7 @@
-INSERT INTO users (id, email, username, password)
+INSERT INTO users (id, email, username, password, membership)
 VALUES
-    (1, 'admin@example.com', 'Admin', '95c1933b8ffe84f085f2839899d1673260be58dbd9c2c787ac35515805502c996417596dae9a92880aaa50a046fc7151'),
-    (2, 'user@example.com', 'User', '95c1933b8ffe84f085f2839899d1673260be58dbd9c2c787ac35515805502c996417596dae9a92880aaa50a046fc7151');
-
+    (1, 'admin@example.com', 'Admin', '95c1933b8ffe84f085f2839899d1673260be58dbd9c2c787ac35515805502c996417596dae9a92880aaa50a046fc7151', 'Yearly'),
+    (2, 'user@example.com', 'User', '95c1933b8ffe84f085f2839899d1673260be58dbd9c2c787ac35515805502c996417596dae9a92880aaa50a046fc7151', 'Monthly');
 
 INSERT INTO roles (`id`, `role`)
 VALUES
@@ -61,6 +60,30 @@ VALUES
     (10, 3, 2, 3),
     (12, 4, 3, 3);
 
+
+INSERT INTO programs (img_url, name)
+VALUES
+    ('/images/beginner-program.jpg', 'Beginner'),
+    ('/images/intermediate-program.jpg', 'Intermediate'),
+    ('/images/advanced-program.jpg', 'Advanced');
+
+INSERT INTO weeks (program_id)
+VALUES
+    (1), (1), (1), (1), (1), -- Program 1
+    (2), (2), (2), (2), (2), -- Program 2
+    (3), (3), (3), (3), (3); -- Program 2
+
+INSERT INTO days (week_id)
+VALUES
+    (1), (1), (1), (1), (1), (1), (1),
+    (2), (2), (2), (2), (2), (2), (2),
+    (3), (3), (3), (3), (3), (3), (3);
+
+INSERT INTO workout_exercises (day_id, exercise_id, sets, reps, workout_id) VALUES
+(1, 1, 3, 12, 1),
+(1, 2, 4, 10, 2),
+(2, 3, 3, 15, 4),
+(3, 4, 5, 5, 3);
 
 
 

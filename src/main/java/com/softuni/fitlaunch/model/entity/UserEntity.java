@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class UserEntity extends BaseEntity{
+public class UserEntity extends BaseEntity {
 
     @Column(unique = true, nullable = false)
     private Long id;
@@ -23,7 +23,7 @@ public class UserEntity extends BaseEntity{
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name= "users_roles",
+            name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
@@ -38,6 +38,9 @@ public class UserEntity extends BaseEntity{
 
     @OneToMany(mappedBy = "user")
     private List<WorkoutScheduleEntity> schedules;
+
+    @Column(nullable = false)
+    private String membership;
 
     @Override
     public Long getId() {
@@ -78,9 +81,9 @@ public class UserEntity extends BaseEntity{
         return this;
     }
 
-   public List<UserRoleEntity> getRoles() {
-       return roles;
-   }
+    public List<UserRoleEntity> getRoles() {
+        return roles;
+    }
 
     public UserEntity setRoles(List<UserRoleEntity> roles) {
         this.roles = roles;
@@ -104,4 +107,16 @@ public class UserEntity extends BaseEntity{
         this.schedules = schedules;
         return this;
     }
+
+    public String getMembership() {
+        return membership;
+    }
+
+    public UserEntity setMembership(String membership) {
+        this.membership = membership;
+        return this;
+    }
 }
+
+
+

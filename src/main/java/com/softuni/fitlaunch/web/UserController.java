@@ -82,7 +82,7 @@ public class UserController {
     @GetMapping("/users/all")
     public String allUsers(Model model) {
 
-        List<UserDTO> allUsers = userService.getAllUsers();
+        List<UserEntity> allUsers = userService.getAllUsers();
 
         model.addAttribute("users", allUsers);
 
