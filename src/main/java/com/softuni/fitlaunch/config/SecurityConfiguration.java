@@ -63,6 +63,12 @@ public class SecurityConfiguration {
                             // invalidate the HTTP session
                             .invalidateHttpSession(true);
                 }
+        ).rememberMe(
+                rememberMe -> {
+                    rememberMe
+                            .key("someUniqueKey")
+                            .tokenValiditySeconds(604800);
+                }
         ).build();
 
     }
