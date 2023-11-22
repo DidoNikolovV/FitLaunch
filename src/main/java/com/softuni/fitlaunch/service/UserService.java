@@ -71,6 +71,10 @@ public class UserService {
         return userRepository.findById(id).get();
     }
 
+    public UserEntity getUserByUsername(String username) {
+        return userRepository.findByUsername(username).get();
+    }
+
     public void changeUserRole(Long userId, UserRoleEntity role) {
         Optional<UserEntity> optUser = userRepository.findById(userId);
 

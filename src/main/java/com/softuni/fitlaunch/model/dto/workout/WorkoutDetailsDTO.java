@@ -1,6 +1,5 @@
 package com.softuni.fitlaunch.model.dto.workout;
 
-import com.softuni.fitlaunch.model.dto.ExerciseDTO;
 import com.softuni.fitlaunch.model.entity.WorkoutExerciseEntity;
 import com.softuni.fitlaunch.model.enums.LevelEnum;
 
@@ -19,6 +18,7 @@ public class WorkoutDetailsDTO {
     private String imgUrl;
 
     private List<WorkoutExerciseEntity> exercises;
+
 
     public WorkoutDetailsDTO(Long id, String name, LevelEnum level, String description, String imgUrl, List<WorkoutExerciseEntity> exercises) {
         this.id = id;
@@ -82,4 +82,5 @@ public class WorkoutDetailsDTO {
         this.exercises = exercises;
         return this;
     }
+
 }

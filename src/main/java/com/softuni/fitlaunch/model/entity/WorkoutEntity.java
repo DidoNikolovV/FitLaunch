@@ -41,6 +41,9 @@ public class WorkoutEntity extends BaseEntity {
     inverseJoinColumns = @JoinColumn(name = "exercise_id"))
     private List<ExerciseEntity> exercises;
 
+    @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL)
+    private List<CommentEntity> comments;
+
     public String getImgUrl() {
         return imgUrl;
     }
@@ -101,6 +104,15 @@ public class WorkoutEntity extends BaseEntity {
 
     public WorkoutEntity setExercises(List<ExerciseEntity> exercises) {
         this.exercises = exercises;
+        return this;
+    }
+
+    public List<CommentEntity> getComments() {
+        return comments;
+    }
+
+    public WorkoutEntity setComments(List<CommentEntity> comments) {
+        this.comments = comments;
         return this;
     }
 }

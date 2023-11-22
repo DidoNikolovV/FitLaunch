@@ -9,6 +9,7 @@ import com.softuni.fitlaunch.model.entity.ExerciseEntity;
 import com.softuni.fitlaunch.model.entity.WorkoutEntity;
 import com.softuni.fitlaunch.model.entity.WorkoutExerciseEntity;
 import com.softuni.fitlaunch.model.enums.LevelEnum;
+import com.softuni.fitlaunch.repository.CommentRepository;
 import com.softuni.fitlaunch.repository.ExerciseRepository;
 import com.softuni.fitlaunch.repository.WorkoutExerciseRepository;
 import com.softuni.fitlaunch.repository.WorkoutRepository;
@@ -34,12 +35,15 @@ public class WorkoutService {
     private final ExerciseRepository exerciseRepository;
     private final WorkoutExerciseRepository workoutExerciseRepository;
 
+    private final CommentRepository commentRepository;
+
     private final ModelMapper modelMapper;
 
-    public WorkoutService(WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, WorkoutExerciseRepository workoutExerciseRepository, ModelMapper modelMapper) {
+    public WorkoutService(WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, WorkoutExerciseRepository workoutExerciseRepository, CommentRepository commentRepository, ModelMapper modelMapper) {
         this.workoutRepository = workoutRepository;
         this.exerciseRepository = exerciseRepository;
         this.workoutExerciseRepository = workoutExerciseRepository;
+        this.commentRepository = commentRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -75,6 +79,10 @@ public class WorkoutService {
                 .map(entity -> modelMapper.map(entity, WorkoutDTO.class));
     }
 
+//    public List<WorkoutDTO> getAllWorkouts() {
+//        return workoutRepository.findAll().stream().map(workoutEntity -> modelMapper.map(workoutEntity, WorkoutDTO.class)).toList();
+//    }
+
     public List<ExerciseDTO> getAllExercises() {
         return exerciseRepository.findAll()
                 .stream()
@@ -100,6 +108,7 @@ public class WorkoutService {
 
 //        List<ExerciseDTO> exercises = workoutEntity.getExercises().stream().map(WorkoutService::mapAsExerciseDTO).toList();
         List<WorkoutExerciseEntity> exercises = workoutExerciseRepository.findByWorkoutId(workoutEntity.getId()).stream().toList();
+//        List<CommentDTO> comments = commentRepository.findByWorkoutId(workoutEntity.getId()).stream().map(commentEntity -> modelMapper.map(commentEntity, CommentDTO.class)).toList();
 
 
         return new WorkoutDetailsDTO(

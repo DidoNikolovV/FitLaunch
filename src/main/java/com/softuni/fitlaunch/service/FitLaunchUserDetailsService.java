@@ -5,7 +5,7 @@ import com.softuni.fitlaunch.model.entity.UserRoleEntity;
 import com.softuni.fitlaunch.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
+//import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,11 +19,11 @@ public class FitLaunchUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository
-                .findByEmail(email)
+                .findByUsername(username)
                 .map(FitLaunchUserDetailsService::map)
-                .orElseThrow(() -> new UsernameNotFoundException("User " + email + " doesn't exist"));
+                .orElseThrow(() -> new UsernameNotFoundException("User " + username + " doesn't exist"));
     }
 
     private static UserDetails map(UserEntity userEntity) {

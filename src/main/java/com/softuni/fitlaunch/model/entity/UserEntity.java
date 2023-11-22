@@ -42,6 +42,9 @@ public class UserEntity extends BaseEntity {
     @Column(nullable = false)
     private String membership;
 
+    @OneToMany(mappedBy = "author")
+    private List<CommentEntity> comments;
+
     @Override
     public Long getId() {
         return id;
@@ -114,6 +117,15 @@ public class UserEntity extends BaseEntity {
 
     public UserEntity setMembership(String membership) {
         this.membership = membership;
+        return this;
+    }
+
+    public List<CommentEntity> getComments() {
+        return comments;
+    }
+
+    public UserEntity setComments(List<CommentEntity> comments) {
+        this.comments = comments;
         return this;
     }
 }

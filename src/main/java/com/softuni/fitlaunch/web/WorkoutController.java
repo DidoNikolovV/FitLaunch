@@ -22,7 +22,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping("/workouts")
 public class WorkoutController {
 
 
@@ -40,7 +39,7 @@ public class WorkoutController {
         this.workoutExerciseService = workoutExerciseService;
     }
 
-    @GetMapping("/add")
+    @GetMapping("/workouts/add")
     public String add(Model model) {
 
         if(!model.containsAttribute("createWorkoutDTO")) {
@@ -54,7 +53,7 @@ public class WorkoutController {
         return "workout-add";
     }
 
-    @PostMapping("/add")
+    @PostMapping("/workouts/add")
     public String add(@ModelAttribute CreateWorkoutDTO createWorkoutDTO,
                       BindingResult bindingResult,
                       RedirectAttributes rAtt) {
@@ -103,7 +102,7 @@ public class WorkoutController {
     }
 
 
-    @PostMapping("/schedule")
+    @PostMapping("/workouts/schedule")
     public String scheduleWorkout(
             @RequestParam Long workoutId,
             @RequestParam String scheduleTime) {
@@ -118,7 +117,7 @@ public class WorkoutController {
     }
 
 
-    @GetMapping("/{id}")
+    @GetMapping("/workouts/{id}")
     public String details(@PathVariable("id") Long id, Model model) {
 
         WorkoutDetailsDTO workout = workoutService.getWorkoutDetails(id).orElse(null);

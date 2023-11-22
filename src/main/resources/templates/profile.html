@@ -12,50 +12,43 @@
     <div class="row justify-content-center">
       <div class="col-md-6 mt-5">
         <div class="card bg-dark text-white">
-          <img th:src="${userProfile.avatarUrl}" class="card-img-top" alt="User Avatar">
-          <div class="card-body">
-            <h5 class="card-title">User Profile</h5>
+          <img src="/images/profile-avatar.jpg" class="card-img-top" alt="User Avatar">
+          <div class="card-body" th:object="${user}">
+            <strong>Membership: </strong><span th:text="*{membership}"></span>
             <ul class="list-group list-group-flush">
               <li class="list-group-item bg-dark text-white">
-                <strong>Email:</strong> <span th:text="${userProfile.email}"></span>
+                <strong>Email:</strong> <span th:text="*{username}"></span>
               </li>
               <li class="list-group-item bg-dark text-white">
-                <strong>Last Login Date:</strong> <span th:text="${userProfile.lastLoginDate}"></span>
+                <strong>Name:</strong> <span th:text="*{email}"></span>
               </li>
               <li class="list-group-item bg-dark text-white">
-                <strong>Location:</strong> <span th:text="${userProfile.location}"></span>
+                <strong>Membership:</strong> <span th:text="*{membership}"></span>
               </li>
-              <li class="list-group-item bg-dark text-white">
-                <strong>Name:</strong> <span th:text="${userProfile.name}"></span>
-              </li>
-              <li class="list-group-item bg-dark text-white">
-                <strong>Membership:</strong> <span th:text="${userProfile.membership}"></span>
-              </li>
-
 
             </ul>
           </div>
         </div>
       </div>
 
-      <div class="col-md-6">
-        <div class="card bg-dark">
-          <div class="card-body">
-            <h5 class="card-title text-white">Scheduled Workouts</h5>
-            <div th:each="scheduledWorkout : ${scheduledWorkouts}" class="mb-3">
-              <div class="card bg-secondary">
-                <div class="card-body">
-                  <h6 class="card-subtitle mb-2 text-white" th:text="${scheduledWorkout.workout.name}"></h6>
-                  <p class="card-text text-white">
-                    Scheduled Time: <span th:text="${scheduledWorkout.scheduledDate}"></span>
-                  </p>
-                  <a th:href="@{/workouts/start/{id}(id=${scheduledWorkout.workout.id})}" class="btn btn-primary">Start</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+<!--      <div class="col-md-6">-->
+<!--        <div class="card bg-dark">-->
+<!--          <div class="card-body">-->
+<!--            <h5 class="card-title text-white">Scheduled Workouts</h5>-->
+<!--            <div th:each="scheduledWorkout : ${scheduledWorkouts}" class="mb-3">-->
+<!--              <div class="card bg-secondary">-->
+<!--                <div class="card-body">-->
+<!--                  <h6 class="card-subtitle mb-2 text-white" th:text="${scheduledWorkout.workout.name}"></h6>-->
+<!--                  <p class="card-text text-white">-->
+<!--                    Scheduled Time: <span th:text="${scheduledWorkout.scheduledDate}"></span>-->
+<!--                  </p>-->
+<!--                  <a th:href="@{/workouts/start/{id}(id=${scheduledWorkout.workout.id})}" class="btn btn-primary">Start</a>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
   </div>
 

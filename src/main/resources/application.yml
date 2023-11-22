@@ -29,11 +29,10 @@ spring:
       cache:
         period: 0
 
-fitlaunch:
-  remember.me.key: ${REMEMBER_ME_KEY:secret}
 
 logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.orm.jdbc.bind: TRACE
+
 
