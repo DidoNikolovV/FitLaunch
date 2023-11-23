@@ -68,7 +68,6 @@
 
         <input type="hidden" name="workoutId" id="workoutId" th:value="${workout.id}">
         <section class="comments">
-
             <h1>Comments</h1>
             <div>
                 <!-- Comments submission -->
@@ -84,9 +83,6 @@
                                   rows="5"
                                   class="form-control"
                                   style="background-color: white;"></textarea>
-                        <small id="messageError" class="invalid-feedback">
-                            Message should be at least 10 characters.
-                        </small>
                     </div>
 
                     <div class="form-group">
@@ -114,36 +110,10 @@
     <!--    </div>-->
     <!--    <button type="submit" class="btn btn-primary">Schedule</button>-->
     <!--</form>-->
-    <div>
-        <footer th:replace="~{fragments/footer}"></footer>
+        <div>
+            <footer th:replace="~{fragments/footer}"></footer>
+        </div>
+        <script th:src="@{/js/comments.js}"></script>
     </div>
-
-<script th:src="@{/js/comments.js}">
-
-
-    // const workoutId = 1;
-    //
-    // async function loadComments() {
-    //     const res = await fetch(`http://localhost:8080/comments/${workoutId}`);
-    //     const comments = await res.json();
-    //     displayComments(comments);
-    // }
-    //
-    // function displayComments(comments) {
-    //     let commentsContainer = document.getElementById('commentsList');
-    //     commentsContainer.innerHTML = '';
-    //
-    //     comments.forEach(comment => {
-    //         const commentElement = document.createElement('div');
-    //         commentElement.innerHTML = `<p>${comment.content}</p>`;
-    //         commentsContainer.appendChild(commentElement);
-    //     });
-    //
-    //     // Display the comments container
-    //     commentsContainer.style.display = 'block';
-    // }
-</script>
-
 </body>
-
 </html>

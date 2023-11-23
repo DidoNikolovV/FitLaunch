@@ -4,6 +4,7 @@ package com.softuni.fitlaunch.web.rest;
 import com.softuni.fitlaunch.model.dto.comment.CommentCreationDTO;
 import com.softuni.fitlaunch.model.dto.comment.CommentMessageDTO;
 import com.softuni.fitlaunch.model.dto.view.CommentView;
+import com.softuni.fitlaunch.model.entity.CommentEntity;
 import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.service.CommentService;
 import com.softuni.fitlaunch.service.UserService;
@@ -30,6 +31,11 @@ public class CommentsRestController {
         this.userService = userService;
     }
 
+    @GetMapping("/{workoutId}/comments/{commentId}")
+    public ResponseEntity<CommentView> getComment(@PathVariable("commentId") Long commentId) {
+        return ResponseEntity.ok(mapToCommentView(commentService.getComment(commentId)));
+    }
+
     @GetMapping("/{workoutId}/comments")
     public ResponseEntity<List<CommentView>> getCommentsByWorkoutId(@PathVariable("workoutId") Long workoutId) {
         return ResponseEntity.ok(commentService.getAllCommentsForWorkout(workoutId));
@@ -47,12 +53,13 @@ public class CommentsRestController {
                 commentMessageDTO.getMessage()
         );
 
+        CommentEntity commentEntity = commentService.addComment(commentDTO, workoutId, user);
 
-        CommentView comment = commentService.addComment(commentDTO);
+        CommentView commentView = mapToCommentView(commentEntity);
 
         return ResponseEntity.created(
-                URI.create(String.format(("/api/%d/comments/%d"), workoutId, comment.getId()))
-        ).body(comment);
+                URI.create(String.format(("/api/%d/comments/%d"), workoutId, commentEntity.getId()))
+        ).body(commentView);
     }
 
 
@@ -64,6 +71,10 @@ public class CommentsRestController {
         return ResponseEntity
                 .noContent()
                 .build();
+    }
+
+    private CommentView mapToCommentView(CommentEntity commentEntity) {
+        return new CommentView(commentEntity.getId(), commentEntity.getAuthor().getUsername(), commentEntity.getContent());
     }
 
 }

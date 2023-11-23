@@ -20,15 +20,11 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     private final WorkoutRepository workoutRepository;
-
-    private final UserRepository userRepository;
-
     private final ModelMapper modelMapper;
 
-    public CommentService(CommentRepository commentRepository, WorkoutRepository workoutRepository, UserRepository userRepository, ModelMapper modelMapper) {
+    public CommentService(CommentRepository commentRepository, WorkoutRepository workoutRepository,ModelMapper modelMapper) {
         this.commentRepository = commentRepository;
         this.workoutRepository = workoutRepository;
-        this.userRepository = userRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -40,25 +36,24 @@ public class CommentService {
         return comments.stream().map(commentEntity -> new CommentView(commentEntity.getId(), commentEntity.getAuthor().getUsername(), commentEntity.getContent())).collect(Collectors.toList());
     }
 
-    public CommentView addComment(CommentCreationDTO commentDTO) {
-        UserEntity author = userRepository.findByUsername(commentDTO.getAuthorName()).get();
+    public CommentEntity addComment(CommentCreationDTO commentDTO, Long workoutId, UserEntity author) {
 
-        CommentEntity comment = modelMapper.map(commentDTO, CommentEntity.class);
+        CommentEntity comment = new CommentEntity();
+        comment.setWorkout(workoutRepository.findById(workoutId).get());
+        comment.setAuthor(author);
+        comment.setContent(commentDTO.getMessage());
         commentRepository.save(comment);
 
-        return new CommentView(comment.getId(), author.getUsername(), comment.getContent());
+        return comment;
     }
 
+    public CommentEntity getComment(Long id) {
+        return commentRepository.findById(id).orElse(null);
+    }
 
 
     public void deleteCommentById(Long id) {
         commentRepository.deleteById(id);
     }
 
-    public List<CommentCreationDTO> getAllComments() {
-        return commentRepository.findAll()
-                .stream()
-                .map(commentEntity -> modelMapper.map(commentEntity, CommentCreationDTO.class))
-                .toList();
-    }
 }

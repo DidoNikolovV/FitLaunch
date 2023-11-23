@@ -1,3 +1,5 @@
+const url = 'http://localhost:8080'
+
 const workoutId = document.getElementById('workoutId').value
 const commentForm = document.getElementById('commentForm')
 commentForm.addEventListener('submit', postComment)
@@ -12,9 +14,11 @@ const showCommentsBtn = document.getElementById('showComments');
 async function postComment(e) {
     e.preventDefault();
 
+    alert("hello");
+
     const messageValue = document.getElementById('message').value;
 
-    fetch(`http://localhost:8080/${workoutId}/comments`, {
+    fetch(`${url}/api/${workoutId}/comments`, {
         method: 'POST',
         headers: {
          'Content-Type': 'application/json',
@@ -40,7 +44,7 @@ function commentAsHTML(comment) {
     return commentHTML;
 }
 
-fetch(`http://localhost:8080/api/${workoutId}/comments`, {
+fetch(`${url}/api/${workoutId}/comments`, {
     headers: {
         "Accept": "application/json"
     }
