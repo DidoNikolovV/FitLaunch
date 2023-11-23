@@ -3,9 +3,7 @@ package com.softuni.fitlaunch.web;
 
 import com.softuni.fitlaunch.model.dto.workout.CreateWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
-import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
-import com.softuni.fitlaunch.model.dto.workout.WorkoutExerciseDTO;
 import com.softuni.fitlaunch.model.entity.ExerciseEntity;
 import com.softuni.fitlaunch.model.entity.WorkoutEntity;
 import com.softuni.fitlaunch.model.entity.WorkoutExerciseEntity;
@@ -14,11 +12,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import com.softuni.fitlaunch.service.exception.ObjectNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -28,15 +27,21 @@ public class WorkoutController {
     private final WorkoutService workoutService;
     private final ExerciseService exerciseService;
 
+    private final UserService userService;
+
     private final WorkoutScheduleService workoutScheduleService;
 
     private final WorkoutExerciseService workoutExerciseService;
 
-    public WorkoutController(WorkoutService workoutService, ExerciseService exerciseService, WorkoutScheduleService workoutScheduleService, WorkoutExerciseService workoutExerciseService) {
+    private final FileUpload fileUpload;
+
+    public WorkoutController(WorkoutService workoutService, ExerciseService exerciseService, UserService userService, WorkoutScheduleService workoutScheduleService, WorkoutExerciseService workoutExerciseService, FileUpload fileUpload) {
         this.workoutService = workoutService;
         this.exerciseService = exerciseService;
+        this.userService = userService;
         this.workoutScheduleService = workoutScheduleService;
         this.workoutExerciseService = workoutExerciseService;
+        this.fileUpload = fileUpload;
     }
 
     @GetMapping("/workouts/add")
@@ -54,9 +59,9 @@ public class WorkoutController {
     }
 
     @PostMapping("/workouts/add")
-    public String add(@ModelAttribute CreateWorkoutDTO createWorkoutDTO,
+    public String add(@ModelAttribute CreateWorkoutDTO createWorkoutDTO, Principal principal,
                       BindingResult bindingResult,
-                      RedirectAttributes rAtt) {
+                      RedirectAttributes rAtt) throws IOException {
 
         if(bindingResult.hasErrors()) {
             rAtt.addFlashAttribute("createWorkoutDTO", createWorkoutDTO);
@@ -65,11 +70,15 @@ public class WorkoutController {
         }
 
 
+        String imageUrl = fileUpload.uploadFile(createWorkoutDTO.getImgUrl());
         WorkoutEntity workout = new WorkoutEntity();
         workout
+                .setAuthor(userService.getUserByUsername(principal.getName()))
                 .setName(createWorkoutDTO.getName())
                 .setLevel(createWorkoutDTO.getLevel())
-                .setDescription(createWorkoutDTO.getDescription());
+                .setDescription(createWorkoutDTO.getDescription())
+                .setImgUrl(imageUrl);
+
 
         workoutService.createWorkout(workout, createWorkoutDTO);
 
@@ -124,11 +133,10 @@ public class WorkoutController {
 //                .orElseThrow(() -> new ObjectNotFoundException("Workout with id " + id + " not found!" ));
         List<WorkoutExerciseEntity> allWorkoutExercises = workoutExerciseService.getAllWorkoutExercisesByWorkoutId(workout.getId());
 
-
         model.addAttribute("workout", workout);
         model.addAttribute("allWorkoutExercises", allWorkoutExercises);
 
-        return "details";
+        return "workout-details";
     }
 
 }

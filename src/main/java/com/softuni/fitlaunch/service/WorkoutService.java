@@ -13,6 +13,7 @@ import com.softuni.fitlaunch.repository.CommentRepository;
 import com.softuni.fitlaunch.repository.ExerciseRepository;
 import com.softuni.fitlaunch.repository.WorkoutExerciseRepository;
 import com.softuni.fitlaunch.repository.WorkoutRepository;
+import org.apache.tomcat.util.http.fileupload.FileUpload;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,40 +35,39 @@ public class WorkoutService {
     private final WorkoutRepository workoutRepository;
     private final ExerciseRepository exerciseRepository;
     private final WorkoutExerciseRepository workoutExerciseRepository;
-
-    private final CommentRepository commentRepository;
-
     private final ModelMapper modelMapper;
 
-    public WorkoutService(WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, WorkoutExerciseRepository workoutExerciseRepository, CommentRepository commentRepository, ModelMapper modelMapper) {
+    private final ImageCloudService imageCloudService;
+
+    public WorkoutService(WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, WorkoutExerciseRepository workoutExerciseRepository, ModelMapper modelMapper, ImageCloudService imageCloudService) {
         this.workoutRepository = workoutRepository;
         this.exerciseRepository = exerciseRepository;
         this.workoutExerciseRepository = workoutExerciseRepository;
-        this.commentRepository = commentRepository;
+        this.imageCloudService = imageCloudService;
         this.modelMapper = modelMapper;
     }
 
     public Long createWorkout(WorkoutEntity workout, CreateWorkoutDTO createWorkoutDTO) {
 
 
-        MultipartFile pictureFile = createWorkoutDTO.getImgUrl();
+//        MultipartFile pictureFile = createWorkoutDTO.getImgUrl();
+//
+//        String picturePath = getPicturePath(pictureFile);
+//
+//
+//        try {
+//            File file = new File(BASE_IMAGES_PATH + picturePath);
+//            file.getParentFile().mkdirs();
+//            file.createNewFile();
+//
+//            OutputStream outputStream = new FileOutputStream(file);
+//            outputStream.write(pictureFile.getBytes());
+//
+//        } catch(IOException ex) {
+//            System.out.println(ex.getMessage());
+//        }
 
-        String picturePath = getPicturePath(pictureFile);
-
-
-        try {
-            File file = new File(BASE_IMAGES_PATH + picturePath);
-            file.getParentFile().mkdirs();
-            file.createNewFile();
-
-            OutputStream outputStream = new FileOutputStream(file);
-            outputStream.write(pictureFile.getBytes());
-
-        } catch(IOException ex) {
-            System.out.println(ex.getMessage());
-        }
-
-        workout.setImgUrl(picturePath);
+//        workout.setImgUrl(picturePath);
         WorkoutEntity newWorkout = workoutRepository.save(workout);
         return newWorkout.getId();
 

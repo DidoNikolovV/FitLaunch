@@ -14,6 +14,9 @@ import java.util.List;
 public class WorkoutEntity extends BaseEntity {
 
 
+    @ManyToOne
+    private UserEntity author;
+
     @Column(nullable = false)
     private String imgUrl;
 
@@ -113,6 +116,15 @@ public class WorkoutEntity extends BaseEntity {
 
     public WorkoutEntity setComments(List<CommentEntity> comments) {
         this.comments = comments;
+        return this;
+    }
+
+    public UserEntity getAuthor() {
+        return author;
+    }
+
+    public WorkoutEntity setAuthor(UserEntity author) {
+        this.author = author;
         return this;
     }
 }
