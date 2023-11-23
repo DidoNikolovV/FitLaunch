@@ -14,8 +14,6 @@ const showCommentsBtn = document.getElementById('showComments');
 async function postComment(e) {
     e.preventDefault();
 
-    alert("hello");
-
     const messageValue = document.getElementById('message').value;
 
     fetch(`${url}/api/${workoutId}/comments`, {
@@ -39,9 +37,22 @@ function commentAsHTML(comment) {
     let commentHTML = '<div>\n'
     commentHTML += `<h4>${comment.authorName}</h4>\n`
     commentHTML += `<p>${comment.message}</p>\n`
+    commentHTML += `<button class="btn btn-danger" onClick="deleteComment(${comment.id})">Delete</button>\n`
     commentHTML += '</div>\n'
 
     return commentHTML;
+}
+
+async function deleteComment(commentId) {
+    fetch(`${url}/api/${workoutId}/comments/${commentId}`, {
+        method: 'DELETE',
+        headers: {
+            [csrfHeaderName]: csrfHeaderValue
+        }
+    }).then(res => res.json())
+        .then(data => {
+            commentContainer.removeChild(data)
+        })
 }
 
 fetch(`${url}/api/${workoutId}/comments`, {

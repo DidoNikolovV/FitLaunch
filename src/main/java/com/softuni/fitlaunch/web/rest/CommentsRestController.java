@@ -6,6 +6,7 @@ import com.softuni.fitlaunch.model.dto.comment.CommentMessageDTO;
 import com.softuni.fitlaunch.model.dto.view.CommentView;
 import com.softuni.fitlaunch.model.entity.CommentEntity;
 import com.softuni.fitlaunch.model.entity.UserEntity;
+import com.softuni.fitlaunch.model.enums.UserRoleEnum;
 import com.softuni.fitlaunch.service.CommentService;
 import com.softuni.fitlaunch.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -63,10 +64,17 @@ public class CommentsRestController {
     }
 
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<CommentCreationDTO> deleteCommentById(@PathVariable("id") Long id) {
+    @DeleteMapping("/{workoutId}/comments/{commentId}")
+    public ResponseEntity<CommentView> deleteCommentById(@PathVariable("commentId") Long commentId, Principal principal) {
 
-        commentService.deleteCommentById(id);
+        UserEntity user = userService.getUserByUsername(principal.getName());
+
+        CommentEntity comment = commentService.getComment(commentId);
+
+        if(user.getRoles().stream().anyMatch(r -> r.getRole().equals(UserRoleEnum.ADMIN)) || user.getId() == comment.getAuthor().getId()) {
+            CommentEntity deleted = commentService.deleteCommentById(commentId);
+            return ResponseEntity.ok(mapToCommentView(deleted));
+        }
 
         return ResponseEntity
                 .noContent()

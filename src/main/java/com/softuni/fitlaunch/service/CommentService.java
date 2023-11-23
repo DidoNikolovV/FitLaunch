@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,8 +53,11 @@ public class CommentService {
     }
 
 
-    public void deleteCommentById(Long id) {
-        commentRepository.deleteById(id);
+    public CommentEntity deleteCommentById(Long id) {
+        CommentEntity comment = this.getComment(id);
+        commentRepository.deleteById(comment.getId());
+
+        return comment;
     }
 
 }

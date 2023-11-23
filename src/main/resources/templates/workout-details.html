@@ -67,7 +67,7 @@
         </div>
 
         <input type="hidden" name="workoutId" id="workoutId" th:value="${workout.id}">
-        <section class="comments">
+        <div class="comments mt-4">
             <h1>Comments</h1>
             <div>
                 <!-- Comments submission -->
@@ -100,7 +100,7 @@
                 <span id="commentCtnr"><!-- Comments section, filled in by script --></span>
             </div>
             <!-- EO: All comments section -->
-        </section>
+        </div>
 
         <!--<form th:action="@{/workouts/schedule}" th:method="post">-->
     <!--    <input type="hidden" name="workoutId" th:value="${workout.id}" />-->
