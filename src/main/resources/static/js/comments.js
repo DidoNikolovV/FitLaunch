@@ -6,6 +6,7 @@ const csrfHeaderName = document.head.querySelector('[name=_csrf_header]').conten
 const csrfHeaderValue = document.head.querySelector('[name=_csrf]').content
 
 const commentContainer = document.getElementById('commentCtnr');
+const showCommentsBtn = document.getElementById('showComments');
 
 
 async function postComment(e) {
@@ -25,33 +26,27 @@ async function postComment(e) {
         })
     }).then(res => res.json())
         .then(data => {
-                document.getElementById('message').value = ""
-                commentContainer.innerHTML = commentAsHTML(data)
-            })
+            document.getElementById('message').value = ""
+            commentContainer.innerHTML += commentAsHTML(data)
+        })
 }
 
 function commentAsHTML(comment) {
     let commentHTML = '<div>\n'
     commentHTML += `<h4>${comment.authorName}</h4>\n`
-    commentHTML += `<p>${comment.content}</p>\n`
+    commentHTML += `<p>${comment.message}</p>\n`
     commentHTML += '</div>\n'
 
     return commentHTML;
 }
 
-function loadComments(e) {
-    e.preventDefault();
-
-    const messageVal = document.getElementById('message').value
-
-    fetch(`http://localhost:8080/api/${workoutId}/comments`, {
-        headers: {
-            "Accept": "application/json"
+fetch(`http://localhost:8080/api/${workoutId}/comments`, {
+    headers: {
+        "Accept": "application/json"
+    }
+}).then(res => res.json())
+    .then(data => {
+        for(let comment of data) {
+            commentContainer.innerHTML += commentAsHTML(comment)
         }
-    }).then(res => res.json())
-        .then(data => {
-            for(let comment of data) {
-                commentContainer.innerHTML += commentAsHTML(comment);
-            }
-        })
-}
+    })

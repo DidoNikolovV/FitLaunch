@@ -1,6 +1,6 @@
 package com.softuni.fitlaunch.model.dto.user;
 
-import com.softuni.fitlaunch.model.dto.comment.CommentDTO;
+import com.softuni.fitlaunch.model.dto.comment.CommentCreationDTO;
 import com.softuni.fitlaunch.model.entity.UserRoleEntity;
 
 import java.util.List;
@@ -18,12 +18,12 @@ public class UserDTO {
     private String membership;
 
 
-    private List<CommentDTO> comments;
+    private List<CommentCreationDTO> comments;
 
     public UserDTO() {
     }
 
-    public UserDTO(Long id, String username, String email, List<UserRoleEntity> roles, String membership, List<CommentDTO> comments) {
+    public UserDTO(Long id, String username, String email, List<UserRoleEntity> roles, String membership, List<CommentCreationDTO> comments) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -77,11 +77,11 @@ public class UserDTO {
         return this;
     }
 
-    public List<CommentDTO> getComments() {
+    public List<CommentCreationDTO> getComments() {
         return comments;
     }
 
-    public UserDTO setComments(List<CommentDTO> comments) {
+    public UserDTO setComments(List<CommentCreationDTO> comments) {
         this.comments = comments;
         return this;
     }

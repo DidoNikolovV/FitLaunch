@@ -36,6 +36,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/", "/users/login", "/users/register", "/users/login-error").permitAll()
                         .requestMatchers("/workouts/all", "/workouts/schedule").permitAll()
                         .requestMatchers(HttpMethod.GET, "/workout/**", "/comments/**").permitAll()
+                        .requestMatchers("/api/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/users/profile").hasAnyRole(UserRoleEnum.ADMIN.name(), UserRoleEnum.USER.name())
                         .requestMatchers("/users/all").hasRole(UserRoleEnum.ADMIN.name())

@@ -6,6 +6,9 @@ public class CommentView {
     private String authorName;
     private String message;
 
+    public CommentView() {
+    }
+
     public CommentView(Long id, String authorName, String message) {
         this.id = id;
         this.authorName = authorName;

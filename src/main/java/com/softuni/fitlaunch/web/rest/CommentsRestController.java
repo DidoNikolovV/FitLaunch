@@ -1,19 +1,18 @@
 package com.softuni.fitlaunch.web.rest;
 
 
-import com.softuni.fitlaunch.model.dto.comment.CommentDTO;
+import com.softuni.fitlaunch.model.dto.comment.CommentCreationDTO;
 import com.softuni.fitlaunch.model.dto.comment.CommentMessageDTO;
 import com.softuni.fitlaunch.model.dto.view.CommentView;
 import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.service.CommentService;
-import com.softuni.fitlaunch.service.CustomUserDetails;
 import com.softuni.fitlaunch.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 
 
@@ -31,24 +30,23 @@ public class CommentsRestController {
         this.userService = userService;
     }
 
-//    @GetMapping("/all")
-//    public ResponseEntity<List<CommentDTO>> geAllComments() {
-//        return ResponseEntity.ok(commentService.getAllComments());
-//    }
+    @GetMapping("/{workoutId}/comments")
+    public ResponseEntity<List<CommentView>> getCommentsByWorkoutId(@PathVariable("workoutId") Long workoutId) {
+        return ResponseEntity.ok(commentService.getAllCommentsForWorkout(workoutId));
+    }
 
     @PostMapping(value = "/{workoutId}/comments", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<CommentView> postComment(@PathVariable("workoutId") Long workoutId, @RequestBody CommentMessageDTO commentMessageDTO) {
+    public ResponseEntity<CommentView> postComment(@PathVariable("workoutId") Long workoutId,
+                                                   @RequestBody CommentMessageDTO commentMessageDTO,
+                                                   Principal principal) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity user = userService.getUserByUsername(principal.getName());
 
-        Long userId = ((CustomUserDetails) authentication.getPrincipal()).getId();
-        UserEntity user = userService.getUserById(userId);
-
-        CommentDTO commentDTO = new CommentDTO(
+        CommentCreationDTO commentDTO = new CommentCreationDTO(
                 user.getUsername(),
-                workoutId,
                 commentMessageDTO.getMessage()
         );
+
 
         CommentView comment = commentService.addComment(commentDTO);
 
@@ -57,13 +55,9 @@ public class CommentsRestController {
         ).body(comment);
     }
 
-    @GetMapping("/{workoutId}/comments")
-    public ResponseEntity<List<CommentDTO>> getCommentsByWorkoutId(@PathVariable("workoutId") Long workoutId) {
-        return ResponseEntity.ok(commentService.getAllCommentsForWorkout(workoutId));
-    }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CommentDTO> deleteCommentById(@PathVariable("id") Long id) {
+    public ResponseEntity<CommentCreationDTO> deleteCommentById(@PathVariable("id") Long id) {
 
         commentService.deleteCommentById(id);
 

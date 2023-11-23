@@ -37,13 +37,11 @@ public class WorkoutService {
     private final WorkoutExerciseRepository workoutExerciseRepository;
     private final ModelMapper modelMapper;
 
-    private final ImageCloudService imageCloudService;
 
-    public WorkoutService(WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, WorkoutExerciseRepository workoutExerciseRepository, ModelMapper modelMapper, ImageCloudService imageCloudService) {
+    public WorkoutService(WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, WorkoutExerciseRepository workoutExerciseRepository, ModelMapper modelMapper) {
         this.workoutRepository = workoutRepository;
         this.exerciseRepository = exerciseRepository;
         this.workoutExerciseRepository = workoutExerciseRepository;
-        this.imageCloudService = imageCloudService;
         this.modelMapper = modelMapper;
     }
 
