@@ -5,10 +5,12 @@ import com.softuni.fitlaunch.model.dto.workout.CreateWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
+import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.model.entity.WorkoutEntity;
 import com.softuni.fitlaunch.model.entity.WorkoutExerciseEntity;
 import com.softuni.fitlaunch.model.enums.LevelEnum;
 import com.softuni.fitlaunch.repository.ExerciseRepository;
+import com.softuni.fitlaunch.repository.UserRepository;
 import com.softuni.fitlaunch.repository.WorkoutExerciseRepository;
 import com.softuni.fitlaunch.repository.WorkoutRepository;
 import org.modelmapper.ModelMapper;
@@ -27,13 +29,15 @@ public class WorkoutService {
     private final WorkoutRepository workoutRepository;
     private final ExerciseRepository exerciseRepository;
     private final WorkoutExerciseRepository workoutExerciseRepository;
+    private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
 
-    public WorkoutService(WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, WorkoutExerciseRepository workoutExerciseRepository, ModelMapper modelMapper) {
+    public WorkoutService(WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, WorkoutExerciseRepository workoutExerciseRepository, UserRepository userRepository, ModelMapper modelMapper) {
         this.workoutRepository = workoutRepository;
         this.exerciseRepository = exerciseRepository;
         this.workoutExerciseRepository = workoutExerciseRepository;
+        this.userRepository = userRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -83,12 +87,27 @@ public class WorkoutService {
         );
     }
 
-    public void addLike(WorkoutDetailsDTO workoutDetailsDTO) {
+    public void addLike(WorkoutDetailsDTO workoutDetailsDTO, UserEntity user) {
         WorkoutEntity workout = workoutRepository.findById(workoutDetailsDTO.getId()).orElseThrow(() -> new RuntimeException("Workout not found"));
         Integer oldLikes = workout.getLikes();
         Integer newLikes = oldLikes + 1;
         workout.setLikes(newLikes);
         workoutDetailsDTO.setLikes(newLikes);
+        user.setHasLikedWorkout(true);
+        userRepository.save(user);
+        workoutRepository.save(workout);
+
+
+    }
+
+    public void unlike(WorkoutDetailsDTO workoutDetailsDTO, UserEntity user) {
+        WorkoutEntity workout = workoutRepository.findById(workoutDetailsDTO.getId()).orElseThrow(() -> new RuntimeException("Workout not found"));
+        Integer oldLikes = workout.getLikes();
+        Integer newLikes = oldLikes - 1;
+        workout.setLikes(newLikes);
+        workoutDetailsDTO.setLikes(newLikes);
+        user.setHasLikedWorkout(false);
+        userRepository.save(user);
         workoutRepository.save(workout);
 
     }

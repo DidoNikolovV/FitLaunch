@@ -20,16 +20,19 @@ public class UserDTO {
 
     private List<CommentCreationDTO> comments;
 
+    private boolean hasLikedWorkout;
+
     public UserDTO() {
     }
 
-    public UserDTO(Long id, String username, String email, List<UserRoleEntity> roles, String membership, List<CommentCreationDTO> comments) {
+    public UserDTO(Long id, String username, String email, List<UserRoleEntity> roles, String membership, List<CommentCreationDTO> comments, boolean hasLikedWorkout) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.roles = roles;
         this.membership = membership;
         this.comments = comments;
+        this.hasLikedWorkout = hasLikedWorkout;
     }
 
     public Long getId() {
@@ -83,6 +86,15 @@ public class UserDTO {
 
     public UserDTO setComments(List<CommentCreationDTO> comments) {
         this.comments = comments;
+        return this;
+    }
+
+    public boolean isHasLikedWorkout() {
+        return hasLikedWorkout;
+    }
+
+    public UserDTO setHasLikedWorkout(boolean hasLikedWorkout) {
+        this.hasLikedWorkout = hasLikedWorkout;
         return this;
     }
 }

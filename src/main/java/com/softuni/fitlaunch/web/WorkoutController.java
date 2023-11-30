@@ -5,9 +5,11 @@ import com.softuni.fitlaunch.model.dto.workout.CreateWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
 import com.softuni.fitlaunch.model.entity.ExerciseEntity;
+import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.model.entity.WorkoutEntity;
 import com.softuni.fitlaunch.model.entity.WorkoutExerciseEntity;
 import com.softuni.fitlaunch.service.*;
+import com.softuni.fitlaunch.service.exception.ObjectNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -128,14 +130,16 @@ public class WorkoutController {
 
 
     @GetMapping("/workouts/{id}")
-    public String details(@PathVariable("id") Long id, Model model) {
+    public String details(@PathVariable("id") Long id, Model model, Principal principal) {
 
-        WorkoutDetailsDTO workout = workoutService.getWorkoutDetails(id).orElse(null);
-//                .orElseThrow(() -> new ObjectNotFoundException("Workout with id " + id + " not found!" ));
+        UserEntity currentLoggedUser = userService.getUserByUsername(principal.getName());
+
+        WorkoutDetailsDTO workout = workoutService.getWorkoutDetails(id).orElseThrow(() -> new ObjectNotFoundException("Workout with id " + id + " not found!" ));;
         List<WorkoutExerciseEntity> allWorkoutExercises = workoutExerciseService.getAllWorkoutExercisesByWorkoutId(workout.getId());
 
         model.addAttribute("workout", workout);
         model.addAttribute("allWorkoutExercises", allWorkoutExercises);
+        model.addAttribute("currentLoggedUser", currentLoggedUser);
 
         return "workout-details";
     }
@@ -143,10 +147,15 @@ public class WorkoutController {
     @PostMapping("/workouts/{id}")
     public String details(@PathVariable("id") Long id,
                           @ModelAttribute WorkoutDetailsDTO workoutDetailsDTO,
-                          BindingResult bindingResult,
-                          RedirectAttributes rAtt) {
+                          Principal principal) {
 
-        workoutService.addLike(workoutDetailsDTO);
+        UserEntity currentLoggedUser = userService.getUserByUsername(principal.getName());
+
+        if(currentLoggedUser.hasLikedWorkout()) {
+            workoutService.unlike(workoutDetailsDTO, currentLoggedUser);
+        } else {
+            workoutService.addLike(workoutDetailsDTO, currentLoggedUser);
+        }
 
         return "redirect:/workouts/" + id;
     }

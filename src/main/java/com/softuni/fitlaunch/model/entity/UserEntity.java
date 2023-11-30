@@ -45,6 +45,9 @@ public class UserEntity extends BaseEntity {
     @OneToMany(mappedBy = "author")
     private List<CommentEntity> comments;
 
+    @Column(nullable = false)
+    private boolean hasLikedWorkout = false;
+
     @Override
     public Long getId() {
         return id;
@@ -126,6 +129,15 @@ public class UserEntity extends BaseEntity {
 
     public UserEntity setComments(List<CommentEntity> comments) {
         this.comments = comments;
+        return this;
+    }
+
+    public boolean hasLikedWorkout() {
+        return hasLikedWorkout;
+    }
+
+    public UserEntity setHasLikedWorkout(boolean hasLikedWorkout) {
+        this.hasLikedWorkout = hasLikedWorkout;
         return this;
     }
 }

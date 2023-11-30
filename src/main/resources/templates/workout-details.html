@@ -24,7 +24,12 @@
                         </div>
                         <form id="likesForm" method="POST" th:action="@{/workouts/{id}(id=*{id})}">
                             <button type="submit" class="btn btn-link">
-                                <i class="fas fa-thumbs-up fa-lg input-group-prepend" style="cursor: pointer"></i>
+                                <div th:if="${currentLoggedUser.hasLikedWorkout}">
+                                    <i class="fa-solid fa-thumbs-down"></i>
+                                </div>
+                                <div th:unless="${currentLoggedUser.hasLikedWorkout}">
+                                    <i class="fas fa-thumbs-up fa-lg input-group-prepend" style="cursor: pointer"></i>
+                                </div>
                             </button>
                         </form>
                         <ul class="list-group list-group-flush">
