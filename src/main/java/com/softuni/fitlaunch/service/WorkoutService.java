@@ -1,6 +1,7 @@
 package com.softuni.fitlaunch.service;
 
 
+import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.dto.workout.CreateWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
@@ -75,6 +76,8 @@ public class WorkoutService {
 
     private WorkoutDetailsDTO mapAsDetails(WorkoutEntity workoutEntity) {
         List<WorkoutExerciseEntity> exercises = workoutExerciseRepository.findByWorkoutId(workoutEntity.getId()).stream().toList();
+        List<UserDTO> usersLiked = workoutEntity.getUsersLiked().stream().map(userEntity -> modelMapper.map(userEntity, UserDTO.class)).toList();
+
 
         return new WorkoutDetailsDTO(
                 workoutEntity.getId(),
@@ -83,32 +86,27 @@ public class WorkoutService {
                 workoutEntity.getDescription(),
                 workoutEntity.getImgUrl(),
                 exercises,
-                workoutEntity.getLikes()
+                workoutEntity.getLikes(),
+                usersLiked
         );
     }
 
-    public void addLike(WorkoutDetailsDTO workoutDetailsDTO, UserEntity user) {
-        WorkoutEntity workout = workoutRepository.findById(workoutDetailsDTO.getId()).orElseThrow(() -> new RuntimeException("Workout not found"));
-        Integer oldLikes = workout.getLikes();
-        Integer newLikes = oldLikes + 1;
-        workout.setLikes(newLikes);
-        workoutDetailsDTO.setLikes(newLikes);
-        user.setHasLikedWorkout(true);
-        userRepository.save(user);
-        workoutRepository.save(workout);
+    public void like(String username, Long workoutId) {
+        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        WorkoutEntity workoutEntity = workoutRepository.findById(workoutId).orElseThrow(() -> new RuntimeException("Workout not found"));
 
+        workoutEntity.getUsersLiked().add(userEntity);
 
+        workoutRepository.save(workoutEntity);
     }
 
-    public void unlike(WorkoutDetailsDTO workoutDetailsDTO, UserEntity user) {
-        WorkoutEntity workout = workoutRepository.findById(workoutDetailsDTO.getId()).orElseThrow(() -> new RuntimeException("Workout not found"));
-        Integer oldLikes = workout.getLikes();
-        Integer newLikes = oldLikes - 1;
-        workout.setLikes(newLikes);
-        workoutDetailsDTO.setLikes(newLikes);
-        user.setHasLikedWorkout(false);
-        userRepository.save(user);
-        workoutRepository.save(workout);
+    public void dislike(String username, Long workoutId) {
+        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        WorkoutEntity workoutEntity = workoutRepository.findById(workoutId).orElseThrow(() -> new RuntimeException("Workout not found"));
+
+        workoutEntity.getUsersLiked().remove(userEntity);
+
+        workoutRepository.save(workoutEntity);
 
     }
 

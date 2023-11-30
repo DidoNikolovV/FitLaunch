@@ -20,14 +20,14 @@
                         <h5 class="card-title text-primary" th:text="*{name}"></h5>
                         <div class="mt-2">
                             <span class="font-weight-bold">Likes: </span>
-                            <span id="likesCount" th:text="*{likes}"></span>
+                            <span id="likesCount" th:text="*{usersLiked.size()}"></span>
                         </div>
                         <form id="likesForm" method="POST" th:action="@{/workouts/{id}(id=*{id})}">
                             <button type="submit" class="btn btn-link">
-                                <div th:if="${currentLoggedUser.hasLikedWorkout}">
+                                <div th:if="${hasLiked}">
                                     <i class="fa-solid fa-thumbs-down"></i>
                                 </div>
-                                <div th:unless="${currentLoggedUser.hasLikedWorkout}">
+                                <div th:unless="${hasLiked}">
                                     <i class="fas fa-thumbs-up fa-lg input-group-prepend" style="cursor: pointer"></i>
                                 </div>
                             </button>

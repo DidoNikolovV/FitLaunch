@@ -1,8 +1,10 @@
 package com.softuni.fitlaunch.web;
 
 
+import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.dto.workout.CreateWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
+import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
 import com.softuni.fitlaunch.model.entity.ExerciseEntity;
 import com.softuni.fitlaunch.model.entity.UserEntity;
@@ -10,6 +12,7 @@ import com.softuni.fitlaunch.model.entity.WorkoutEntity;
 import com.softuni.fitlaunch.model.entity.WorkoutExerciseEntity;
 import com.softuni.fitlaunch.service.*;
 import com.softuni.fitlaunch.service.exception.ObjectNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -36,14 +39,17 @@ public class WorkoutController {
 
     private final WorkoutExerciseService workoutExerciseService;
 
+    private final ModelMapper modelMapper;
+
     private final FileUpload fileUpload;
 
-    public WorkoutController(WorkoutService workoutService, ExerciseService exerciseService, UserService userService, WorkoutScheduleService workoutScheduleService, WorkoutExerciseService workoutExerciseService, FileUpload fileUpload) {
+    public WorkoutController(WorkoutService workoutService, ExerciseService exerciseService, UserService userService, WorkoutScheduleService workoutScheduleService, WorkoutExerciseService workoutExerciseService, ModelMapper modelMapper, FileUpload fileUpload) {
         this.workoutService = workoutService;
         this.exerciseService = exerciseService;
         this.userService = userService;
         this.workoutScheduleService = workoutScheduleService;
         this.workoutExerciseService = workoutExerciseService;
+        this.modelMapper = modelMapper;
         this.fileUpload = fileUpload;
     }
 
@@ -132,30 +138,50 @@ public class WorkoutController {
     @GetMapping("/workouts/{id}")
     public String details(@PathVariable("id") Long id, Model model, Principal principal) {
 
-        UserEntity currentLoggedUser = userService.getUserByUsername(principal.getName());
+        UserDTO currentLoggedUser = modelMapper.map(userService.getUserByUsername(principal.getName()), UserDTO.class);
 
         WorkoutDetailsDTO workout = workoutService.getWorkoutDetails(id).orElseThrow(() -> new ObjectNotFoundException("Workout with id " + id + " not found!" ));;
         List<WorkoutExerciseEntity> allWorkoutExercises = workoutExerciseService.getAllWorkoutExercisesByWorkoutId(workout.getId());
 
+        boolean hasLiked = false;
+
+        for (UserDTO userDTO : workout.getUsersLiked()) {
+            if(userDTO.getUsername().equals(principal.getName())) {
+                hasLiked = true;
+                break;
+            }
+        }
+
         model.addAttribute("workout", workout);
         model.addAttribute("allWorkoutExercises", allWorkoutExercises);
-        model.addAttribute("currentLoggedUser", currentLoggedUser);
+        model.addAttribute("hasLiked", hasLiked);
 
         return "workout-details";
     }
 
     @PostMapping("/workouts/{id}")
     public String details(@PathVariable("id") Long id,
-                          @ModelAttribute WorkoutDetailsDTO workoutDetailsDTO,
                           Principal principal) {
 
-        UserEntity currentLoggedUser = userService.getUserByUsername(principal.getName());
+        String currentUserUsername = principal.getName();
+        WorkoutDetailsDTO workoutDetails = workoutService.getWorkoutDetails(id).orElseThrow(() -> new RuntimeException("Workout not found"));
 
-        if(currentLoggedUser.hasLikedWorkout()) {
-            workoutService.unlike(workoutDetailsDTO, currentLoggedUser);
-        } else {
-            workoutService.addLike(workoutDetailsDTO, currentLoggedUser);
+        boolean hasLiked = false;
+
+        for (UserDTO userDTO : workoutDetails.getUsersLiked()) {
+            if(userDTO.getUsername().equals(currentUserUsername)) {
+                hasLiked = true;
+                break;
+            }
         }
+
+        if(hasLiked) {
+            workoutService.dislike(currentUserUsername, workoutDetails.getId());
+        } else {
+            workoutService.like(currentUserUsername, workoutDetails.getId());
+        }
+
+
 
         return "redirect:/workouts/" + id;
     }

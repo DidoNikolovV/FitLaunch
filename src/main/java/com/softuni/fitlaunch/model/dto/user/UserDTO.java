@@ -1,6 +1,7 @@
 package com.softuni.fitlaunch.model.dto.user;
 
 import com.softuni.fitlaunch.model.dto.comment.CommentCreationDTO;
+import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import com.softuni.fitlaunch.model.entity.UserRoleEntity;
 
 import java.util.List;
@@ -20,19 +21,19 @@ public class UserDTO {
 
     private List<CommentCreationDTO> comments;
 
-    private boolean hasLikedWorkout;
+    private List<WorkoutDTO> likedWorkouts;
 
     public UserDTO() {
     }
 
-    public UserDTO(Long id, String username, String email, List<UserRoleEntity> roles, String membership, List<CommentCreationDTO> comments, boolean hasLikedWorkout) {
+    public UserDTO(Long id, String username, String email, List<UserRoleEntity> roles, String membership, List<CommentCreationDTO> comments, List<WorkoutDTO> likedWorkouts) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.roles = roles;
         this.membership = membership;
         this.comments = comments;
-        this.hasLikedWorkout = hasLikedWorkout;
+        this.likedWorkouts = likedWorkouts;
     }
 
     public Long getId() {
@@ -89,12 +90,14 @@ public class UserDTO {
         return this;
     }
 
-    public boolean isHasLikedWorkout() {
-        return hasLikedWorkout;
+    public List<WorkoutDTO> getLikedWorkouts() {
+        return likedWorkouts;
     }
 
-    public UserDTO setHasLikedWorkout(boolean hasLikedWorkout) {
-        this.hasLikedWorkout = hasLikedWorkout;
+    public UserDTO setLikedWorkouts(List<WorkoutDTO> likedWorkouts) {
+        this.likedWorkouts = likedWorkouts;
         return this;
     }
+
+
 }

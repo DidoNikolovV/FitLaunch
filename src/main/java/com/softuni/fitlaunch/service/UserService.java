@@ -6,8 +6,10 @@ import com.softuni.fitlaunch.model.dto.user.UserRegisterDTO;
 import com.softuni.fitlaunch.model.dto.user.UserRoleDTO;
 import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.model.entity.UserRoleEntity;
+import com.softuni.fitlaunch.model.entity.WorkoutEntity;
 import com.softuni.fitlaunch.repository.RoleRepository;
 import com.softuni.fitlaunch.repository.UserRepository;
+import com.softuni.fitlaunch.repository.WorkoutRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,13 +26,15 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     
     private final RoleRepository roleRepository;
+    private final WorkoutRepository workoutRepository;
 
     private final ModelMapper modelMapper;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, ModelMapper modelMapper) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, WorkoutRepository workoutRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+        this.workoutRepository = workoutRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -108,6 +112,8 @@ public class UserService {
                 userRoleEntity.getRole()
         );
     }
+
+
 
 //    private static UserDTO mapAsUserDTO(UserEntity userEntity) {
 //        return new UserDTO(

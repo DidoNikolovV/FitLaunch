@@ -50,6 +50,14 @@ public class WorkoutEntity extends BaseEntity {
     @Column(nullable = false)
     private Integer likes = 0;
 
+
+    @ManyToMany
+    @JoinTable(
+            name = "workouts_likes",
+            joinColumns = @JoinColumn(name = "workout_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<UserEntity> usersLiked = new ArrayList<>();
+
     public String getImgUrl() {
         return imgUrl;
     }
@@ -137,6 +145,15 @@ public class WorkoutEntity extends BaseEntity {
 
     public WorkoutEntity setLikes(Integer likes) {
         this.likes = likes;
+        return this;
+    }
+
+    public List<UserEntity> getUsersLiked() {
+        return usersLiked;
+    }
+
+    public WorkoutEntity setUsersLiked(List<UserEntity> usersLiked) {
+        this.usersLiked = usersLiked;
         return this;
     }
 }

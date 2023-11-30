@@ -1,5 +1,6 @@
 package com.softuni.fitlaunch.model.dto.workout;
 
+import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.entity.WorkoutExerciseEntity;
 import com.softuni.fitlaunch.model.enums.LevelEnum;
 
@@ -21,8 +22,11 @@ public class WorkoutDetailsDTO {
 
     private Integer likes;
 
+    private List<UserDTO> usersLiked;
 
-    public WorkoutDetailsDTO(Long id, String name, LevelEnum level, String description, String imgUrl, List<WorkoutExerciseEntity> exercises, Integer likes) {
+
+
+    public WorkoutDetailsDTO(Long id, String name, LevelEnum level, String description, String imgUrl, List<WorkoutExerciseEntity> exercises, Integer likes, List<UserDTO> usersLiked) {
         this.id = id;
         this.name = name;
         this.level = level;
@@ -30,6 +34,7 @@ public class WorkoutDetailsDTO {
         this.imgUrl = imgUrl;
         this.exercises = exercises;
         this.likes = likes;
+        this.usersLiked = usersLiked;
     }
 
     public Long getId() {
@@ -92,6 +97,15 @@ public class WorkoutDetailsDTO {
 
     public WorkoutDetailsDTO setLikes(Integer likes) {
         this.likes = likes;
+        return this;
+    }
+
+    public List<UserDTO> getUsersLiked() {
+        return usersLiked;
+    }
+
+    public WorkoutDetailsDTO setUsersLiked(List<UserDTO> usersLiked) {
+        this.usersLiked = usersLiked;
         return this;
     }
 }
