@@ -37,4 +37,6 @@ public class WorkoutExerciseService {
         return workoutExerciseRepository.findByWorkoutId(id);
     }
 
+
+
 }

@@ -5,25 +5,17 @@ import com.softuni.fitlaunch.model.dto.workout.CreateWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
-import com.softuni.fitlaunch.model.entity.ExerciseEntity;
 import com.softuni.fitlaunch.model.entity.WorkoutEntity;
 import com.softuni.fitlaunch.model.entity.WorkoutExerciseEntity;
 import com.softuni.fitlaunch.model.enums.LevelEnum;
-import com.softuni.fitlaunch.repository.CommentRepository;
 import com.softuni.fitlaunch.repository.ExerciseRepository;
 import com.softuni.fitlaunch.repository.WorkoutExerciseRepository;
 import com.softuni.fitlaunch.repository.WorkoutRepository;
-import org.apache.tomcat.util.http.fileupload.FileUpload;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -47,25 +39,6 @@ public class WorkoutService {
 
     public Long createWorkout(WorkoutEntity workout, CreateWorkoutDTO createWorkoutDTO) {
 
-
-//        MultipartFile pictureFile = createWorkoutDTO.getImgUrl();
-//
-//        String picturePath = getPicturePath(pictureFile);
-//
-//
-//        try {
-//            File file = new File(BASE_IMAGES_PATH + picturePath);
-//            file.getParentFile().mkdirs();
-//            file.createNewFile();
-//
-//            OutputStream outputStream = new FileOutputStream(file);
-//            outputStream.write(pictureFile.getBytes());
-//
-//        } catch(IOException ex) {
-//            System.out.println(ex.getMessage());
-//        }
-
-//        workout.setImgUrl(picturePath);
         WorkoutEntity newWorkout = workoutRepository.save(workout);
         return newWorkout.getId();
 
@@ -76,10 +49,6 @@ public class WorkoutService {
                 .findAll(pageable)
                 .map(entity -> modelMapper.map(entity, WorkoutDTO.class));
     }
-
-//    public List<WorkoutDTO> getAllWorkouts() {
-//        return workoutRepository.findAll().stream().map(workoutEntity -> modelMapper.map(workoutEntity, WorkoutDTO.class)).toList();
-//    }
 
     public List<ExerciseDTO> getAllExercises() {
         return exerciseRepository.findAll()
@@ -100,14 +69,8 @@ public class WorkoutService {
     }
 
 
-
-
     private WorkoutDetailsDTO mapAsDetails(WorkoutEntity workoutEntity) {
-
-//        List<ExerciseDTO> exercises = workoutEntity.getExercises().stream().map(WorkoutService::mapAsExerciseDTO).toList();
         List<WorkoutExerciseEntity> exercises = workoutExerciseRepository.findByWorkoutId(workoutEntity.getId()).stream().toList();
-//        List<CommentDTO> comments = commentRepository.findByWorkoutId(workoutEntity.getId()).stream().map(commentEntity -> modelMapper.map(commentEntity, CommentDTO.class)).toList();
-
 
         return new WorkoutDetailsDTO(
                 workoutEntity.getId(),
@@ -115,69 +78,19 @@ public class WorkoutService {
                 workoutEntity.getLevel(),
                 workoutEntity.getDescription(),
                 workoutEntity.getImgUrl(),
-                exercises
+                exercises,
+                workoutEntity.getLikes()
         );
     }
 
-//    private WorkoutEntity map(CreateWorkoutDTO workoutDTO) {
-//
-//        List<ExerciseEntity> exercises = workoutDTO.getExercises().stream().map(WorkoutService::mapAsExerciseEntity).toList();
-//
-//        MultipartFile pictureFile = workoutDTO.getImgUrl();
-//
-//        String picturePath = getPicturePath(pictureFile);
-//
-//
-//        try {
-//            File file = new File(BASE_IMAGES_PATH + picturePath);
-//            file.getParentFile().mkdirs();
-//            file.createNewFile();
-//
-//            OutputStream outputStream = new FileOutputStream(file);
-//            outputStream.write(pictureFile.getBytes());
-//
-//        } catch(IOException ex) {
-//            System.out.println(ex.getMessage());
-//        }
-//
-//
-//        return new WorkoutEntity()
-//                .setName(workoutDTO.getName())
-//                .setLevel(workoutDTO.getLevel())
-//                .setDescription(workoutDTO.getDescription())
-//                .setImgUrl(picturePath)
-//                .setExercises(exercises);
-//
-//    }
+    public void addLike(WorkoutDetailsDTO workoutDetailsDTO) {
+        WorkoutEntity workout = workoutRepository.findById(workoutDetailsDTO.getId()).orElseThrow(() -> new RuntimeException("Workout not found"));
+        Integer oldLikes = workout.getLikes();
+        Integer newLikes = oldLikes + 1;
+        workout.setLikes(newLikes);
+        workoutDetailsDTO.setLikes(newLikes);
+        workoutRepository.save(workout);
 
-    private String getPicturePath(MultipartFile pictureFile) {
-
-
-        String[] splitPictureName = pictureFile.getOriginalFilename().split("\\.");
-        String ext = splitPictureName[splitPictureName.length - 1];
-        String imgPath = splitPictureName[0];
-        String pathPattern = "%s." + ext;
-
-
-        return String.format(pathPattern,
-                BASE_IMAGES_PATH + imgPath);
-    }
-
-
-    private static ExerciseDTO mapAsExerciseDTO(ExerciseEntity exerciseEntity) {
-        return new ExerciseDTO(
-                exerciseEntity.getId(),
-                exerciseEntity.getName(),
-                exerciseEntity.getSets(),
-                exerciseEntity.getSets(),
-                exerciseEntity.getVideoUrl()
-        );
-    }
-
-    private static ExerciseEntity mapAsExerciseEntity(ExerciseDTO exerciseDTO) {
-        return new ExerciseEntity()
-                .setId(exerciseDTO.getId())
-                .setName(exerciseDTO.getName());
     }
 
 }

@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class WorkoutController {
@@ -137,6 +138,17 @@ public class WorkoutController {
         model.addAttribute("allWorkoutExercises", allWorkoutExercises);
 
         return "workout-details";
+    }
+
+    @PostMapping("/workouts/{id}")
+    public String details(@PathVariable("id") Long id,
+                          @ModelAttribute WorkoutDetailsDTO workoutDetailsDTO,
+                          BindingResult bindingResult,
+                          RedirectAttributes rAtt) {
+
+        workoutService.addLike(workoutDetailsDTO);
+
+        return "redirect:/workouts/" + id;
     }
 
 }

@@ -20,11 +20,12 @@
                         <h5 class="card-title text-primary" th:text="*{name}"></h5>
                         <div class="mt-2">
                             <span class="font-weight-bold">Likes: </span>
-                            <span class="likesCount">0</span>
+                            <span id="likesCount" th:text="*{likes}"></span>
                         </div>
-                        <form th:method="POST" th:action="@{/workouts/likes}">
-                            <input type="submit" class="btn btn-link text-white"/>
-                            <i class="fa-solid fa-thumbs-up"></i>
+                        <form id="likesForm" method="POST" th:action="@{/workouts/{id}(id=*{id})}">
+                            <button type="submit" class="btn btn-link">
+                                <i class="fas fa-thumbs-up fa-lg input-group-prepend" style="cursor: pointer"></i>
+                            </button>
                         </form>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item text-white bg-dark">

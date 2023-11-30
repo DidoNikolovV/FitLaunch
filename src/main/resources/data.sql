@@ -14,12 +14,12 @@ VALUES
     (1, 2),
     (2, 2);
 
-INSERT INTO workouts(`id`, `description`, `img_url`, `level`, `name`)
+INSERT INTO workouts(`id`, `description`, `img_url`, `level`, `name`, `likes`, `author_id`)
 VALUES
-    (1, 'Start your fitness journey with our beginner workouts.', '/images/beginner.jpg', 'BEGINNER', 'Full Body'),
-    (2, 'Take your fitness to the next level with our intermediate workouts.', '/images/intermediate.jpg', 'INTERMEDIATE', 'Push'),
-    (3, 'Challenge yourself with our advanced workout programs.', '/images/advanced.jpg', 'ADVANCED', 'Pull'),
-    (4, 'Start your fitness journey with our beginner workouts.', '/images/beginner.jpg', 'BEGINNER', 'LEGS');
+    (1, 'Start your fitness journey with our beginner workouts.', '/images/beginner.jpg', 'BEGINNER', 'Full Body', 0, 2),
+    (2, 'Take your fitness to the next level with our intermediate workouts.', '/images/intermediate.jpg', 'INTERMEDIATE', 'Push', 0, 1),
+    (3, 'Challenge yourself with our advanced workout programs.', '/images/advanced.jpg', 'ADVANCED', 'Pull', 0, 1),
+    (4, 'Start your fitness journey with our beginner workouts.', '/images/beginner.jpg', 'BEGINNER', 'LEGS', 0, 1);
 
 INSERT INTO exercises(`id`, `name`, reps, sets, video_url)
 VALUES

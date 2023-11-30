@@ -19,14 +19,17 @@ public class WorkoutDetailsDTO {
 
     private List<WorkoutExerciseEntity> exercises;
 
+    private Integer likes;
 
-    public WorkoutDetailsDTO(Long id, String name, LevelEnum level, String description, String imgUrl, List<WorkoutExerciseEntity> exercises) {
+
+    public WorkoutDetailsDTO(Long id, String name, LevelEnum level, String description, String imgUrl, List<WorkoutExerciseEntity> exercises, Integer likes) {
         this.id = id;
         this.name = name;
         this.level = level;
         this.description = description;
         this.imgUrl = imgUrl;
         this.exercises = exercises;
+        this.likes = likes;
     }
 
     public Long getId() {
@@ -83,4 +86,12 @@ public class WorkoutDetailsDTO {
         return this;
     }
 
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public WorkoutDetailsDTO setLikes(Integer likes) {
+        this.likes = likes;
+        return this;
+    }
 }

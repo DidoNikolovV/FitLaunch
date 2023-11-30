@@ -39,6 +39,7 @@ public class CreateWorkoutDTO {
     private List<Integer> reps;
 
 
+
     public CreateWorkoutDTO() {
     }
 

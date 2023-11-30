@@ -47,6 +47,9 @@ public class WorkoutEntity extends BaseEntity {
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL)
     private List<CommentEntity> comments;
 
+    @Column(nullable = false)
+    private Integer likes = 0;
+
     public String getImgUrl() {
         return imgUrl;
     }
@@ -125,6 +128,15 @@ public class WorkoutEntity extends BaseEntity {
 
     public WorkoutEntity setAuthor(UserEntity author) {
         this.author = author;
+        return this;
+    }
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public WorkoutEntity setLikes(Integer likes) {
+        this.likes = likes;
         return this;
     }
 }
