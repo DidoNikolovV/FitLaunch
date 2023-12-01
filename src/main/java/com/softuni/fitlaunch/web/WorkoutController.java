@@ -144,6 +144,7 @@ public class WorkoutController {
         List<WorkoutExerciseEntity> allWorkoutExercises = workoutExerciseService.getAllWorkoutExercisesByWorkoutId(workout.getId());
 
         boolean hasLiked = false;
+        boolean hasStarted = workout.isHasStarted();
 
         for (UserDTO userDTO : workout.getUsersLiked()) {
             if(userDTO.getUsername().equals(principal.getName())) {
@@ -155,9 +156,11 @@ public class WorkoutController {
         model.addAttribute("workout", workout);
         model.addAttribute("allWorkoutExercises", allWorkoutExercises);
         model.addAttribute("hasLiked", hasLiked);
+        model.addAttribute("hasStarted", hasStarted);
 
         return "workout-details";
     }
+
 
     @PostMapping("/workouts/{id}")
     public String details(@PathVariable("id") Long id,
@@ -184,6 +187,30 @@ public class WorkoutController {
 
 
         return "redirect:/workouts/" + id;
+    }
+
+    @PostMapping("/workouts/start/{id}")
+    public String workoutStart(@PathVariable("id") Long id) {
+
+        workoutService.startWorkout(id);
+
+        return "redirect:/workouts/" + id;
+    }
+
+    @PostMapping("/workouts/complete/{id}")
+    public String workoutComplete(@PathVariable("id") Long id) {
+
+        WorkoutDetailsDTO workoutDetails = workoutService.getWorkoutDetails(id).orElseThrow(() -> new RuntimeException("Workout not found"));
+        workoutService.completeWorkout(workoutDetails.getId());
+
+        return "redirect:/workouts/" + id;
+    }
+
+    @PostMapping("/workouts/{workoutId}/complete/{exerciseId}")
+    public String exerciseComplete(@PathVariable("workoutId") Long workoutId, @PathVariable("exerciseId") Long exerciseId) {
+        workoutService.completeExercise(workoutId, exerciseId);
+
+        return "redirect:/workouts/" + workoutId;
     }
 
 }

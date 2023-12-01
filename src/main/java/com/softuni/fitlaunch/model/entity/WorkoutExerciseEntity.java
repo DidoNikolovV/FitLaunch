@@ -27,6 +27,9 @@ public class WorkoutExerciseEntity extends BaseEntity{
     @ManyToOne
     private DayEntity day;
 
+    @Column(nullable = false)
+    private boolean isCompleted;
+
     public WorkoutEntity getWorkout() {
         return workout;
     }
@@ -78,6 +81,15 @@ public class WorkoutExerciseEntity extends BaseEntity{
 
     public WorkoutExerciseEntity setDay(DayEntity day) {
         this.day = day;
+        return this;
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public WorkoutExerciseEntity setCompleted(boolean completed) {
+        isCompleted = completed;
         return this;
     }
 }

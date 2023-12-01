@@ -17,15 +17,28 @@
             <div class="col-md-6">
                 <div class="card mb-4">
                     <div class="card-body bg-dark">
-                        <h5 class="card-title text-primary" th:text="*{name}"></h5>
+                        <div class="d-flex justify-content-between align-items-start">
+                            <h5 class="card-title primary" th:text="*{name}"></h5>
+                            <div th:if="${hasStarted}">
+                                <form th:method="POST" th:action="@{/workouts/complete/{id}(id=*{id})}">
+                                    <input type="submit" name="completeWorkout" id="completeWorkout" class="btn btn-primary" value="Complete Workout">
+                                </form>
+                            </div>
+                            <div th:unless="${hasStarted}">
+                                <form th:method="POST" th:action="@{/workouts/start/{id}(id=*{id})}">
+                                    <input type="submit" name="startWorkout" id="startWorkout" class="btn btn-success" value="Start Workout">
+                                </form>
+                            </div>
+                        </div>
+
                         <div class="mt-2">
-                            <span class="font-weight-bold">Likes: </span>
-                            <span id="likesCount" th:text="*{usersLiked.size()}"></span>
+                            <span class="font-weight-bold text-primary">Likes: </span>
+                            <span id="likesCount"  class="text-primary" th:text="*{usersLiked.size()}"></span>
                         </div>
                         <form id="likesForm" method="POST" th:action="@{/workouts/{id}(id=*{id})}">
                             <button type="submit" class="btn btn-link">
                                 <div th:if="${hasLiked}">
-                                    <i class="fa-solid fa-thumbs-down"></i>
+                                    <i class="fa-solid fa-lg fa-thumbs-down"></i>
                                 </div>
                                 <div th:unless="${hasLiked}">
                                     <i class="fas fa-thumbs-up fa-lg input-group-prepend" style="cursor: pointer"></i>
@@ -49,7 +62,7 @@
 
         <div class="exercises card">
             <div class="card-body bg-dark">
-                <h5 class="card-title text-primary">Exercises</h5>
+                <h5 class="card-title primary">Exercises</h5>
                 <ul class="list-group">
                     <li th:each="exercise: ${allWorkoutExercises}" class="list-group-item primary bg-dark">
                         <div class="d-flex justify-content-between">
@@ -65,6 +78,20 @@
                             <div>
                                 <span class="font-weight-bold">Reps:</span>
                                 <span th:text="${exercise.reps}"></span>
+                                <!-- Add checkmark icon -->
+                            </div>
+                            <div th:if="${hasStarted}">
+                                <form id="exercisesForm" method="POST" th:action="@{/workouts/{id}/complete/{exerciseId}(id=*{workout.id}, exerciseId=*{exercise.id})}">
+                                    <input type="hidden" name="workoutId" th:value="${workout.id}" />
+                                    <button type="submit" class="btn btn-link" th:if="${exercise.isCompleted}">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                    </button>
+                                    <button type="submit" class="btn btn-link" th:unless="${exercise.isCompleted}">
+                                        <i class="fa-regular fa-circle-check"></i>
+                                    </button>
+                                </form>
+<!--                                    <i class="fa-solid fa-circle-check"></i>-->
+
                             </div>
                         </div>
                     </li>
@@ -72,8 +99,9 @@
             </div>
         </div>
 
+
         <input type="hidden" name="workoutId" id="workoutId" th:value="${workout.id}">
-        <div class="comments mt-4">
+        <div class="comments mt-4" th:unless="hasStarted">
             <h1>Comments</h1>
             <div>
                 <!-- Comments submission -->
@@ -116,10 +144,14 @@
     <!--    </div>-->
     <!--    <button type="submit" class="btn btn-primary">Schedule</button>-->
     <!--</form>-->
-        <div>
-            <footer th:replace="~{fragments/footer}"></footer>
-        </div>
-        <script th:src="@{/js/comments.js}"></script>
+
+
     </div>
+
+    <div>
+        <footer th:replace="~{fragments/footer}"></footer>
+    </div>
+
+    <script th:src="@{/js/comments.js}"></script>
 </body>
 </html>

@@ -6,6 +6,7 @@ import com.softuni.fitlaunch.model.dto.workout.CreateWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
+import com.softuni.fitlaunch.model.entity.ExerciseEntity;
 import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.model.entity.WorkoutEntity;
 import com.softuni.fitlaunch.model.entity.WorkoutExerciseEntity;
@@ -87,7 +88,9 @@ public class WorkoutService {
                 workoutEntity.getImgUrl(),
                 exercises,
                 workoutEntity.getLikes(),
-                usersLiked
+                usersLiked,
+                workoutEntity.hasStarted(),
+                workoutEntity.isCompleted()
         );
     }
 
@@ -107,7 +110,37 @@ public class WorkoutService {
         workoutEntity.getUsersLiked().remove(userEntity);
 
         workoutRepository.save(workoutEntity);
+    }
+
+    public void startWorkout(Long workoutId) {
+        WorkoutEntity workoutEntity = workoutRepository.findById(workoutId).orElseThrow(() -> new RuntimeException("Workout not found"));
+        workoutEntity.setHasStarted(true);
+        for (WorkoutExerciseEntity workoutExercise : workoutEntity.getWorkoutExercises()) {
+            workoutExercise.setCompleted(false);
+        }
+
+        workoutRepository.save(workoutEntity);
 
     }
 
+
+    public void completeWorkout(Long workoutId) {
+        WorkoutEntity workoutEntity = workoutRepository.findById(workoutId).orElseThrow(() -> new RuntimeException("Workout not found"));
+        workoutEntity.setCompleted(true);
+
+        workoutRepository.save(workoutEntity);
+
+    }
+
+    public void completeExercise(Long workoutId, Long exerciseId) {
+        List<WorkoutExerciseEntity> workoutExercises = workoutExerciseRepository.findByWorkoutId(workoutId);
+        for (WorkoutExerciseEntity workoutExercise : workoutExercises) {
+            if(workoutExercise.getId().equals(exerciseId)) {
+                workoutExercise.setCompleted(true);
+                workoutExerciseRepository.save(workoutExercise);
+                break;
+            }
+        }
+
+    }
 }

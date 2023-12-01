@@ -33,6 +33,8 @@ public class ExerciseEntity{
     private List<WorkoutExerciseEntity> workoutExercise = new ArrayList<>();
 
 
+
+
     public Long getId() {
         return id;
     }
@@ -86,4 +88,6 @@ public class ExerciseEntity{
         this.workoutExercise = workoutExercise;
         return this;
     }
+
+
 }

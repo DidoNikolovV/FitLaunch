@@ -58,6 +58,12 @@ public class WorkoutEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<UserEntity> usersLiked = new ArrayList<>();
 
+    @Column(nullable = false)
+    private boolean isCompleted;
+
+    @Column(nullable = false)
+    private boolean hasStarted;
+
     public String getImgUrl() {
         return imgUrl;
     }
@@ -154,6 +160,24 @@ public class WorkoutEntity extends BaseEntity {
 
     public WorkoutEntity setUsersLiked(List<UserEntity> usersLiked) {
         this.usersLiked = usersLiked;
+        return this;
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public WorkoutEntity setCompleted(boolean completed) {
+        isCompleted = completed;
+        return this;
+    }
+
+    public boolean hasStarted() {
+        return hasStarted;
+    }
+
+    public WorkoutEntity setHasStarted(boolean hasStarted) {
+        this.hasStarted = hasStarted;
         return this;
     }
 }
