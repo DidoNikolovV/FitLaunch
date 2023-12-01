@@ -1,9 +1,11 @@
 package com.softuni.fitlaunch.model.dto.workout;
 
 import com.softuni.fitlaunch.model.dto.user.UserDTO;
+import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.model.entity.WorkoutExerciseEntity;
 import com.softuni.fitlaunch.model.enums.LevelEnum;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WorkoutDetailsDTO {
@@ -24,13 +26,19 @@ public class WorkoutDetailsDTO {
 
     private List<UserDTO> usersLiked;
 
+    private List<UserDTO> workoutsCompleted;
+
+    private List<UserDTO> workoutsStarted;
+
     private boolean hasStarted;
 
     private boolean isCompleted;
 
 
 
-    public WorkoutDetailsDTO(Long id, String name, LevelEnum level, String description, String imgUrl, List<WorkoutExerciseEntity> exercises, Integer likes, List<UserDTO> usersLiked, boolean hasStarted, boolean isCompleted) {
+    public WorkoutDetailsDTO(Long id, String name, LevelEnum level, String description, String imgUrl, List<WorkoutExerciseEntity> exercises,
+                             Integer likes, List<UserDTO> usersLiked, boolean hasStarted, boolean isCompleted,
+                             List<UserDTO> workoutsCompleted, List<UserDTO> workoutsStarted) {
         this.id = id;
         this.name = name;
         this.level = level;
@@ -41,6 +49,8 @@ public class WorkoutDetailsDTO {
         this.usersLiked = usersLiked;
         this.hasStarted = hasStarted;
         this.isCompleted = isCompleted;
+        this.workoutsCompleted = workoutsCompleted;
+        this.workoutsStarted = workoutsStarted;
     }
 
     public Long getId() {
@@ -130,6 +140,24 @@ public class WorkoutDetailsDTO {
 
     public WorkoutDetailsDTO setCompleted(boolean completed) {
         isCompleted = completed;
+        return this;
+    }
+
+    public List<UserDTO> getWorkoutsCompleted() {
+        return workoutsCompleted;
+    }
+
+    public WorkoutDetailsDTO setWorkoutsCompleted(List<UserDTO> workoutsCompleted) {
+        this.workoutsCompleted = workoutsCompleted;
+        return this;
+    }
+
+    public List<UserDTO> getWorkoutsStarted() {
+        return workoutsStarted;
+    }
+
+    public WorkoutDetailsDTO setWorkoutsStarted(List<UserDTO> workoutsStarted) {
+        this.workoutsStarted = workoutsStarted;
         return this;
     }
 }

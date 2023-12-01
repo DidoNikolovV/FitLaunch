@@ -138,18 +138,32 @@ public class WorkoutController {
     @GetMapping("/workouts/{id}")
     public String details(@PathVariable("id") Long id, Model model, Principal principal) {
 
-        UserDTO currentLoggedUser = modelMapper.map(userService.getUserByUsername(principal.getName()), UserDTO.class);
+        UserEntity currentLoggedUser = userService.getUserByUsername(principal.getName());
 
         WorkoutDetailsDTO workout = workoutService.getWorkoutDetails(id).orElseThrow(() -> new ObjectNotFoundException("Workout with id " + id + " not found!" ));;
         List<WorkoutExerciseEntity> allWorkoutExercises = workoutExerciseService.getAllWorkoutExercisesByWorkoutId(workout.getId());
 
         boolean hasLiked = false;
-        boolean hasStarted = workout.isHasStarted();
-        boolean isCompleted = workout.isCompleted();
+        boolean isCompleted = false;
+        boolean hasStarted = false;
+
+        for (UserDTO userDTO : workout.getWorkoutsCompleted()) {
+            if(userDTO.getId().equals(currentLoggedUser.getId())) {
+                isCompleted = true;
+                break;
+            }
+        }
 
         for (UserDTO userDTO : workout.getUsersLiked()) {
             if(userDTO.getUsername().equals(principal.getName())) {
                 hasLiked = true;
+                break;
+            }
+        }
+
+        for (UserDTO userDTO : workout.getWorkoutsStarted()) {
+            if(userDTO.getId().equals(currentLoggedUser.getId())) {
+                hasStarted = true;
                 break;
             }
         }
@@ -192,9 +206,9 @@ public class WorkoutController {
     }
 
     @PostMapping("/workouts/start/{id}")
-    public String workoutStart(@PathVariable("id") Long id) {
+    public String workoutStart(@PathVariable("id") Long id, Principal principal) {
 
-        workoutService.startWorkout(id);
+        workoutService.startWorkout(id, principal.getName());
 
         return "redirect:/workouts/" + id;
     }

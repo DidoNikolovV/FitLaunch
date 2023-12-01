@@ -73,6 +73,8 @@ public class WorkoutService {
 
     private WorkoutDetailsDTO mapAsDetails(WorkoutEntity workoutEntity) {
         List<WorkoutExerciseEntity> exercises = workoutExerciseRepository.findByWorkoutId(workoutEntity.getId()).stream().toList();
+        List<UserDTO> usersCompleted = workoutEntity.getWorkoutsCompleted().stream().map(userEntity -> modelMapper.map(userEntity, UserDTO.class)).toList();
+        List<UserDTO> usersStarted = workoutEntity.getWorkoutsStarted().stream().map(userEntity -> modelMapper.map(userEntity, UserDTO.class)).toList();
         List<UserDTO> usersLiked = workoutEntity.getUsersLiked().stream().map(userEntity -> modelMapper.map(userEntity, UserDTO.class)).toList();
 
 
@@ -86,7 +88,9 @@ public class WorkoutService {
                 workoutEntity.getLikes(),
                 usersLiked,
                 workoutEntity.hasStarted(),
-                workoutEntity.isCompleted()
+                workoutEntity.isCompleted(),
+                usersCompleted,
+                usersStarted
         );
     }
 
@@ -108,9 +112,13 @@ public class WorkoutService {
         workoutRepository.save(workoutEntity);
     }
 
-    public void startWorkout(Long workoutId) {
+    public void startWorkout(Long workoutId, String username) {
         WorkoutEntity workoutEntity = workoutRepository.findById(workoutId).orElseThrow(() -> new RuntimeException("Workout not found"));
+        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+
         workoutEntity.setHasStarted(true);
+        workoutEntity.getWorkoutsStarted().add(userEntity);
+
         for (WorkoutExerciseEntity workoutExercise : workoutEntity.getWorkoutExercises()) {
             workoutExercise.setCompleted(false);
         }

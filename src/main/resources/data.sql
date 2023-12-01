@@ -34,31 +34,32 @@ VALUES
     (9, 'Deadlift', 5, 5, 'McCDaAsSeRc'),
     (10, 'Bench Press', 5, 5, 'EdDqD4aKwxM');
 
--- INSERT INTO workouts_exercises(`workout_id`, `exercise_id`)
--- VALUES
---     (1, 1),
---     (1, 2),
---     (1, 3),
---     (2, 1),
---     (2, 2),
---     (2, 5),
---     (3, 10),
---     (3, 9),
---     (3, 5),
---     (3, 10),
---     (3, 2),
---     (4, 3),
---     (4, 1),
---     (4, 4);
-
-INSERT INTO workout_exercises (reps, sets, exercise_id, workout_id)
+INSERT INTO workouts_exercises(`workout_id`, `exercise_id`)
 VALUES
-    (12, 3, 1, 1),
-    (10, 4, 2, 1),
-    (15, 3, 3, 2),
-    (8, 5, 1, 2),
-    (10, 3, 2, 3),
-    (12, 4, 3, 3);
+    (1, 1),
+    (1, 2),
+    (1, 3),
+    (2, 1),
+    (2, 2),
+    (2, 5),
+    (3, 10),
+    (3, 9),
+    (3, 5),
+    (3, 10),
+    (3, 2),
+    (4, 3),
+    (4, 1),
+    (4, 4);
+
+INSERT INTO workout_exercises (reps, sets, exercise_id, workout_id, is_completed)
+VALUES
+    (12, 3, 1, 1, 0),
+    (10, 4, 2, 1, 0),
+    (15, 3, 3, 2, 0),
+    (8, 5, 1, 2, 0),
+    (10, 3, 2, 3, 0),
+    (12, 4, 3, 3, 0),
+    (12, 4, 3, 3, 0);
 
 
 INSERT INTO programs (img_url, name)
@@ -79,11 +80,11 @@ VALUES
     (2), (2), (2), (2), (2), (2), (2),
     (3), (3), (3), (3), (3), (3), (3);
 
-INSERT INTO workout_exercises (day_id, exercise_id, sets, reps, workout_id) VALUES
-(1, 1, 3, 12, 1),
-(1, 2, 4, 10, 2),
-(2, 3, 3, 15, 4),
-(3, 4, 5, 5, 3);
+INSERT INTO workout_exercises (day_id, exercise_id, sets, reps, workout_id, is_completed) VALUES
+(1, 1, 3, 12, 1, 0),
+(1, 2, 4, 10, 2, 0),
+(2, 3, 3, 15, 4, 0),
+(3, 4, 5, 5, 3, 0);
 
 
 

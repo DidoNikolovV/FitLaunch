@@ -28,7 +28,7 @@ public class WorkoutExerciseEntity extends BaseEntity{
     private DayEntity day;
 
     @Column(nullable = false)
-    private boolean isCompleted;
+    private boolean isCompleted = false;
 
     public WorkoutEntity getWorkout() {
         return workout;

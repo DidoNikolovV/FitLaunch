@@ -46,7 +46,6 @@ public class UserEntity extends BaseEntity {
     private List<CommentEntity> comments;
 
 
-
     @Override
     public Long getId() {
         return id;
@@ -130,6 +129,7 @@ public class UserEntity extends BaseEntity {
         this.comments = comments;
         return this;
     }
+
 
 }
 

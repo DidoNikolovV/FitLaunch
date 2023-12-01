@@ -66,11 +66,19 @@ public class WorkoutEntity extends BaseEntity {
     private List<UserEntity> workoutsCompleted = new ArrayList<>();
 
 
-    @Column(nullable = false)
-    private boolean isCompleted;
+    @ManyToMany
+    @JoinTable(
+            name = "workouts_started",
+            joinColumns = @JoinColumn(name = "workout_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<UserEntity> workoutsStarted = new ArrayList<>();
+
 
     @Column(nullable = false)
-    private boolean hasStarted;
+    private boolean isCompleted = false;
+
+    @Column(nullable = false)
+    private boolean hasStarted = false;
 
     public String getImgUrl() {
         return imgUrl;
@@ -200,5 +208,14 @@ public class WorkoutEntity extends BaseEntity {
 
     public boolean isHasStarted() {
         return hasStarted;
+    }
+
+    public List<UserEntity> getWorkoutsStarted() {
+        return workoutsStarted;
+    }
+
+    public WorkoutEntity setWorkoutsStarted(List<UserEntity> workoutsStarted) {
+        this.workoutsStarted = workoutsStarted;
+        return this;
     }
 }

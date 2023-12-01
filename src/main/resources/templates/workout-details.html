@@ -21,10 +21,10 @@
                             <h5 class="card-title primary" th:text="*{name}"></h5>
                             <div th:if="${hasStarted}">
                                 <form th:method="POST" th:action="@{/workouts/complete/{id}(id=*{id})}">
-                                    <div th:unless="*{isCompleted}">
+                                    <div th:unless="${isCompleted}">
                                         <input type="submit" name="completeWorkout" id="completeWorkout" class="btn btn-primary" value="Complete Workout">
                                     </div>
-                                    <div th:if="*{isCompleted}">
+                                    <div th:if="${isCompleted}">
                                         <input type="submit" name="completedWorkout" id="completedWorkout" class="btn btn-success" value="Workout Completed">
                                     </div>
 
