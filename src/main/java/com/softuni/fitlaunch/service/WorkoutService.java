@@ -6,15 +6,11 @@ import com.softuni.fitlaunch.model.dto.workout.CreateWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
-import com.softuni.fitlaunch.model.entity.ExerciseEntity;
 import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.model.entity.WorkoutEntity;
 import com.softuni.fitlaunch.model.entity.WorkoutExerciseEntity;
 import com.softuni.fitlaunch.model.enums.LevelEnum;
-import com.softuni.fitlaunch.repository.ExerciseRepository;
-import com.softuni.fitlaunch.repository.UserRepository;
-import com.softuni.fitlaunch.repository.WorkoutExerciseRepository;
-import com.softuni.fitlaunch.repository.WorkoutRepository;
+import com.softuni.fitlaunch.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -124,12 +120,15 @@ public class WorkoutService {
     }
 
 
-    public void completeWorkout(Long workoutId) {
+    public void completeWorkout(Long workoutId, String username) {
         WorkoutEntity workoutEntity = workoutRepository.findById(workoutId).orElseThrow(() -> new RuntimeException("Workout not found"));
+        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+
         workoutEntity.setCompleted(true);
+        workoutEntity.getWorkoutsCompleted().add(userEntity);
+
 
         workoutRepository.save(workoutEntity);
-
     }
 
     public void completeExercise(Long workoutId, Long exerciseId) {

@@ -145,6 +145,7 @@ public class WorkoutController {
 
         boolean hasLiked = false;
         boolean hasStarted = workout.isHasStarted();
+        boolean isCompleted = workout.isCompleted();
 
         for (UserDTO userDTO : workout.getUsersLiked()) {
             if(userDTO.getUsername().equals(principal.getName())) {
@@ -157,6 +158,7 @@ public class WorkoutController {
         model.addAttribute("allWorkoutExercises", allWorkoutExercises);
         model.addAttribute("hasLiked", hasLiked);
         model.addAttribute("hasStarted", hasStarted);
+        model.addAttribute("isCompleted", isCompleted);
 
         return "workout-details";
     }
@@ -198,10 +200,12 @@ public class WorkoutController {
     }
 
     @PostMapping("/workouts/complete/{id}")
-    public String workoutComplete(@PathVariable("id") Long id) {
+    public String workoutComplete(@PathVariable("id") Long id, Principal principal) {
 
         WorkoutDetailsDTO workoutDetails = workoutService.getWorkoutDetails(id).orElseThrow(() -> new RuntimeException("Workout not found"));
-        workoutService.completeWorkout(workoutDetails.getId());
+        String currentUserUsername = principal.getName();
+
+        workoutService.completeWorkout(workoutDetails.getId(), currentUserUsername);
 
         return "redirect:/workouts/" + id;
     }

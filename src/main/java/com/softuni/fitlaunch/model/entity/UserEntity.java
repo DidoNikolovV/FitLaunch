@@ -131,7 +131,6 @@ public class UserEntity extends BaseEntity {
         return this;
     }
 
-
 }
 
 
