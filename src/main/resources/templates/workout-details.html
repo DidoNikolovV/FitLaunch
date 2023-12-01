@@ -1,163 +1,123 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="~{fragments/head}">
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 
 <body>
 
-<div>
-    <nav th:replace="~{fragments/navbar}"></nav>
-</div>
+<nav th:replace="~{fragments/navbar}"></nav>
 
-    <div class="container my-5">
-        <h2 class="text-center text-white">Details</h2>
-        <div th:object="${workout}" class="row">
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-body bg-dark">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <h5 class="card-title primary" th:text="*{name}"></h5>
-                            <div th:if="${hasStarted}">
-                                <form th:method="POST" th:action="@{/workouts/complete/{id}(id=*{id})}">
-                                    <div th:unless="${isCompleted}">
-                                        <input type="submit" name="completeWorkout" id="completeWorkout" class="btn btn-primary" value="Complete Workout">
-                                    </div>
-                                    <div th:if="${isCompleted}">
-                                        <input type="submit" name="completedWorkout" id="completedWorkout" class="btn btn-success" value="Workout Completed">
-                                    </div>
+<div class="container my-2">
+    <h2 class="text-center text-white mb-4">Workout Details</h2>
 
-                                </form>
-                            </div>
-                            <div th:unless="${hasStarted}">
-                                <form th:method="POST" th:action="@{/workouts/start/{id}(id=*{id})}">
-                                    <input type="submit" name="startWorkout" id="startWorkout" class="btn btn-success" value="Start Workout">
-                                </form>
-                            </div>
+    <div th:object="${workout}" class="card">
+        <div class="card-body bg-dark text-center">
+            <h5 class="card-title text-primary" th:text="*{name}"></h5>
+            <div class="d-flex justify-content-center align-items-center mt-3">
+                <div th:if="${hasStarted}">
+                    <form th:method="POST" th:action="@{/workouts/complete/{id}(id=*{id})}">
+                        <div th:unless="${isCompleted}">
+                            <input type="submit" name="completeWorkout" id="completeWorkout" class="btn btn-primary" value="Complete Workout">
                         </div>
-
-                        <div class="mt-2">
-                            <span class="font-weight-bold text-primary">Likes: </span>
-                            <span id="likesCount"  class="text-primary" th:text="*{usersLiked.size()}"></span>
+                        <div th:if="${isCompleted}">
+                            <button type="button" class="btn btn-success" disabled>Workout Completed</button>
                         </div>
-                        <form id="likesForm" method="POST" th:action="@{/workouts/{id}(id=*{id})}">
-                            <button type="submit" class="btn btn-link">
-                                <div th:if="${hasLiked}">
-                                    <i class="fa-solid fa-lg fa-thumbs-down"></i>
-                                </div>
-                                <div th:unless="${hasLiked}">
-                                    <i class="fas fa-thumbs-up fa-lg input-group-prepend" style="cursor: pointer"></i>
-                                </div>
-                            </button>
-                        </form>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item text-white bg-dark">
-                                <span class="font-weight-bold">Level:</span>
-                                <span th:text="${workout.level}">Beginner</span>
-                            </li>
-                            <li class="list-group-item text-white bg-dark">
-                                <span class="font-weight-bold">Description:</span>
-                                <span th:text="${workout.description}">This is a great workout for...</span>
-                            </li>
-                        </ul>
-                    </div>
+                    </form>
+                </div>
+                <div th:unless="${hasStarted}">
+                    <form th:method="POST" th:action="@{/workouts/start/{id}(id=*{id})}">
+                        <input type="submit" name="startWorkout" id="startWorkout" class="btn btn-success" value="Start Workout">
+                    </form>
                 </div>
             </div>
+
+            <div class="mt-2">
+                <span class="font-weight-bold text-primary">Likes: </span>
+                <span id="likesCount" class="text-primary" th:text="*{usersLiked.size()}"></span>
+            </div>
+
+            <form id="likesForm" method="POST" th:action="@{/workouts/{id}(id=*{id})}">
+                <button type="submit" class="btn btn-link">
+                    <div th:if="${hasLiked}">
+                        <i class="fa-solid fa-lg fa-thumbs-down text-primary"></i>
+                    </div>
+                    <div th:unless="${hasLiked}">
+                        <i class="fas fa-thumbs-up fa-lg text-primary" style="cursor: pointer"></i>
+                    </div>
+                </button>
+            </form>
+
+            <ul class="list-group list-group-flush mt-3text-white align-items-center">
+                <li class="list-group-item bg-dark text-white">
+                    <span class="font-weight-bold">Level:</span>
+                    <span th:text="${workout.level}">Beginner</span>
+                </li>
+                <li class="list-group-item bg-dark text-white">
+                    <span class="font-weight-bold">Description:</span>
+                    <span th:text="${workout.description}">This is a great workout for...</span>
+                </li>
+            </ul>
         </div>
+    </div>
 
-        <div class="exercises card">
-            <div class="card-body bg-dark">
-                <h5 class="card-title primary">Exercises</h5>
-                <ul class="list-group">
-                    <li th:each="exercise: ${allWorkoutExercises}" class="list-group-item primary bg-dark">
-                        <div class="d-flex justify-content-between">
-                            <span class="font-weight-bold" th:text="${exercise.getExercise().name}"></span>
-                            <div>
-                                <iframe th:src="'https://www.youtube.com/embed/' + ${exercise.getExercise().getVideoUrl()}"
-                                        height="100" width="180" frameborder="0" allowfullscreen></iframe>
-                            </div>
-                            <div>
-                                <span class="font-weight-bold">Sets:</span>
-                                <span th:text="${exercise.sets}"></span>
-                            </div>
-                            <div>
-                                <span class="font-weight-bold">Reps:</span>
-                                <span th:text="${exercise.reps}"></span>
-                                <!-- Add checkmark icon -->
-                            </div>
-                            <div th:if="${hasStarted}">
-                                <form id="exercisesForm" method="POST" th:action="@{/workouts/{id}/complete/{exerciseId}(id=*{workout.id}, exerciseId=*{exercise.id})}">
-                                    <input type="hidden" name="workoutId" th:value="${workout.id}" />
-                                    <button type="submit" class="btn btn-link" th:if="${exercise.isCompleted}">
-                                        <i class="fa-solid fa-circle-check"></i>
-                                    </button>
-                                    <button type="submit" class="btn btn-link" th:unless="${exercise.isCompleted}">
-                                        <i class="fa-regular fa-circle-check"></i>
-                                    </button>
-                                </form>
-<!--                                    <i class="fa-solid fa-circle-check"></i>-->
-
-                            </div>
+    <div class="card mt-4">
+        <div class="card-body bg-dark primary">
+            <h5 class="card-title primary">Exercises</h5>
+            <ul class="list-group list-group-flush">
+                <li th:each="exercise: ${allWorkoutExercises}" class="list-group-item bg-dark">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="font-weight-bold" th:text="${exercise.getExercise().name}"></h6>
+                            <span class="font-weight-bold">Sets:</span>
+                            <span th:text="${exercise.sets}"></span>
+                            <br>
+                            <span class="font-weight-bold">Reps:</span>
+                            <span th:text="${exercise.reps}"></span>
                         </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-
-        <input type="hidden" name="workoutId" id="workoutId" th:value="${workout.id}">
-        <div class="comments mt-4" th:unless="hasStarted">
-            <h1>Comments</h1>
-            <div>
-                <!-- Comments submission -->
-                <form id="commentForm" method="POST"
-                      action="/">
-                    <div class="form-group">
-                        <h4>Leave a comment</h4>
-                        <label for="message">Message</label>
-
-                        <textarea name="message"
-                                  id="message"
-                                  cols="30"
-                                  rows="5"
-                                  class="form-control"
-                                  style="background-color: white;"></textarea>
+                        <div>
+                            <iframe class="w-100" th:src="'https://www.youtube.com/embed/' + ${exercise.getExercise().getVideoUrl()}"
+                                    height="100" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-link" th:if="${exercise.isCompleted}">
+                                <i class="fa-solid fa-lg fa-circle-check text-success"></i>
+                            </button>
+                            <button type="button" class="btn btn-link" th:unless="${exercise.isCompleted}">
+                                <i class="fa-regular fa-lg fa-circle-check text-muted"></i>
+                            </button>
+                        </div>
                     </div>
-
-                    <div class="form-group">
-                        <input type="submit"
-                               class="btn"
-                               id="postComment"
-                               value="Post Comment"/>
-                    </div>
-                </form>
-                <!-- Comments submission -->
-            </div>
-
-            <!-- All comments section -->
-            <div>
-                <span id="commentCtnr"><!-- Comments section, filled in by script --></span>
-            </div>
-            <!-- EO: All comments section -->
+                </li>
+            </ul>
         </div>
-
-        <!--<form th:action="@{/workouts/schedule}" th:method="post">-->
-    <!--    <input type="hidden" name="workoutId" th:value="${workout.id}" />-->
-    <!--    <div class="form-group">-->
-    <!--        <label for="scheduleTime" class="text-white">Select Time:</label>-->
-    <!--        <input type="time" id="scheduleTime" name="scheduleTime" class="form-control" required />-->
-    <!--    </div>-->
-    <!--    <button type="submit" class="btn btn-primary">Schedule</button>-->
-    <!--</form>-->
-
-
     </div>
 
-    <div>
-        <footer th:replace="~{fragments/footer}"></footer>
-    </div>
 
-    <script th:src="@{/js/comments.js}"></script>
+    <div class="comments my-4 bg-dark text-white" th:unless="${hasStarted}">
+        <h1>Comments</h1>
+        <div>
+            <form id="commentForm" method="POST" action="/">
+                <div class="form-group">
+                    <h4>Leave a comment</h4>
+                    <label for="message">Message</label>
+                    <textarea name="message" id="message" cols="30" rows="5" class="form-control" style="background-color: white;"></textarea>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary" id="postComment" value="Post Comment"/>
+                </div>
+            </form>
+        </div>
+        <div>
+            <span id="commentCtnr"></span>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/footer}"></footer>
+
+<script th:src="@{/js/comments.js}"></script>
 </body>
 </html>
