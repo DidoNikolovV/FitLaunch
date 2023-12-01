@@ -1,33 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">>
+<html xmlns:th="http://www.thymeleaf.org">
    <head th:replace="~{fragments/head}">
-
    </head>
     <body>
+    <nav th:replace="~{fragments/navbar}"></nav>
 
-    <div>
-        <nav th:replace="~{fragments/navbar}"></nav>
-    </div>
-
-    <!-- Hero Section -->
     <section class="hero">
         <h1>Welcome to Fit Launch</h1>
         <p>Your journey to a healthier YOU begins here.</p>
-<!--        <a th:href="@{/classes}" class="btn">View Classes</a>-->
     </section>
-
-    <!-- Fitness Classes Section -->
-<!--    <section class="classes">-->
-<!--        <h2>Our Classes</h2>-->
-<!--        <div class="class-card" th:each="class : ${classes}">-->
-<!--            <img th:src="@{${class.image}}" alt="Class Image" />-->
-<!--            <h3 th:text="${class.name}">Class Name</h3>-->
-<!--            <p th:text="${class.description}">Class description goes here.</p>-->
-<!--        </div>-->
-<!--    </section>-->
-
-    <!-- Footer Section -->
 
     <footer th:replace="~{fragments/footer}"></footer>
     </body>
