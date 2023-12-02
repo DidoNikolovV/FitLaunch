@@ -58,21 +58,6 @@ public class WorkoutEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<UserEntity> usersLiked = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "workouts_completed",
-            joinColumns = @JoinColumn(name = "workout_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<UserEntity> workoutsCompleted = new ArrayList<>();
-
-
-    @ManyToMany
-    @JoinTable(
-            name = "workouts_started",
-            joinColumns = @JoinColumn(name = "workout_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<UserEntity> workoutsStarted = new ArrayList<>();
-
 
     @Column(nullable = false)
     private boolean isCompleted = false;
@@ -197,25 +182,8 @@ public class WorkoutEntity extends BaseEntity {
         return this;
     }
 
-    public List<UserEntity> getWorkoutsCompleted() {
-        return workoutsCompleted;
-    }
-
-    public WorkoutEntity setWorkoutsCompleted(List<UserEntity> workoutsCompleted) {
-        this.workoutsCompleted = workoutsCompleted;
-        return this;
-    }
-
     public boolean isHasStarted() {
         return hasStarted;
     }
 
-    public List<UserEntity> getWorkoutsStarted() {
-        return workoutsStarted;
-    }
-
-    public WorkoutEntity setWorkoutsStarted(List<UserEntity> workoutsStarted) {
-        this.workoutsStarted = workoutsStarted;
-        return this;
-    }
 }

@@ -26,9 +26,7 @@ public class WorkoutDetailsDTO {
 
     private List<UserDTO> usersLiked;
 
-    private List<UserDTO> workoutsCompleted;
 
-    private List<UserDTO> workoutsStarted;
 
     private boolean hasStarted;
 
@@ -37,8 +35,7 @@ public class WorkoutDetailsDTO {
 
 
     public WorkoutDetailsDTO(Long id, String name, LevelEnum level, String description, String imgUrl, List<WorkoutExerciseEntity> exercises,
-                             Integer likes, List<UserDTO> usersLiked, boolean hasStarted, boolean isCompleted,
-                             List<UserDTO> workoutsCompleted, List<UserDTO> workoutsStarted) {
+                             Integer likes, List<UserDTO> usersLiked, boolean hasStarted, boolean isCompleted) {
         this.id = id;
         this.name = name;
         this.level = level;
@@ -49,8 +46,6 @@ public class WorkoutDetailsDTO {
         this.usersLiked = usersLiked;
         this.hasStarted = hasStarted;
         this.isCompleted = isCompleted;
-        this.workoutsCompleted = workoutsCompleted;
-        this.workoutsStarted = workoutsStarted;
     }
 
     public Long getId() {
@@ -143,21 +138,4 @@ public class WorkoutDetailsDTO {
         return this;
     }
 
-    public List<UserDTO> getWorkoutsCompleted() {
-        return workoutsCompleted;
-    }
-
-    public WorkoutDetailsDTO setWorkoutsCompleted(List<UserDTO> workoutsCompleted) {
-        this.workoutsCompleted = workoutsCompleted;
-        return this;
-    }
-
-    public List<UserDTO> getWorkoutsStarted() {
-        return workoutsStarted;
-    }
-
-    public WorkoutDetailsDTO setWorkoutsStarted(List<UserDTO> workoutsStarted) {
-        this.workoutsStarted = workoutsStarted;
-        return this;
-    }
 }

@@ -23,10 +23,15 @@ public class UserDTO {
 
     private List<WorkoutDTO> likedWorkouts;
 
+    private List<WorkoutDTO> workoutsCompleted;
+
+    private List<WorkoutDTO> workoutStarted;
+
     public UserDTO() {
     }
 
-    public UserDTO(Long id, String username, String email, List<UserRoleEntity> roles, String membership, List<CommentCreationDTO> comments, List<WorkoutDTO> likedWorkouts) {
+    public UserDTO(Long id, String username, String email, List<UserRoleEntity> roles, String membership,
+                   List<CommentCreationDTO> comments, List<WorkoutDTO> likedWorkouts, List<WorkoutDTO> workoutsCompleted, List<WorkoutDTO> workoutStarted) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -34,6 +39,8 @@ public class UserDTO {
         this.membership = membership;
         this.comments = comments;
         this.likedWorkouts = likedWorkouts;
+        this.workoutsCompleted = workoutsCompleted;
+        this.workoutStarted = workoutStarted;
     }
 
     public Long getId() {
@@ -99,5 +106,21 @@ public class UserDTO {
         return this;
     }
 
+    public List<WorkoutDTO> getWorkoutsCompleted() {
+        return workoutsCompleted;
+    }
 
+    public UserDTO setWorkoutsCompleted(List<WorkoutDTO> workoutsCompleted) {
+        this.workoutsCompleted = workoutsCompleted;
+        return this;
+    }
+
+    public List<WorkoutDTO> getWorkoutStarted() {
+        return workoutStarted;
+    }
+
+    public UserDTO setWorkoutStarted(List<WorkoutDTO> workoutStarted) {
+        this.workoutStarted = workoutStarted;
+        return this;
+    }
 }

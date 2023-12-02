@@ -73,8 +73,6 @@ public class WorkoutService {
 
     private WorkoutDetailsDTO mapAsDetails(WorkoutEntity workoutEntity) {
         List<WorkoutExerciseEntity> exercises = workoutExerciseRepository.findByWorkoutId(workoutEntity.getId()).stream().toList();
-        List<UserDTO> usersCompleted = workoutEntity.getWorkoutsCompleted().stream().map(userEntity -> modelMapper.map(userEntity, UserDTO.class)).toList();
-        List<UserDTO> usersStarted = workoutEntity.getWorkoutsStarted().stream().map(userEntity -> modelMapper.map(userEntity, UserDTO.class)).toList();
         List<UserDTO> usersLiked = workoutEntity.getUsersLiked().stream().map(userEntity -> modelMapper.map(userEntity, UserDTO.class)).toList();
 
 
@@ -88,9 +86,7 @@ public class WorkoutService {
                 workoutEntity.getLikes(),
                 usersLiked,
                 workoutEntity.hasStarted(),
-                workoutEntity.isCompleted(),
-                usersCompleted,
-                usersStarted
+                workoutEntity.isCompleted()
         );
     }
 
@@ -117,11 +113,7 @@ public class WorkoutService {
         UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
 
         workoutEntity.setHasStarted(true);
-        workoutEntity.getWorkoutsStarted().add(userEntity);
-
-        for (WorkoutExerciseEntity workoutExercise : workoutEntity.getWorkoutExercises()) {
-            workoutExercise.setCompleted(false);
-        }
+        userEntity.getWorkoutsStarted().add(workoutEntity);
 
         workoutRepository.save(workoutEntity);
 
@@ -133,7 +125,8 @@ public class WorkoutService {
         UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
 
         workoutEntity.setCompleted(true);
-        workoutEntity.getWorkoutsCompleted().add(userEntity);
+        userEntity.getWorkoutsCompleted().add(workoutEntity);
+//        workoutEntity.getWorkoutsCompleted().add(userEntity);
 
 
         workoutRepository.save(workoutEntity);

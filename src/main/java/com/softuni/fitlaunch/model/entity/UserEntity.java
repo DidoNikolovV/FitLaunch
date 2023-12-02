@@ -45,6 +45,21 @@ public class UserEntity extends BaseEntity {
     @OneToMany(mappedBy = "author")
     private List<CommentEntity> comments;
 
+    @ManyToMany
+    @JoinTable(
+            name = "workouts_completed",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "workout_id"))
+    private List<WorkoutEntity> workoutsCompleted = new ArrayList<>();
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "workouts_started",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "workout_id"))
+    private List<WorkoutEntity> workoutsStarted = new ArrayList<>();
+
 
     @Override
     public Long getId() {
@@ -130,7 +145,23 @@ public class UserEntity extends BaseEntity {
         return this;
     }
 
+    public List<WorkoutEntity> getWorkoutsCompleted() {
+        return workoutsCompleted;
+    }
 
+    public UserEntity setWorkoutsCompleted(List<WorkoutEntity> workoutsCompleted) {
+        this.workoutsCompleted = workoutsCompleted;
+        return this;
+    }
+
+    public List<WorkoutEntity> getWorkoutsStarted() {
+        return workoutsStarted;
+    }
+
+    public UserEntity setWorkoutsStarted(List<WorkoutEntity> workoutsStarted) {
+        this.workoutsStarted = workoutsStarted;
+        return this;
+    }
 }
 
 

@@ -81,19 +81,24 @@
                             <iframe class="w-100" th:src="'https://www.youtube.com/embed/' + ${exercise.getExercise().getVideoUrl()}"
                                     height="100" frameborder="0" allowfullscreen></iframe>
                         </div>
-                        <div>
-                            <button type="button" class="btn btn-link" th:if="${exercise.isCompleted}">
-                                <i class="fa-solid fa-lg fa-circle-check text-success"></i>
-                            </button>
-                            <button type="button" class="btn btn-link" th:unless="${exercise.isCompleted}">
-                                <i class="fa-regular fa-lg fa-circle-check text-muted"></i>
-                            </button>
+                        <div th:if="*{hasStarted}">
+                            <form th:method="POST" th:action="@{/workouts/{workoutId}/complete/{exerciseId}(workoutId=${workout.id}, exerciseId=${exercise.getId()})}">
+                                <button type="submit" class="btn btn-link" th:if="${exercise.isCompleted()}">
+                                    <i class="fa-solid fa-lg fa-circle-check text-success"></i>
+                                </button>
+                                <button type="submit" class="btn btn-link" th:unless="${exercise.isCompleted()}">
+                                    <i class="fa-regular fa-lg fa-circle-check text-muted"></i>
+                                </button>
+                            </form>
                         </div>
+
+
                     </div>
                 </li>
             </ul>
         </div>
     </div>
+
 
 
     <div class="comments my-4 bg-dark text-white" th:unless="${hasStarted}">

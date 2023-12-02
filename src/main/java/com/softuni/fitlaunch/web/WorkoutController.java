@@ -147,12 +147,22 @@ public class WorkoutController {
         boolean isCompleted = false;
         boolean hasStarted = false;
 
-        for (UserDTO userDTO : workout.getWorkoutsCompleted()) {
-            if(userDTO.getId().equals(currentLoggedUser.getId())) {
+
+        for (WorkoutEntity workoutEntity : currentLoggedUser.getWorkoutsStarted()) {
+            if(workoutEntity.getId().equals(workout.getId())) {
+                hasStarted = true;
+                break;
+            }
+        }
+
+        for (WorkoutEntity workoutEntity : currentLoggedUser.getWorkoutsCompleted()) {
+            if(workoutEntity.getId().equals(workout.getId())) {
                 isCompleted = true;
                 break;
             }
         }
+
+
 
         for (UserDTO userDTO : workout.getUsersLiked()) {
             if(userDTO.getUsername().equals(principal.getName())) {
@@ -161,12 +171,7 @@ public class WorkoutController {
             }
         }
 
-        for (UserDTO userDTO : workout.getWorkoutsStarted()) {
-            if(userDTO.getId().equals(currentLoggedUser.getId())) {
-                hasStarted = true;
-                break;
-            }
-        }
+
 
         model.addAttribute("workout", workout);
         model.addAttribute("allWorkoutExercises", allWorkoutExercises);
