@@ -40,9 +40,4 @@ public class WorkoutsController {
         return "workouts";
     }
 
-    @GetMapping("/scheduled")
-    public String scheduledWorkouts(Model model) {
-
-        return "workout-start";
-    }
 }

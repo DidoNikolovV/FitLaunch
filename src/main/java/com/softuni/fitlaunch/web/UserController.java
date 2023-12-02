@@ -2,12 +2,15 @@ package com.softuni.fitlaunch.web;
 
 import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.dto.user.UserRegisterDTO;
+import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
+import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
 import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.model.entity.UserRoleEntity;
 import com.softuni.fitlaunch.model.enums.UserRoleEnum;
 import com.softuni.fitlaunch.service.CustomUserDetails;
 import com.softuni.fitlaunch.service.UserService;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -17,14 +20,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.security.Principal;
 
 @Controller
 public class UserController {
 
     private final UserService userService;
+    private final ModelMapper modelMapper;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ModelMapper modelMapper) {
         this.userService = userService;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping("/users/login")
@@ -99,6 +105,19 @@ public class UserController {
         userService.changeUserRole(userId, newRole);
 
         return "redirect:/users/all";
+    }
+
+    @GetMapping("/workouts/history")
+    public String workoutHistory(Model model, Principal principal) {
+
+
+        List<WorkoutDTO> workoutsCompleted = userService.getCompletedWorkouts(principal.getName());
+
+
+
+        model.addAttribute("workoutsCompleted", workoutsCompleted);
+
+        return "workout-history";
     }
 
     @GetMapping("/upgrade")

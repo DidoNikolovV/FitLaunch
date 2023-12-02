@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head}">
+</head>
+<body>
+  <nav th:replace="~{fragments/navbar}"></nav>
+
+  <div class="container">
+    <h1 class="text-center mt-5 mb-4">Workout History</h1>
+
+    <div th:each="completedWorkout: ${workoutsCompleted}">
+      <table class="table bg-dark text-white">
+        <thead class="bg-info text-white">
+        <tr>
+          <th>Date</th>
+          <th>Exercise</th>
+          <th>Sets</th>
+          <th>Reps</th>
+          <th>Notes</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="exercise: ${completedWorkout.exercises}">
+          <td>2023-12-01</td>
+          <td th:text="${exercise.name}">Push-ups</td>
+          <td th:text="${exercise.sets}">3</td>
+          <td th:text="${exercise.reps}">15</td>
+          <td>Feeling strong today!</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <footer th:replace="~{fragments/footer}"></footer>
+
+</body>
+</html>

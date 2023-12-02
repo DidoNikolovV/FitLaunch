@@ -193,6 +193,10 @@ nav .left {
     color: #ff9900;
 }
 
+.bg-custom-primary {
+    color: #ff9900;
+}
+
 
 body {
     display: flex;

@@ -2,6 +2,7 @@ package com.softuni.fitlaunch.model.dto.user;
 
 import com.softuni.fitlaunch.model.dto.comment.CommentCreationDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
+import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
 import com.softuni.fitlaunch.model.entity.UserRoleEntity;
 
 import java.util.List;

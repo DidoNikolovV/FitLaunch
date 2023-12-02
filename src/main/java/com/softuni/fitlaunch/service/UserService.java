@@ -4,6 +4,7 @@ package com.softuni.fitlaunch.service;
 import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.dto.user.UserRegisterDTO;
 import com.softuni.fitlaunch.model.dto.user.UserRoleDTO;
+import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.model.entity.UserRoleEntity;
 import com.softuni.fitlaunch.model.entity.WorkoutEntity;
@@ -95,6 +96,14 @@ public class UserService {
         }
     }
 
+    public List<WorkoutDTO> getCompletedWorkouts(String username) {
+        UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        List<WorkoutDTO> completedWorkouts = user.getWorkoutsCompleted().stream().map(workoutEntity -> modelMapper.map(workoutEntity, WorkoutDTO.class)).toList();
+
+
+        return completedWorkouts;
+    }
+
     public UserRoleDTO getUserRole(UserDTO userDTO) {
         Optional<UserEntity> optUser =
                 userRepository.findByUsername(userDTO.getEmail());
@@ -112,16 +121,5 @@ public class UserService {
                 userRoleEntity.getRole()
         );
     }
-
-
-
-//    private static UserDTO mapAsUserDTO(UserEntity userEntity) {
-//        return new UserDTO(
-//                    userEntity.getId(),
-//                    userEntity.getUsername(),
-//                    userEntity.getEmail(),
-//                    userEntity.getRoles()
-//                    );
-//    }
 
 }

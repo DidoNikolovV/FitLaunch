@@ -23,16 +23,19 @@ public class WorkoutDTO {
 
     private List<ExerciseDTO> exercises;
 
+    private boolean isCompleted = false;
+
     public WorkoutDTO() {
         this.exercises = new ArrayList<>();
     }
 
-    public WorkoutDTO(Long id, String name, String imgUrl, LevelEnum level, String description) {
+    public WorkoutDTO(Long id, String name, String imgUrl, LevelEnum level, String description, boolean isCompleted) {
         this.id = id;
         this.name = name;
         this.imgUrl = imgUrl;
         this.level = level;
         this.description = description;
+        this.isCompleted = isCompleted;
     }
 
     public Long getId() {
@@ -98,4 +101,12 @@ public class WorkoutDTO {
         return this;
     }
 
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public WorkoutDTO setCompleted(boolean completed) {
+        isCompleted = completed;
+        return this;
+    }
 }

@@ -124,10 +124,13 @@ public class WorkoutService {
         WorkoutEntity workoutEntity = workoutRepository.findById(workoutId).orElseThrow(() -> new RuntimeException("Workout not found"));
         UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
 
-        workoutEntity.setCompleted(true);
-        userEntity.getWorkoutsCompleted().add(workoutEntity);
-//        workoutEntity.getWorkoutsCompleted().add(userEntity);
+        UserDTO userDTO = modelMapper.map(userEntity, UserDTO.class);
+        WorkoutDTO workoutDTO = modelMapper.map(workoutEntity, WorkoutDTO.class);
 
+        workoutDTO.setCompleted(true);
+        userEntity.getWorkoutsCompleted().add(workoutEntity);
+
+        userDTO.getWorkoutsCompleted().add(workoutDTO);
 
         workoutRepository.save(workoutEntity);
     }
