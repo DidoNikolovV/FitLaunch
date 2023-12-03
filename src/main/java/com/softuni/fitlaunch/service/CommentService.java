@@ -6,14 +6,12 @@ import com.softuni.fitlaunch.model.entity.CommentEntity;
 import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.model.entity.WorkoutEntity;
 import com.softuni.fitlaunch.repository.CommentRepository;
-import com.softuni.fitlaunch.repository.UserRepository;
 import com.softuni.fitlaunch.repository.WorkoutRepository;
 import com.softuni.fitlaunch.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

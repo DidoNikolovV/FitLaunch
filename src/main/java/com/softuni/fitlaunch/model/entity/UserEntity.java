@@ -1,8 +1,8 @@
 package com.softuni.fitlaunch.model.entity;
 
+import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +36,6 @@ public class UserEntity extends BaseEntity {
     private String password;
 
 
-    @OneToMany(mappedBy = "user")
-    private List<WorkoutScheduleEntity> schedules;
 
     @Column(nullable = false)
     private String membership;
@@ -59,6 +57,7 @@ public class UserEntity extends BaseEntity {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "workout_id"))
     private List<WorkoutEntity> workoutsStarted = new ArrayList<>();
+
 
 
     @Override
@@ -118,14 +117,6 @@ public class UserEntity extends BaseEntity {
         return this;
     }
 
-    public List<WorkoutScheduleEntity> getSchedules() {
-        return schedules;
-    }
-
-    public UserEntity setSchedules(List<WorkoutScheduleEntity> schedules) {
-        this.schedules = schedules;
-        return this;
-    }
 
     public String getMembership() {
         return membership;

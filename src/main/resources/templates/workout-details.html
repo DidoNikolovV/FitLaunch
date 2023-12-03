@@ -36,7 +36,7 @@
 
             <div class="mt-2">
                 <span class="font-weight-bold text-primary">Likes: </span>
-                <span id="likesCount" class="text-primary" th:text="*{usersLiked.size()}"></span>
+                <span id="likesCount" class="text-primary" th:text="${workout.usersLiked.size()}"></span>
             </div>
 
             <form id="likesForm" method="POST" th:action="@{/workouts/{id}(id=*{id})}">

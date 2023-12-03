@@ -4,7 +4,6 @@ package com.softuni.fitlaunch.web;
 import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.dto.workout.CreateWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
-import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
 import com.softuni.fitlaunch.model.entity.ExerciseEntity;
 import com.softuni.fitlaunch.model.entity.UserEntity;
@@ -23,8 +22,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class WorkoutController {
@@ -35,7 +35,6 @@ public class WorkoutController {
 
     private final UserService userService;
 
-    private final WorkoutScheduleService workoutScheduleService;
 
     private final WorkoutExerciseService workoutExerciseService;
 
@@ -43,11 +42,10 @@ public class WorkoutController {
 
     private final FileUpload fileUpload;
 
-    public WorkoutController(WorkoutService workoutService, ExerciseService exerciseService, UserService userService, WorkoutScheduleService workoutScheduleService, WorkoutExerciseService workoutExerciseService, ModelMapper modelMapper, FileUpload fileUpload) {
+    public WorkoutController(WorkoutService workoutService, ExerciseService exerciseService, UserService userService,WorkoutExerciseService workoutExerciseService, ModelMapper modelMapper, FileUpload fileUpload) {
         this.workoutService = workoutService;
         this.exerciseService = exerciseService;
         this.userService = userService;
-        this.workoutScheduleService = workoutScheduleService;
         this.workoutExerciseService = workoutExerciseService;
         this.modelMapper = modelMapper;
         this.fileUpload = fileUpload;
@@ -89,7 +87,7 @@ public class WorkoutController {
                 .setImgUrl(imageUrl);
 
 
-        workoutService.createWorkout(workout, createWorkoutDTO);
+        workoutService.createWorkout(workout);
 
         List<Integer> sets = createWorkoutDTO.getSets();
         List<Integer> reps = createWorkoutDTO.getReps();
@@ -109,7 +107,7 @@ public class WorkoutController {
                     .setExercise(selectedExercise)
                     .setSets(selectedExerciseSets)
                     .setReps(selectedExerciseReps)
-                            .setVideoUrl(selectedExercise.getVideoUrl());
+                    .setVideoUrl(selectedExercise.getVideoUrl());
 
             workoutExerciseService.saveWorkoutExercise(exercise);
         }
@@ -119,20 +117,6 @@ public class WorkoutController {
         return "redirect:/workouts/" + newWorkoutID;
     }
 
-
-    @PostMapping("/workouts/schedule")
-    public String scheduleWorkout(
-            @RequestParam Long workoutId,
-            @RequestParam String scheduleTime) {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        Long userId = ((CustomUserDetails) authentication.getPrincipal()).getId();
-
-        workoutScheduleService.scheduleWorkout(userId, workoutId, scheduleTime);
-
-        return "redirect:/";
-    }
 
 
     @GetMapping("/workouts/{id}")
@@ -158,11 +142,8 @@ public class WorkoutController {
         for (WorkoutEntity workoutEntity : currentLoggedUser.getWorkoutsCompleted()) {
             if(workoutEntity.getId().equals(workout.getId())) {
                 isCompleted = true;
-                break;
             }
         }
-
-
 
         for (UserDTO userDTO : workout.getUsersLiked()) {
             if(userDTO.getUsername().equals(principal.getName())) {
@@ -189,6 +170,7 @@ public class WorkoutController {
 
         String currentUserUsername = principal.getName();
         WorkoutDetailsDTO workoutDetails = workoutService.getWorkoutDetails(id).orElseThrow(() -> new RuntimeException("Workout not found"));
+
 
         boolean hasLiked = false;
 

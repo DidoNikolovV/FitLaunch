@@ -2,9 +2,8 @@ package com.softuni.fitlaunch.model.dto.workout;
 
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
 import com.softuni.fitlaunch.model.entity.WorkoutEntity;
-import lombok.Getter;
-import lombok.Setter;
 
+import java.time.LocalDate;
 
 
 public class WorkoutExerciseDTO {
@@ -14,6 +13,7 @@ public class WorkoutExerciseDTO {
     private ExerciseDTO exercise;
     private int sets;
     private int reps;
+
 
     public WorkoutExerciseDTO() {
     }

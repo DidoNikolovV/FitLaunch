@@ -6,6 +6,7 @@ import com.softuni.fitlaunch.model.dto.workout.CreateWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
+import com.softuni.fitlaunch.model.dto.workout.WorkoutExerciseDTO;
 import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.model.entity.WorkoutEntity;
 import com.softuni.fitlaunch.model.entity.WorkoutExerciseEntity;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -39,7 +41,7 @@ public class WorkoutService {
         this.modelMapper = modelMapper;
     }
 
-    public Long createWorkout(WorkoutEntity workout, CreateWorkoutDTO createWorkoutDTO) {
+    public Long createWorkout(WorkoutEntity workout) {
 
         WorkoutEntity newWorkout = workoutRepository.save(workout);
         return newWorkout.getId();
@@ -73,6 +75,8 @@ public class WorkoutService {
 
     private WorkoutDetailsDTO mapAsDetails(WorkoutEntity workoutEntity) {
         List<WorkoutExerciseEntity> exercises = workoutExerciseRepository.findByWorkoutId(workoutEntity.getId()).stream().toList();
+        List<UserEntity> usersLiked1 = workoutEntity.getUsersLiked();
+        System.out.println();
         List<UserDTO> usersLiked = workoutEntity.getUsersLiked().stream().map(userEntity -> modelMapper.map(userEntity, UserDTO.class)).toList();
 
 
@@ -124,15 +128,13 @@ public class WorkoutService {
         WorkoutEntity workoutEntity = workoutRepository.findById(workoutId).orElseThrow(() -> new RuntimeException("Workout not found"));
         UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
 
-        UserDTO userDTO = modelMapper.map(userEntity, UserDTO.class);
-        WorkoutDTO workoutDTO = modelMapper.map(workoutEntity, WorkoutDTO.class);
-
-        workoutDTO.setCompleted(true);
+        workoutEntity.setCompleted(true);
+        workoutEntity.setDateCompleted(String.valueOf(LocalDate.now()));
+        workoutEntity.setLikes(workoutEntity.getUsersLiked().size());
         userEntity.getWorkoutsCompleted().add(workoutEntity);
 
-        userDTO.getWorkoutsCompleted().add(workoutDTO);
-
         workoutRepository.save(workoutEntity);
+        userRepository.save(userEntity);
     }
 
     public void completeExercise(Long workoutId, Long exerciseId) {

@@ -5,6 +5,7 @@ import com.softuni.fitlaunch.model.entity.WorkoutExerciseEntity;
 import com.softuni.fitlaunch.model.enums.LevelEnum;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,17 +26,21 @@ public class WorkoutDTO {
 
     private boolean isCompleted = false;
 
+    private String dateCompleted;
+
+
     public WorkoutDTO() {
         this.exercises = new ArrayList<>();
     }
 
-    public WorkoutDTO(Long id, String name, String imgUrl, LevelEnum level, String description, boolean isCompleted) {
+    public WorkoutDTO(Long id, String name, String imgUrl, LevelEnum level, String description, boolean isCompleted, String dateCompleted) {
         this.id = id;
         this.name = name;
         this.imgUrl = imgUrl;
         this.level = level;
         this.description = description;
         this.isCompleted = isCompleted;
+        this.dateCompleted = dateCompleted;
     }
 
     public Long getId() {
@@ -107,6 +112,15 @@ public class WorkoutDTO {
 
     public WorkoutDTO setCompleted(boolean completed) {
         isCompleted = completed;
+        return this;
+    }
+
+    public String getDateCompleted() {
+        return dateCompleted;
+    }
+
+    public WorkoutDTO setDateCompleted(String dateCompleted) {
+        this.dateCompleted = dateCompleted;
         return this;
     }
 }

@@ -1,8 +1,6 @@
 package com.softuni.fitlaunch.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 
 @Entity
@@ -28,7 +26,8 @@ public class WorkoutExerciseEntity extends BaseEntity{
     private DayEntity day;
 
     @Column(nullable = false)
-    private boolean isCompleted = false;
+    private boolean isCompleted;
+
 
     public WorkoutEntity getWorkout() {
         return workout;

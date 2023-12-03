@@ -3,7 +3,6 @@ package com.softuni.fitlaunch.model.entity;
 
 import com.softuni.fitlaunch.model.enums.LevelEnum;
 import jakarta.persistence.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,16 +32,6 @@ public class WorkoutEntity extends BaseEntity {
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WorkoutExerciseEntity> workoutExercises = new ArrayList<>();
 
-    @OneToMany(mappedBy = "workout")
-    private List<WorkoutScheduleEntity> schedules;
-
-
-    @ManyToMany
-    @JoinTable(
-            name = "workouts_exercises",
-    joinColumns = @JoinColumn(name = "workout_id"),
-    inverseJoinColumns = @JoinColumn(name = "exercise_id"))
-    private List<ExerciseEntity> exercises;
 
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL)
     private List<CommentEntity> comments;
@@ -58,9 +47,19 @@ public class WorkoutEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<UserEntity> usersLiked = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "workouts_exercises",
+            joinColumns = @JoinColumn(name = "workout_id"),
+            inverseJoinColumns = @JoinColumn(name = "exercise_id"))
+    private List<ExerciseEntity> exercises;
+
 
     @Column(nullable = false)
     private boolean isCompleted = false;
+
+    @Column
+    private String dateCompleted;
 
     @Column(nullable = false)
     private boolean hasStarted = false;
@@ -110,23 +109,6 @@ public class WorkoutEntity extends BaseEntity {
         return this;
     }
 
-    public List<WorkoutScheduleEntity> getSchedules() {
-        return schedules;
-    }
-
-    public WorkoutEntity setSchedules(List<WorkoutScheduleEntity> schedules) {
-        this.schedules = schedules;
-        return this;
-    }
-
-    public List<ExerciseEntity> getExercises() {
-        return exercises;
-    }
-
-    public WorkoutEntity setExercises(List<ExerciseEntity> exercises) {
-        this.exercises = exercises;
-        return this;
-    }
 
     public List<CommentEntity> getComments() {
         return comments;
@@ -185,5 +167,24 @@ public class WorkoutEntity extends BaseEntity {
     public boolean isHasStarted() {
         return hasStarted;
     }
+
+    public String getDateCompleted() {
+        return dateCompleted;
+    }
+
+    public WorkoutEntity setDateCompleted(String dateCompleted) {
+        this.dateCompleted = dateCompleted;
+        return this;
+    }
+
+    public List<ExerciseEntity> getExercises() {
+        return exercises;
+    }
+
+    public WorkoutEntity setExercises(List<ExerciseEntity> exercises) {
+        this.exercises = exercises;
+        return this;
+    }
+
 
 }

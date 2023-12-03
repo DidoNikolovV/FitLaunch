@@ -113,11 +113,14 @@ public class UserController {
 
         List<WorkoutDTO> workoutsCompleted = userService.getCompletedWorkouts(principal.getName());
 
-
-
         model.addAttribute("workoutsCompleted", workoutsCompleted);
 
         return "workout-history";
+    }
+
+    @GetMapping("/contact-us")
+    public String contactUs() {
+        return "contact-us";
     }
 
     @GetMapping("/upgrade")
