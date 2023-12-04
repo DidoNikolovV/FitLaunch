@@ -20,4 +20,8 @@ public class UserActivationService {
         System.out.println("User with email " + userRegisteredEvent.getUserEmail());
         emailService.sendRegistrationEmail(userRegisteredEvent.getUserEmail(), userRegisteredEvent.getUsernames());
     }
+
+    public void cleanUpObsoleteActivationLinks() {
+        System.out.println("NOT YET");
+    }
 }
