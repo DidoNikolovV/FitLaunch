@@ -4,6 +4,7 @@ import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +60,13 @@ public class UserEntity extends BaseEntity {
     private List<WorkoutEntity> workoutsStarted = new ArrayList<>();
 
 
+    private boolean activated = false;
+
+    @Column(name = "activation_code")
+    private String activationCode;
+
+    @Column(name = "activation_code_expiration")
+    private LocalDateTime activationCodeExpiration;
 
     @Override
     public Long getId() {
@@ -151,6 +159,33 @@ public class UserEntity extends BaseEntity {
 
     public UserEntity setWorkoutsStarted(List<WorkoutEntity> workoutsStarted) {
         this.workoutsStarted = workoutsStarted;
+        return this;
+    }
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public UserEntity setActivated(boolean activated) {
+        this.activated = activated;
+        return this;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public UserEntity setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
+        return this;
+    }
+
+    public LocalDateTime getActivationCodeExpiration() {
+        return activationCodeExpiration;
+    }
+
+    public UserEntity setActivationCodeExpiration(LocalDateTime activationCodeExpiration) {
+        this.activationCodeExpiration = activationCodeExpiration;
         return this;
     }
 }

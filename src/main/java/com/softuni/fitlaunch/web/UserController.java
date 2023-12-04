@@ -129,4 +129,24 @@ public class UserController {
     }
 
 
+    @GetMapping("/user/activate/{activationCode}")
+    public String activateAccount(@PathVariable("activationCode") String activationCode, Model model) {
+
+        System.out.println("Received activation code: " + activationCode);
+
+        if(activationCode == null || activationCode.isEmpty()) {
+            model.addAttribute("activationError", "Invalid activation code");
+            return "email/activation-failed";
+        }
+
+        boolean activationSuccess = userService.activateUser(activationCode);
+        System.out.println("");
+        if(activationSuccess) {
+            return "email/activation-success";
+        } else {
+            return "email/activation-failed";
+        }
+
+    }
+
 }

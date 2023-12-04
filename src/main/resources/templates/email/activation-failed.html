@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Activation Failed</title>
+</head>
+<body>
+<h1>Account Activation Failed</h1>
+<!--<p th:if="${activationError}">Error: <span th:text="${activationError}"></span></p>-->
+<p>Account activation failed. Please try again or contact support.</p>
+<a th:href="@{/users/login}">Go to Login</a>
+</body>
+</html>

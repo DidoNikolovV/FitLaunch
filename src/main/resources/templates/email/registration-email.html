@@ -7,6 +7,10 @@
 <body>
     <h1>Hello, <th:block th:text="${username}">Pesho</th:block>!</h1>
     <p>Welcome to FitLaunch!</p>
-    <p>Please follow the link in order to activate your account.</p>
+    <p>Thank you for registering with us. Please click the following link to activate your account:</p>
+    <a th:href="@{'http://localhost:8080/user/activate/' + ${activation_code}}">Activate Account</a>
+
+
+
 </body>
 </html>

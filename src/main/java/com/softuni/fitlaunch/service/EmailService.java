@@ -26,7 +26,7 @@ public class EmailService {
         this.fitlaunch = fitlaunch;
     }
 
-    public void sendRegistrationEmail(String userEmail, String username) {
+    public void sendRegistrationEmail(String userEmail, String username, String activationCode) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
 
@@ -37,7 +37,7 @@ public class EmailService {
             mimeMessageHelper.setReplyTo(fitlaunch);
             mimeMessageHelper.setTo(userEmail);
             mimeMessageHelper.setSubject("Welcome to FitLaunch!");
-            mimeMessageHelper.setText(generateRegistrationEmailBody(username), true);
+            mimeMessageHelper.setText(generateRegistrationEmailBody(username, activationCode), true);
 
             javaMailSender.send(mimeMessageHelper.getMimeMessage());
 
@@ -47,9 +47,10 @@ public class EmailService {
 
     }
 
-    private String generateRegistrationEmailBody(String username) {
+    private String generateRegistrationEmailBody(String username, String activation_code) {
         Context context = new Context();
         context.setVariable("username", username);
+        context.setVariable("activation_code", activation_code);
         return templateEngine.process("email/registration-email", context);
     }
 }

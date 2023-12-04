@@ -5,12 +5,15 @@ import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.dto.user.UserRegisterDTO;
 import com.softuni.fitlaunch.model.dto.user.UserRoleDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
+import com.softuni.fitlaunch.model.entity.UserActivationCodeEntity;
 import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.model.entity.UserRoleEntity;
 import com.softuni.fitlaunch.model.events.UserRegisteredEvent;
 import com.softuni.fitlaunch.repository.RoleRepository;
+import com.softuni.fitlaunch.repository.UserActivationCodeRepository;
 import com.softuni.fitlaunch.repository.UserRepository;
 import com.softuni.fitlaunch.repository.WorkoutRepository;
+import com.softuni.fitlaunch.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,9 +21,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -34,13 +40,16 @@ public class UserService {
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, WorkoutRepository workoutRepository, ModelMapper modelMapper, ApplicationEventPublisher applicationEventPublisher) {
+    private final UserActivationCodeRepository userActivationCodeRepository;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, WorkoutRepository workoutRepository, ModelMapper modelMapper, ApplicationEventPublisher applicationEventPublisher, UserActivationCodeRepository userActivationCodeRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
         this.workoutRepository = workoutRepository;
         this.modelMapper = modelMapper;
         this.applicationEventPublisher = applicationEventPublisher;
+        this.userActivationCodeRepository = userActivationCodeRepository;
     }
 
     public boolean register(UserRegisterDTO userRegisterDTO) {
@@ -67,7 +76,10 @@ public class UserService {
         user.setRoles(List.of(role));
         user.setMembership("Free");
 
+
+
         userRepository.save(user);
+
 
         applicationEventPublisher.publishEvent(new UserRegisteredEvent(
                 "UserService", userRegisterDTO.getEmail(), userRegisterDTO.getUsername()
@@ -129,5 +141,32 @@ public class UserService {
                 userRoleEntity.getRole()
         );
     }
+
+    public boolean activateUser(String activationCode) {
+
+        UserActivationCodeEntity activationCodeEntity = userActivationCodeRepository.findByActivationCode(activationCode)
+                .orElseThrow(() -> new ObjectNotFoundException("Activation code not found"));
+        UserEntity user = activationCodeEntity.getUser();
+        System.out.println();
+
+        if (!user.isActivated() && !isActivationCodeExpired(activationCodeEntity.getCreated())) {
+            user.setActivated(true);
+            user.setActivationCode(null);
+            user.setActivationCodeExpiration(null);
+
+            userRepository.save(user);
+            userActivationCodeRepository.delete(activationCodeEntity);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean isActivationCodeExpired(Instant expirationDateTime) {
+        return expirationDateTime != null && expirationDateTime.isBefore(expirationDateTime);
+    }
+
+
 
 }
