@@ -14,7 +14,7 @@ spring:
       ddl-auto: update
   sql:
     init:
-      mode: never
+      mode: always
   mvc:
     hiddenmethod:
       filter:
@@ -29,10 +29,18 @@ spring:
       cache:
         period: 0
 
+  mail:
+    fitlaunch: ${EMAIL:didaka934@gmail.com}
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USER:didaka934@gmail.com}
+    password: ${MAIL_PASSWORD:lpwcojgqymewqdfk}
 
 logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.orm.jdbc.bind: TRACE
+
+
 
 

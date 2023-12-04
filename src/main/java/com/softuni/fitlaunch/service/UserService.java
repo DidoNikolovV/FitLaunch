@@ -7,11 +7,12 @@ import com.softuni.fitlaunch.model.dto.user.UserRoleDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.model.entity.UserRoleEntity;
-import com.softuni.fitlaunch.model.entity.WorkoutEntity;
+import com.softuni.fitlaunch.model.events.UserRegisteredEvent;
 import com.softuni.fitlaunch.repository.RoleRepository;
 import com.softuni.fitlaunch.repository.UserRepository;
 import com.softuni.fitlaunch.repository.WorkoutRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,12 +32,15 @@ public class UserService {
 
     private final ModelMapper modelMapper;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, WorkoutRepository workoutRepository, ModelMapper modelMapper) {
+    private final ApplicationEventPublisher applicationEventPublisher;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, WorkoutRepository workoutRepository, ModelMapper modelMapper, ApplicationEventPublisher applicationEventPublisher) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
         this.workoutRepository = workoutRepository;
         this.modelMapper = modelMapper;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     public boolean register(UserRegisterDTO userRegisterDTO) {
@@ -64,6 +68,10 @@ public class UserService {
         user.setMembership("Free");
 
         userRepository.save(user);
+
+        applicationEventPublisher.publishEvent(new UserRegisteredEvent(
+                "UserService", userRegisterDTO.getEmail(), userRegisterDTO.getUsername()
+        ));
 
         return true;
     }
