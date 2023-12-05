@@ -4,7 +4,6 @@ package com.softuni.fitlaunch.service.schedulers;
 import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.service.EmailService;
 import com.softuni.fitlaunch.service.UserService;
-import jakarta.mail.MessagingException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -23,13 +22,10 @@ public class DailyWorkoutReminderScheduler {
     }
 
     @Scheduled(fixedRate = 24 * 60 * 60 * 1000) // 24 hours in milliseconds
-    public void sendWorkoutReminders() {
+    public void sendWorkoutReminders() throws InterruptedException {
         List<UserEntity> allUsers = userService.getAllUsers();
 
-        for (UserEntity user : allUsers) {
-            emailService.sendReminderEmail(user);
-
-        }
+        emailService.sendReminderEmail(allUsers);
     }
 
 }

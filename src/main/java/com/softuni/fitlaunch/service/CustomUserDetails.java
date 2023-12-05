@@ -14,10 +14,14 @@ public class CustomUserDetails extends User {
     private final Long id;
     private final UserProfileEntity userProfile;
 
-    public CustomUserDetails(Long id, String username, String password, UserProfileEntity userProfile, Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, authorities);
+    private final boolean isActivated;
+
+
+    public CustomUserDetails(Long id, String username, String password, UserProfileEntity userProfile, boolean isActivated, Collection<? extends GrantedAuthority> authorities) {
+        super(username, password, isActivated, true, true ,true, authorities);
         this.id = id;
         this.userProfile = userProfile;
+        this.isActivated = isActivated;
     }
 
     public Long getId() {
@@ -27,6 +31,14 @@ public class CustomUserDetails extends User {
     public UserProfileEntity getUserProfile() {
         return userProfile;
     }
+
+
+    @Override
+    public boolean isEnabled() {
+        return isActivated;
+    }
+
+
 
     public static CustomUserDetails create(UserEntity userEntity) {
         UserProfileEntity userProfile = userEntity.getUserProfile();
@@ -44,6 +56,6 @@ public class CustomUserDetails extends User {
 
 //        return new CustomUserDetails(userEntity.getId(), userEntity.getUsername(), userEntity.getPassword(), authorities);
 
-        return new CustomUserDetails(userEntity.getId(), userEntity.getUsername(), userEntity.getPassword(), userProfile, authorities);
+        return new CustomUserDetails(userEntity.getId(), userEntity.getUsername(), userEntity.getPassword(), userProfile, userEntity.isActivated(), authorities);
     }
 }

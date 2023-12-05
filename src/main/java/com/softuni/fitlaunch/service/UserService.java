@@ -97,7 +97,7 @@ public class UserService {
     }
 
     public UserEntity getUserByUsername(String username) {
-        return userRepository.findByUsername(username).get();
+        return userRepository.findByUsername(username).orElse(null);
     }
 
     public void changeUserRole(Long userId, UserRoleEntity role) {

@@ -23,8 +23,11 @@
                            type="password"
                            class="form-control">
                 </div>
+                <p th:if="${user_not_active}" class="errors alert alert-danger">
+                    You account is not activated. Please activate your account first.
+                </p>
                 <p th:if="${bad_credentials}" class="errors alert alert-danger">
-                    Invalid username or password;
+                    Invalid username or password
                 </p>
 
                 <div>

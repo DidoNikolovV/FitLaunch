@@ -27,13 +27,11 @@ import java.security.Principal;
 public class UserController {
 
     private final UserService userService;
-    private final ModelMapper modelMapper;
 
     private final BlackListService blackListService;
 
-    public UserController(UserService userService, ModelMapper modelMapper, BlackListService blackListService) {
+    public UserController(UserService userService, BlackListService blackListService) {
         this.userService = userService;
-        this.modelMapper = modelMapper;
         this.blackListService = blackListService;
     }
 
@@ -55,11 +53,23 @@ public class UserController {
     }
 
     @PostMapping("/users/login-error")
-    public String onFailure(@ModelAttribute("email") String email,
+    public String onFailure(@ModelAttribute("username") String username,
                             Model model) {
 
-        model.addAttribute("email", email);
-        model.addAttribute("bad_credentials", "true");
+        UserEntity user = userService.getUserByUsername(username);
+
+        if(user != null) {
+            if(user.isActivated()) {
+                model.addAttribute("username", username);
+                model.addAttribute("bad_credentials", "true");
+            } else {
+                model.addAttribute("user_not_active", "true");
+
+            }
+        } else {
+            model.addAttribute("username", username);
+            model.addAttribute("bad_credentials", "true");
+        }
 
         return "login";
     }

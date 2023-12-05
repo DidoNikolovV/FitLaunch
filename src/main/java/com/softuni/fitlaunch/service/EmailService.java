@@ -49,25 +49,25 @@ public class EmailService {
         }
     }
 
-    public void sendReminderEmail(UserEntity user) {
+    public void sendReminderEmail(List<UserEntity> users) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
 
+        for (UserEntity user : users) {
+            try {
+                mimeMessageHelper.setFrom(fitlaunch);
+                mimeMessageHelper.setFrom(fitlaunch);
+                mimeMessageHelper.setTo(user.getEmail());
+                mimeMessageHelper.setSubject("Daily workout reminder!");
+                mimeMessageHelper.setText("Have you trained today?");
 
-        try {
-            mimeMessageHelper.setFrom(fitlaunch);
-            mimeMessageHelper.setFrom(fitlaunch);
-            mimeMessageHelper.setTo(user.getEmail());
-            mimeMessageHelper.setSubject("Daily workout reminder!");
-            mimeMessageHelper.setText("Have you trained today?");
+                javaMailSender.send(mimeMessageHelper.getMimeMessage());
 
-            javaMailSender.send(mimeMessageHelper.getMimeMessage());
-
-        } catch(MessagingException e) {
-            throw new RuntimeException(e);
+            } catch(MessagingException e) {
+                throw new RuntimeException(e);
+            }
         }
-
 
     }
 
