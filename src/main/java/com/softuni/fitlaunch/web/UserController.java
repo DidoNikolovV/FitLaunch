@@ -1,16 +1,17 @@
 package com.softuni.fitlaunch.web;
 
-import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.dto.user.UserRegisterDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
-import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
 import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.model.entity.UserRoleEntity;
 import com.softuni.fitlaunch.model.enums.UserRoleEnum;
+import com.softuni.fitlaunch.service.BlackListService;
 import com.softuni.fitlaunch.service.CustomUserDetails;
 import com.softuni.fitlaunch.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -28,9 +29,12 @@ public class UserController {
     private final UserService userService;
     private final ModelMapper modelMapper;
 
-    public UserController(UserService userService, ModelMapper modelMapper) {
+    private final BlackListService blackListService;
+
+    public UserController(UserService userService, ModelMapper modelMapper, BlackListService blackListService) {
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.blackListService = blackListService;
     }
 
     @GetMapping("/users/login")
@@ -86,7 +90,9 @@ public class UserController {
     }
 
     @GetMapping("/users/all")
-    public String allUsers(Model model) {
+    public String allUsers(HttpServletRequest request, Model model) {
+        String ipAddress = request.getRemoteAddr();
+        request.getSession().setAttribute("userIpAddress", ipAddress);
 
         List<UserEntity> allUsers = userService.getAllUsers();
 
@@ -103,6 +109,14 @@ public class UserController {
                 .setId(roleId)
                 .setRole(UserRoleEnum.valueOf(role));
         userService.changeUserRole(userId, newRole);
+
+        return "redirect:/users/all";
+    }
+
+    @PostMapping("/users/ban")
+    @Secured("ROLE_ADMIN")
+    public String banUser(@RequestParam("ipAddress") String ipAddress) {
+        blackListService.banUser(ipAddress);
 
         return "redirect:/users/all";
     }

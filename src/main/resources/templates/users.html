@@ -36,6 +36,14 @@
                 <button type="submit" class="btn btn-primary">Change Role</button>
               </form>
             </td>
+
+            <td>
+              <form th:action="@{/users/ban}" th:method="POST">
+                <input type="hidden" th:name="ipAddress" th:value="${session.userIpAddress}">
+                <button type="submit" class="btn btn-danger">Ban User</button>
+
+              </form>
+            </td>
           </tr>
           </tbody>
         </table>
