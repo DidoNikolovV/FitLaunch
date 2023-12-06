@@ -29,6 +29,7 @@ public class WorkoutExerciseService {
         return exercises;
     }
 
+
     public void saveWorkoutExercise(WorkoutExerciseEntity workoutExercise) {
         workoutExerciseRepository.save(workoutExercise);
     }

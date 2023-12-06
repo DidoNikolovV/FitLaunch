@@ -10,7 +10,6 @@ import com.softuni.fitlaunch.service.CustomUserDetails;
 import com.softuni.fitlaunch.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -149,6 +148,15 @@ public class UserController {
 
     @GetMapping("/upgrade")
     public String membershipPlans() {
+        return "upgrade";
+    }
+
+    @PostMapping("/upgrade/{membership}")
+    public String membershipPlans(@PathVariable("membership") String membership, Principal principal) {
+        UserEntity loggedUser = userService.getUserByUsername(principal.getName());
+
+        userService.changeMembership(loggedUser, membership);
+
         return "upgrade";
     }
 

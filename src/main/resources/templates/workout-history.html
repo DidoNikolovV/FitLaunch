@@ -2,58 +2,36 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head}">
 </head>
-<body>
-  <nav th:replace="~{fragments/navbar}"></nav>
+<body class="d-flex flex-column" style="min-height: 100vh;">
+<nav th:replace="~{fragments/navbar}"></nav>
 
-  <div class="container">
-    <h1 class="text-center mt-5 mb-4 text-white">Workout History</h1>
+<div class="container flex-grow-1">
+  <h1 class="text-center mt-5 mb-4 text-white">Workout History</h1>
 
-    <div th:each="completedWorkout: ${workoutsCompleted}">
-      <table class="table bg-dark text-white">
-        <thead class="bg-dark text-white">
-        <tr>
-          <th style="width: 25%;" th:text="${completedWorkout.name}"></th>
-          <th style="width: 25%;" th:text="${completedWorkout.level}">Exercise</th>
-          <th style="width: 25%;" th:text="${completedWorkout.dateCompleted}"></th>
-          <th style="width: 25%;">
-              <button type="button" class="btn btn-link">
-              Show Details
-            </button>
-          </th>
-        </tr>
-        </thead>
-      </table>
+  <div th:each="completedWorkout: ${workoutsCompleted}">
+    <table class="table bg-dark text-white">
+      <thead class="bg-dark text-white">
+      <tr>
+        <th style="width: 25%;" th:text="${completedWorkout.name}"></th>
+        <th style="width: 25%;" th:text="${completedWorkout.level}">Exercise</th>
+        <th style="width: 25%;" th:text="${completedWorkout.dateCompleted}"></th>
+        <th style="width: 25%;">
 
-      <!-- Collapsible section for workout details -->
-      <div th:id="'detailsCollapse' + ${completedWorkout.id}" class="collapse">
-        <!-- Add your details content here, e.g., a nested table -->
-        <table class="table">
-          <thead>
-          <tr>
-            <th>Exercise</th>
-            <th>Sets</th>
-            <th>Reps</th>
-            <th>Completed</th>
-          </tr>
-          </thead>
-          <tbody>
-          <!-- Add rows for each exercise -->
-          <tr>
-            <td>Push-ups</td>
-            <td>3</td>
-            <td>15</td>
-            <td>Yes</td>
-          </tr>
-          <!-- Add more rows for additional exercises -->
-          </tbody>
-        </table>
-      </div>
+            <button id="show-details">Show Details</button>
+
+        </th>
+      </tr>
+      </thead>
+    </table>
+
+    <!-- Collapsible section for workout details -->
+    <div id="detailsCtnr" class="text-white">
     </div>
-
   </div>
+</div>
 
-  <footer th:replace="~{fragments/footer}"></footer>
-
+<footer th:replace="~{fragments/footer}"></footer>
 
 </body>
 </html>
+

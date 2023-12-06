@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/head}">
+</head>
+
+<body>
+<nav th:replace="~{fragments/navbar}"></nav>
+<div class="container mt-5">
+  <h2 th:text="${program.name}"></h2>
+  <!-- Weeks Section -->
+  <ul class="list-group list-group-flush">
+    <li th:each="week: ${program.weeks}" class="list-group-item bg-dark text-white">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="flex-grow-1">
+          <h6 class="font-weight-bold" th:text="'Week ' + ${week.id}"></h6>
+          <span class="font-weight-bold">Days :</span>
+          <span th:text="5"></span>
+          <br>
+        </div>
+          <form th:method="POST" th:action="@{/programs/{programId}/complete/{weekId}(programId=${program.id}, weekId=${week.id})}">
+            <button type="submit" class="btn btn-link">
+              <i class="fa-solid fa-lg fa-circle-check text-success"></i>
+            </button>
+          </form>
+        </div>
+    </li>
+  </ul>
+</div>
+
+
+<footer th:replace="~{fragments/footer}"></footer>
+</body>
+</html>

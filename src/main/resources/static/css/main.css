@@ -127,6 +127,33 @@ nav .left {
     transition: background-color 0.3s;
 }
 
+button.th-disabled {
+    cursor: not-allowed;
+}
+
+.th-disabled-overlay {
+    background-color: rgba(128, 128, 128, 0.5); /* Use a semi-transparent gray background color */
+    pointer-events: none; /* Make the overlay not clickable */
+}
+
+.card-hover {
+    transition: transform 0.3s ease; /* Add a smooth transition */
+}
+
+.card-hover:hover {
+    transform: scale(1.05); /* Increase the size of the card on hover */
+}
+
+.lock-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff; /* Set the color of the lock icon */
+    font-size: 36px; /* Set the font size of the lock icon (adjust as needed) */
+    /* Add any other styling for the lock icon */
+}
+
 .plan-card.month:hover {
     color: #101010;
     background-color: #e2e6ea;

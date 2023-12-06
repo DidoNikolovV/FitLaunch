@@ -8,6 +8,7 @@ import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import com.softuni.fitlaunch.model.entity.UserActivationCodeEntity;
 import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.model.entity.UserRoleEntity;
+import com.softuni.fitlaunch.model.entity.WorkoutEntity;
 import com.softuni.fitlaunch.model.events.UserRegisteredEvent;
 import com.softuni.fitlaunch.repository.RoleRepository;
 import com.softuni.fitlaunch.repository.UserActivationCodeRepository;
@@ -22,11 +23,9 @@ import org.springframework.stereotype.Service;
 
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class UserService {
@@ -120,9 +119,9 @@ public class UserService {
         UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
         List<WorkoutDTO> completedWorkouts = user.getWorkoutsCompleted().stream().map(workoutEntity -> modelMapper.map(workoutEntity, WorkoutDTO.class)).toList();
 
-
         return completedWorkouts;
     }
+
 
     public UserRoleDTO getUserRole(UserDTO userDTO) {
         Optional<UserEntity> optUser =
@@ -168,5 +167,8 @@ public class UserService {
     }
 
 
-
+    public void changeMembership(UserEntity loggedUser, String membership) {
+        loggedUser.setMembership(membership);
+        userRepository.save(loggedUser);
+    }
 }
