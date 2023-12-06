@@ -1,12 +1,8 @@
 package com.softuni.fitlaunch.init;
 
 
-import com.softuni.fitlaunch.model.entity.CommentEntity;
-import com.softuni.fitlaunch.model.entity.UserEntity;
-import com.softuni.fitlaunch.model.entity.WorkoutEntity;
-import com.softuni.fitlaunch.repository.CommentRepository;
-import com.softuni.fitlaunch.repository.UserRepository;
-import com.softuni.fitlaunch.repository.WorkoutRepository;
+import com.softuni.fitlaunch.model.entity.*;
+import com.softuni.fitlaunch.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -21,10 +17,12 @@ public class DBInit implements CommandLineRunner {
 
     private final UserRepository userRepository;
 
+
     public DBInit(WorkoutRepository workoutRepository, CommentRepository commentRepository, UserRepository userRepository) {
         this.workoutRepository = workoutRepository;
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
+
     }
 
     @Override
@@ -32,6 +30,7 @@ public class DBInit implements CommandLineRunner {
         if(commentRepository.count() == 0) {
             initComment("Admin", 1L, "Cool Workout", "I like it");
         }
+
     }
 
     private void initComment(String authorName, Long workoutId, String... comments) {
@@ -58,3 +57,4 @@ public class DBInit implements CommandLineRunner {
 
     }
 }
+

@@ -64,6 +64,10 @@ public class WorkoutEntity extends BaseEntity {
     @Column(nullable = false)
     private boolean hasStarted = false;
 
+    @ManyToOne
+    @JoinColumn(name = "week_id")
+    private WeekEntity week;
+
     public String getImgUrl() {
         return imgUrl;
     }
@@ -186,5 +190,21 @@ public class WorkoutEntity extends BaseEntity {
         return this;
     }
 
+    public WeekEntity getWeek() {
+        return week;
+    }
 
+    public WorkoutEntity setWeek(WeekEntity week) {
+        this.week = week;
+        return this;
+    }
+
+    //    public DayEntity getDay() {
+//        return day;
+//    }
+//
+//    public WorkoutEntity setDay(DayEntity day) {
+//        this.day = day;
+//        return this;
+//    }
 }

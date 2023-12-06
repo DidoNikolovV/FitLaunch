@@ -22,8 +22,6 @@ public class WorkoutExerciseEntity extends BaseEntity{
     @Column(name = "video_url")
     private String videoUrl;
 
-    @ManyToOne
-    private DayEntity day;
 
     @Column(nullable = false)
     private boolean isCompleted;
@@ -74,14 +72,9 @@ public class WorkoutExerciseEntity extends BaseEntity{
         return this;
     }
 
-    public DayEntity getDay() {
-        return day;
-    }
 
-    public WorkoutExerciseEntity setDay(DayEntity day) {
-        this.day = day;
-        return this;
-    }
+
+
 
     public boolean isCompleted() {
         return isCompleted;

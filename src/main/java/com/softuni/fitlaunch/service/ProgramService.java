@@ -5,6 +5,7 @@ import com.softuni.fitlaunch.model.entity.ProgramEntity;
 import com.softuni.fitlaunch.repository.ProgramRepository;
 import com.softuni.fitlaunch.service.exception.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class ProgramService {
         this.programRepository = programRepository;
     }
 
+    @Transactional
     public List<ProgramEntity> loadAllPrograms() {
         return programRepository.findAll();
     }
@@ -26,4 +28,6 @@ public class ProgramService {
 
         return programEntity;
     }
+
+
 }
