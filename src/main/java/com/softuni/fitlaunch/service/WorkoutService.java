@@ -119,20 +119,20 @@ public class WorkoutService {
 //    }
 
 
-    @Transactional
-    public void completeWorkout(Long workoutId, String username) {
-        WorkoutEntity workoutEntity = workoutRepository.findById(workoutId).orElseThrow(() -> new RuntimeException("Workout not found"));
-        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
-
-
-        workoutEntity.setCompleted(true);
-        workoutEntity.setDateCompleted(String.valueOf(LocalDate.now()));
-        workoutEntity.setLikes(workoutEntity.getUsersLiked().size());
-        userEntity.getWorkoutsCompleted().add(workoutEntity);
-
-        workoutRepository.save(workoutEntity);
-        userRepository.save(userEntity);
-    }
+//    @Transactional
+//    public void completeWorkout(Long workoutId, String username) {
+//        WorkoutEntity workoutEntity = workoutRepository.findById(workoutId).orElseThrow(() -> new RuntimeException("Workout not found"));
+//        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+//
+//
+//        workoutEntity.setCompleted(true);
+//        workoutEntity.setDateCompleted(String.valueOf(LocalDate.now()));
+//        workoutEntity.setLikes(workoutEntity.getUsersLiked().size());
+//        userEntity.getWorkoutsCompleted().add(workoutEntity);
+//
+//        workoutRepository.save(workoutEntity);
+//        userRepository.save(userEntity);
+//    }
 
 
     public void completeExercise(Long workoutId, Long exerciseId) {

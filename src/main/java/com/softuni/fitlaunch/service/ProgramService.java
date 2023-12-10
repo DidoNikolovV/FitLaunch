@@ -75,7 +75,7 @@ public class ProgramService {
     }
 
     public ProgramWeekWorkoutDTO getProgramWorkout(Long programId, Long weekId, Long workoutId, String loggedUserUsername) {
-        ProgramWeekWorkoutEntity programWeekWorkout = programWeekWorkoutRepository.findByProgramWeekIdAndWorkoutId(weekId, workoutId).orElseThrow(() -> new ObjectNotFoundException("Workout was not found"));
+        ProgramWeekWorkoutEntity programWeekWorkout = programWeekWorkoutRepository.findByProgramWeekIdAndId(weekId, workoutId).orElseThrow(() -> new ObjectNotFoundException("Workout was not found"));
         ProgramWeekWorkoutDTO programWeekWorkoutDTO = modelMapper.map(programWeekWorkout, ProgramWeekWorkoutDTO.class);
 
         programWeekWorkout.setHasStarted(true);

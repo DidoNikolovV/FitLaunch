@@ -104,8 +104,26 @@ public class UserService {
 
     public boolean isWorkoutStarted(String username, ProgramWeekWorkoutDTO programWeekWorkoutDTO) {
         UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User with " + username + " doesn't exist"));
-        ProgramWeekWorkoutEntity programWeekWorkoutEntity = modelMapper.map(programWeekWorkoutDTO, ProgramWeekWorkoutEntity.class);
+
         for (ProgramWeekWorkoutEntity weekWorkoutEntity : user.getWorkoutsStarted()) {
+            if(weekWorkoutEntity.getId().equals(programWeekWorkoutDTO.getId())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void completeProgramWorkout(String username, ProgramWeekWorkoutDTO programWeekWorkoutDTO) {
+        UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User with " + username + " doesn't exist"));
+        ProgramWeekWorkoutEntity programWeekWorkoutEntity = modelMapper.map(programWeekWorkoutDTO, ProgramWeekWorkoutEntity.class);
+        user.getWorkoutsCompleted().add(programWeekWorkoutEntity);
+        userRepository.save(user);
+    }
+
+    public boolean isWorkoutCompleted(String username, ProgramWeekWorkoutDTO programWeekWorkoutDTO) {
+        UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User with " + username + " doesn't exist"));
+        for (ProgramWeekWorkoutEntity weekWorkoutEntity : user.getWorkoutsCompleted()) {
             if(weekWorkoutEntity.getId().equals(programWeekWorkoutDTO.getId())) {
                 return true;
             }
@@ -186,4 +204,7 @@ public class UserService {
         loggedUser.setMembership(membership);
         userRepository.save(loggedUser);
     }
+
+
+
 }

@@ -48,13 +48,16 @@ public class ProgramController {
     }
 
     @GetMapping("/programs/{programId}")
-    public String loadProgramById(@PathVariable("programId") Long programId, Model model) {
+    public String loadProgramById(@PathVariable("programId") Long programId, Model model, Principal principal) {
         ProgramEntity program = programService.getById(programId);
         List<ProgramWeekDTO> allWeeksByProgramId = programService.getAllWeeksByProgramId(programId);
 
+        UserDTO user = modelMapper.map(userService.getUserByUsername(principal.getName()), UserDTO.class);
 
         model.addAttribute("program", program);
         model.addAttribute("allWeeks", allWeeksByProgramId);
+        model.addAttribute("user", user);
+
 
         return "program-details";
     }
@@ -70,40 +73,41 @@ public class ProgramController {
         ProgramWeekWorkoutDTO programWeekWorkoutById = programService.getProgramWeekWorkoutById(workoutId);
 
         boolean hasStarted = userService.isWorkoutStarted(principal.getName(), programWeekWorkoutById);
+        boolean isCompleted = userService.isWorkoutCompleted(principal.getName(), programWeekWorkoutById);
 
         model.addAttribute("workout", programWeekWorkoutById);
         model.addAttribute("program", program);
         model.addAttribute("week", programWeekById);
         model.addAttribute("hasStarted", hasStarted);
+        model.addAttribute("isCompleted", isCompleted);
 
 
         return "workout-details";
     }
 
 
-//    @PostMapping("/workouts/complete/{programId}/{weekId}/{id}")
-//    public String workoutComplete(@PathVariable("programId") Long programId, @PathVariable("weekId") Long weekId, @PathVariable("id") Long id, Principal principal) {
-//        // ... existing code ...
-//        String currentUserUsername = principal.getName();
-//
-//        programWorkoutService.completeWorkoutForTheWeek(id, weekId, programId, currentUserUsername);
-//
-//
-//        return "redirect:/workouts/{programId}/{weekId}/{id}";
-//
-//    }
 
     @PostMapping("/workouts/start/{programId}/{weekId}/{workoutId}")
     public String workoutStart(@PathVariable("programId") Long programId, @PathVariable("weekId") Long weekId, @PathVariable("workoutId") Long workoutId, Principal principal) {
 
-//        workoutService.startWorkout(id, principal.getName());
         ProgramWeekWorkoutDTO programWorkout = programService.getProgramWorkout(programId, weekId, workoutId, principal.getName());
         userService.startProgramWorkout(principal.getName(), programWorkout);
 
-//        programWorkoutService.startWorkoutForTheWeek(id, weekId, programId, principal.getName());
+        return String.format("redirect:/workouts/%d/%d/%d", programId, weekId, workoutId);
+    }
+
+
+    @PostMapping("/workouts/complete/{programId}/{weekId}/{workoutId}")
+    public String workoutComplete(@PathVariable("programId") Long programId, @PathVariable("weekId") Long weekId, @PathVariable("workoutId") Long workoutId, Principal principal) {
+        String currentUserUsername = principal.getName();
+
+
+        ProgramWeekWorkoutDTO programWorkout = programService.getProgramWorkout(programId, weekId, workoutId, principal.getName());
+        userService.completeProgramWorkout(principal.getName(), programWorkout);
 
 
         return String.format("redirect:/workouts/%d/%d/%d", programId, weekId, workoutId);
+
     }
 
 }

@@ -1,5 +1,6 @@
 package com.softuni.fitlaunch.model.entity;
 
+import com.softuni.fitlaunch.model.dto.program.ProgramWeekWorkoutDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 
@@ -48,7 +49,7 @@ public class UserEntity extends BaseEntity {
             name = "workouts_completed",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "workout_id"))
-    private List<WorkoutEntity> workoutsCompleted = new ArrayList<>();
+    private List<ProgramWeekWorkoutEntity> workoutsCompleted = new ArrayList<>();
 
 
     @ManyToMany
@@ -66,6 +67,8 @@ public class UserEntity extends BaseEntity {
 
     @Column(name = "activation_code_expiration")
     private LocalDateTime activationCodeExpiration;
+
+
 
     @Override
     public Long getId() {
@@ -143,11 +146,11 @@ public class UserEntity extends BaseEntity {
         return this;
     }
 
-    public List<WorkoutEntity> getWorkoutsCompleted() {
+    public List<ProgramWeekWorkoutEntity> getWorkoutsCompleted() {
         return workoutsCompleted;
     }
 
-    public UserEntity setWorkoutsCompleted(List<WorkoutEntity> workoutsCompleted) {
+    public UserEntity setWorkoutsCompleted(List<ProgramWeekWorkoutEntity> workoutsCompleted) {
         this.workoutsCompleted = workoutsCompleted;
         return this;
     }
@@ -187,6 +190,16 @@ public class UserEntity extends BaseEntity {
         this.activationCodeExpiration = activationCodeExpiration;
         return this;
     }
+
+    public boolean workoutCompleted(ProgramWeekWorkoutEntity programWeekWorkoutEntity) {
+        for (ProgramWeekWorkoutEntity weekWorkoutEntity : workoutsCompleted) {
+            if(weekWorkoutEntity.getId().equals(programWeekWorkoutEntity.getId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
 
 

@@ -27,6 +27,10 @@ public class ProgramWeekWorkoutEntity extends BaseEntity{
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL)
     private List<CommentEntity> comments;
 
+
+    @ManyToMany
+    private List<UserEntity> usersCompleted;
+
     public ProgramWeekEntity getProgramWeek() {
         return programWeek;
     }
@@ -69,6 +73,15 @@ public class ProgramWeekWorkoutEntity extends BaseEntity{
 
     public ProgramWeekWorkoutEntity setComments(List<CommentEntity> comments) {
         this.comments = comments;
+        return this;
+    }
+
+    public List<UserEntity> getUsersCompleted() {
+        return usersCompleted;
+    }
+
+    public ProgramWeekWorkoutEntity setUsersCompleted(List<UserEntity> usersCompleted) {
+        this.usersCompleted = usersCompleted;
         return this;
     }
 }

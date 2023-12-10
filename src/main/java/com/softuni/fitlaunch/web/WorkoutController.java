@@ -132,7 +132,7 @@ public class WorkoutController {
             }
         }
 
-        for (WorkoutEntity workoutEntity : currentLoggedUser.getWorkoutsCompleted()) {
+        for (ProgramWeekWorkoutEntity workoutEntity : currentLoggedUser.getWorkoutsCompleted()) {
             if(workoutEntity.getId().equals(workout.getId())) {
                 isCompleted = true;
             }
@@ -192,17 +192,17 @@ public class WorkoutController {
 //        return "redirect:/workouts/" + id;
 //    }
 
-    @PostMapping("/workouts/complete/{id}")
-    public String workoutComplete(@PathVariable("id") Long id, Principal principal) {
-
-        WorkoutDetailsDTO workoutDetails = workoutService.getWorkoutDetails(id).orElseThrow(() -> new RuntimeException("Workout not found"));
-        String currentUserUsername = principal.getName();
-
-
-        workoutService.completeWorkout(workoutDetails.getId(), currentUserUsername);
-
-        return "redirect:/workouts/" + id;
-    }
+//    @PostMapping("/workouts/complete/{id}")
+//    public String workoutComplete(@PathVariable("id") Long id, Principal principal) {
+//
+//        WorkoutDetailsDTO workoutDetails = workoutService.getWorkoutDetails(id).orElseThrow(() -> new RuntimeException("Workout not found"));
+//        String currentUserUsername = principal.getName();
+//
+//
+//        workoutService.completeWorkout(workoutDetails.getId(), currentUserUsername);
+//
+//        return "redirect:/workouts/" + id;
+//    }
 
     @PostMapping("/workouts/{workoutId}/complete/{exerciseId}")
     public String exerciseComplete(@PathVariable("workoutId") Long workoutId, @PathVariable("exerciseId") Long exerciseId) {
