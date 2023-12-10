@@ -33,9 +33,6 @@ public class WorkoutEntity extends BaseEntity {
     private List<WorkoutExerciseEntity> workoutExercises = new ArrayList<>();
 
 
-    @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL)
-    private List<CommentEntity> comments;
-
     @Column(nullable = false)
     private Integer likes = 0;
 
@@ -65,8 +62,9 @@ public class WorkoutEntity extends BaseEntity {
     private boolean hasStarted = false;
 
     @ManyToOne
-    @JoinColumn(name = "week_id")
-    private WeekEntity week;
+    @JoinColumn(name = "program_id")
+    private ProgramWeekEntity programWeek;
+
 
     public String getImgUrl() {
         return imgUrl;
@@ -114,15 +112,6 @@ public class WorkoutEntity extends BaseEntity {
     }
 
 
-    public List<CommentEntity> getComments() {
-        return comments;
-    }
-
-    public WorkoutEntity setComments(List<CommentEntity> comments) {
-        this.comments = comments;
-        return this;
-    }
-
     public UserEntity getAuthor() {
         return author;
     }
@@ -168,13 +157,6 @@ public class WorkoutEntity extends BaseEntity {
         return this;
     }
 
-    public boolean isHasStarted() {
-        return hasStarted;
-    }
-
-    public String getDateCompleted() {
-        return dateCompleted;
-    }
 
     public WorkoutEntity setDateCompleted(String dateCompleted) {
         this.dateCompleted = dateCompleted;
@@ -190,21 +172,21 @@ public class WorkoutEntity extends BaseEntity {
         return this;
     }
 
-    public WeekEntity getWeek() {
-        return week;
+
+    public String getDateCompleted() {
+        return dateCompleted;
     }
 
-    public WorkoutEntity setWeek(WeekEntity week) {
-        this.week = week;
+    public boolean isHasStarted() {
+        return hasStarted;
+    }
+
+    public ProgramWeekEntity getProgramWeek() {
+        return programWeek;
+    }
+
+    public WorkoutEntity setProgramWeek(ProgramWeekEntity programWeek) {
+        this.programWeek = programWeek;
         return this;
     }
-
-    //    public DayEntity getDay() {
-//        return day;
-//    }
-//
-//    public WorkoutEntity setDay(DayEntity day) {
-//        this.day = day;
-//        return this;
-//    }
 }

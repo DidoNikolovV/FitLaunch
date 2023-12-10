@@ -6,14 +6,14 @@ public class CommentCreationDTO {
 
     private Long workoutId;
 
-    private String message;
+    private String content;
 
     public CommentCreationDTO() {
     }
 
     public CommentCreationDTO(String authorName, String message) {
         this.authorName = authorName;
-        this.message = message;
+        this.content = message;
     }
 
     public String getAuthorName() {
@@ -25,12 +25,12 @@ public class CommentCreationDTO {
         return this;
     }
 
-    public String getMessage() {
-        return message;
+    public String getContent() {
+        return content;
     }
 
-    public CommentCreationDTO setMessage(String message) {
-        this.message = message;
+    public CommentCreationDTO setContent(String content) {
+        this.content = content;
         return this;
     }
 

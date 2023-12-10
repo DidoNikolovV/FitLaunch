@@ -1,47 +1,73 @@
 package com.softuni.fitlaunch.model.dto.workout;
 
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
+import com.softuni.fitlaunch.model.dto.comment.CommentCreationDTO;
+import com.softuni.fitlaunch.model.dto.program.ProgramWeekDTO;
+import com.softuni.fitlaunch.model.dto.user.UserDTO;
+import com.softuni.fitlaunch.model.entity.CommentEntity;
+import com.softuni.fitlaunch.model.entity.ExerciseEntity;
+import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.model.entity.WorkoutExerciseEntity;
 import com.softuni.fitlaunch.model.enums.LevelEnum;
-import org.springframework.web.multipart.MultipartFile;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class WorkoutDTO {
 
+    @NotNull
     private Long id;
 
+    @NotNull
+    private UserDTO author;
+
+    @NotNull
     private String imgUrl;
 
+    @NotNull
     private String name;
 
+    @Enumerated(EnumType.STRING)
+    @NotNull
     private LevelEnum level;
+
+    @NotNull
     private String description;
 
+    @NotNull
     private List<WorkoutExerciseDTO> workoutExercises = new ArrayList<>();
 
+    @NotNull
+    private List<CommentCreationDTO> comments;
+
+    @NotNull
+    private Integer likes = 0;
+
+
+    @NotNull
     private List<ExerciseDTO> exercises;
 
+
+    @NotNull
     private boolean isCompleted = false;
 
+    @NotNull
     private String dateCompleted;
 
+    @NotNull
+    private boolean hasStarted = false;
 
-    public WorkoutDTO() {
-        this.exercises = new ArrayList<>();
-    }
-
-    public WorkoutDTO(Long id, String name, String imgUrl, LevelEnum level, String description, boolean isCompleted, String dateCompleted) {
-        this.id = id;
-        this.name = name;
-        this.imgUrl = imgUrl;
-        this.level = level;
-        this.description = description;
-        this.isCompleted = isCompleted;
-        this.dateCompleted = dateCompleted;
-    }
+    @NotNull
+    private ProgramWeekDTO programWeek;
 
     public Long getId() {
         return id;
@@ -49,6 +75,24 @@ public class WorkoutDTO {
 
     public WorkoutDTO setId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public UserDTO getAuthor() {
+        return author;
+    }
+
+    public WorkoutDTO setAuthor(UserDTO author) {
+        this.author = author;
+        return this;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public WorkoutDTO setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
         return this;
     }
 
@@ -70,15 +114,6 @@ public class WorkoutDTO {
         return this;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
-    }
-
-    public WorkoutDTO setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-        return this;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -94,6 +129,24 @@ public class WorkoutDTO {
 
     public WorkoutDTO setWorkoutExercises(List<WorkoutExerciseDTO> workoutExercises) {
         this.workoutExercises = workoutExercises;
+        return this;
+    }
+
+    public List<CommentCreationDTO> getComments() {
+        return comments;
+    }
+
+    public WorkoutDTO setComments(List<CommentCreationDTO> comments) {
+        this.comments = comments;
+        return this;
+    }
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public WorkoutDTO setLikes(Integer likes) {
+        this.likes = likes;
         return this;
     }
 
@@ -121,6 +174,24 @@ public class WorkoutDTO {
 
     public WorkoutDTO setDateCompleted(String dateCompleted) {
         this.dateCompleted = dateCompleted;
+        return this;
+    }
+
+    public boolean isHasStarted() {
+        return hasStarted;
+    }
+
+    public WorkoutDTO setHasStarted(boolean hasStarted) {
+        this.hasStarted = hasStarted;
+        return this;
+    }
+
+    public ProgramWeekDTO getProgramWeek() {
+        return programWeek;
+    }
+
+    public WorkoutDTO setProgramWeek(ProgramWeekDTO programWeek) {
+        this.programWeek = programWeek;
         return this;
     }
 }

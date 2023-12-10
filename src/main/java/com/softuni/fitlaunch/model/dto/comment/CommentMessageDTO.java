@@ -10,11 +10,11 @@ public class CommentMessageDTO {
         this.message = message;
     }
 
-    public String getMessage() {
+    public String getContent() {
         return message;
     }
 
-    public CommentMessageDTO setMessage(String message) {
+    public CommentMessageDTO setContent(String message) {
         this.message = message;
         return this;
     }

@@ -5,9 +5,7 @@ import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
-import com.softuni.fitlaunch.model.entity.UserEntity;
-import com.softuni.fitlaunch.model.entity.WorkoutEntity;
-import com.softuni.fitlaunch.model.entity.WorkoutExerciseEntity;
+import com.softuni.fitlaunch.model.entity.*;
 import com.softuni.fitlaunch.model.enums.LevelEnum;
 import com.softuni.fitlaunch.repository.*;
 import org.modelmapper.ModelMapper;
@@ -85,10 +83,8 @@ public class WorkoutService {
                 workoutEntity.getName(),
                 workoutEntity.getLevel(),
                 workoutEntity.getDescription(),
-                workoutEntity.getImgUrl(),
                 exercises,
                 workoutEntity.getLikes(),
-                usersLiked,
                 workoutEntity.hasStarted(),
                 workoutEntity.isCompleted()
         );
@@ -120,7 +116,6 @@ public class WorkoutService {
         userEntity.getWorkoutsStarted().add(workoutEntity);
 
         workoutRepository.save(workoutEntity);
-
     }
 
 
@@ -128,6 +123,7 @@ public class WorkoutService {
     public void completeWorkout(Long workoutId, String username) {
         WorkoutEntity workoutEntity = workoutRepository.findById(workoutId).orElseThrow(() -> new RuntimeException("Workout not found"));
         UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+
 
         workoutEntity.setCompleted(true);
         workoutEntity.setDateCompleted(String.valueOf(LocalDate.now()));
@@ -137,6 +133,7 @@ public class WorkoutService {
         workoutRepository.save(workoutEntity);
         userRepository.save(userEntity);
     }
+
 
     public void completeExercise(Long workoutId, Long exerciseId) {
         List<WorkoutExerciseEntity> workoutExercises = workoutExerciseRepository.findByWorkoutId(workoutId);

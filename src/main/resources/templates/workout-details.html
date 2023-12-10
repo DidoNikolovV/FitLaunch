@@ -15,10 +15,11 @@
 
     <div th:object="${workout}" class="card">
         <div class="card-body bg-dark text-center">
-            <h5 class="card-title text-primary" th:text="*{name}"></h5>
+            <h5 class="card-title text-primary" th:text="*{workout.name}"></h5>
             <div class="d-flex justify-content-center align-items-center mt-3">
                 <div th:if="${hasStarted}">
-                    <form th:method="POST" th:action="@{/workouts/complete/{id}(id=*{id})}">
+<!--                    <form th:method="POST" th:action="@{/workouts/complete/{id}(id=*{id})}">-->
+                    <form th:method="POST" th:action="@{/workouts/complete/{programId}/{weekId}/{id}(programId=${program.id}, weekId=${week.id}, id=${workout.id})}">
                         <div th:unless="${isCompleted}">
                             <input type="submit" name="completeWorkout" id="completeWorkout" class="btn btn-primary" value="Complete Workout">
                         </div>
@@ -28,7 +29,8 @@
                     </form>
                 </div>
                 <div th:unless="${hasStarted}">
-                    <form th:method="POST" th:action="@{/workouts/start/{id}(id=*{id})}">
+<!--                    <form th:method="POST" th:action="@{/workouts/start/{id}(id=*{id})}">-->
+                    <form th:method="POST" th:action="@{/workouts/start/{programId}/{weekId}/{id}(programId=${program.id}, weekId=${week.id}, id=${workout.id})}">
                         <input type="submit" name="startWorkout" id="startWorkout" class="btn btn-success" value="Start Workout">
                     </form>
                 </div>
@@ -36,7 +38,7 @@
 
             <div class="mt-2">
                 <span class="font-weight-bold text-primary">Likes: </span>
-                <span id="likesCount" class="text-primary" th:text="${workout.usersLiked.size()}"></span>
+                <span id="likesCount" class="text-primary" th:text="${workout.workout.likes}"></span>
             </div>
 
             <form id="likesForm" method="POST" th:action="@{/workouts/{id}(id=*{id})}">
@@ -53,11 +55,11 @@
             <ul class="list-group list-group-flush mt-3text-white align-items-center">
                 <li class="list-group-item bg-dark text-white">
                     <span class="font-weight-bold">Level:</span>
-                    <span th:text="${workout.level}">Beginner</span>
+                    <span th:text="${workout.workout.level}">Beginner</span>
                 </li>
                 <li class="list-group-item bg-dark text-white">
                     <span class="font-weight-bold">Description:</span>
-                    <span th:text="${workout.description}">This is a great workout for...</span>
+                    <span th:text="${workout.workout.description}">This is a great workout for...</span>
                 </li>
             </ul>
         </div>
@@ -67,7 +69,7 @@
         <div class="card-body bg-dark primary">
             <h5 class="card-title primary">Exercises</h5>
             <ul class="list-group list-group-flush">
-                <li th:each="exercise: ${allWorkoutExercises}" class="list-group-item bg-dark">
+                <li th:each="exercise: ${workout.workout.exercises}" class="list-group-item bg-dark">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="flex-grow-1">
                             <h6 class="font-weight-bold" th:text="${exercise.getExercise().name}"></h6>
@@ -92,15 +94,15 @@
                             </form>
                         </div>
 
-
                     </div>
                 </li>
             </ul>
         </div>
     </div>
 
-
-
+    <input type="hidden" name="programId" id="programId" th:value="${program.id}">
+    <input type="hidden" name="weekId" id="weekId" th:value="${week.id}">
+    <input type="hidden" name="workoutId" id="workoutId" th:value="${workout.id}">
     <div class="comments my-4 bg-dark text-white" th:unless="${hasStarted}">
         <h1>Comments</h1>
         <div>

@@ -30,7 +30,7 @@ public class SecurityConfiguration {
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         // Allow anyone to see the home page, the registration page and the login form
                         .requestMatchers("/", "/users/login", "/users/register", "/users/login-error").permitAll()
-                        .requestMatchers("/workouts/all", "/workouts/history").hasAnyRole(UserRoleEnum.ADMIN.name(), UserRoleEnum.USER.name())
+                        .requestMatchers("/workouts/all", "/workouts/history", "/workouts/**").hasAnyRole(UserRoleEnum.ADMIN.name(), UserRoleEnum.USER.name())
                         .requestMatchers(HttpMethod.GET, "/workout/**", "/comments/**").permitAll()
                         .requestMatchers("/api/**").permitAll()
                         .requestMatchers("/error").permitAll()

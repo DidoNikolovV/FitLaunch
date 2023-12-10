@@ -9,8 +9,6 @@ import com.softuni.fitlaunch.model.entity.*;
 import com.softuni.fitlaunch.service.*;
 import com.softuni.fitlaunch.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,8 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -185,7 +181,6 @@ public class WorkoutController {
         }
 
 
-
         return "redirect:/workouts/" + id;
     }
 
@@ -202,6 +197,7 @@ public class WorkoutController {
 
         WorkoutDetailsDTO workoutDetails = workoutService.getWorkoutDetails(id).orElseThrow(() -> new RuntimeException("Workout not found"));
         String currentUserUsername = principal.getName();
+
 
         workoutService.completeWorkout(workoutDetails.getId(), currentUserUsername);
 

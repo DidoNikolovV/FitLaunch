@@ -1,6 +1,8 @@
 const url = 'http://localhost:8080'
 
 const workoutId = document.getElementById('workoutId').value
+const weekId = document.getElementById('weekId').value
+const programId = document.getElementById('programId').value
 const commentForm = document.getElementById('commentForm')
 commentForm.addEventListener('submit', postComment)
 
@@ -9,6 +11,8 @@ const csrfHeaderValue = document.head.querySelector('[name=_csrf]').content
 
 const commentContainer = document.getElementById('commentCtnr');
 const showCommentsBtn = document.getElementById('showComments');
+
+
 
 
 async function postComment(e) {
@@ -55,7 +59,7 @@ async function deleteComment(commentId) {
         })
 }
 
-fetch(`${url}/api/${workoutId}/comments`, {
+fetch(`${url}/api/${programId}/${weekId}/${workoutId}/comments`, {
     headers: {
         "Accept": "application/json"
     }

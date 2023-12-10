@@ -68,34 +68,33 @@ VALUES
     ('/images/intermediate-program.jpg', 'Intermediate'),
     ('/images/advanced-program.jpg', 'Advanced');
 
-INSERT INTO weeks (program_id)
+-- Insert data into ProgramWeekEntity
+INSERT INTO programs_weeks (id, program_id)
 VALUES
-    (1), (1), (1), (1), -- Program 1
-    (2), (2), (2), (2), -- Program 2
-    (3), (3), (3), (3); -- Program 2
+        (1, 1),
+        (2, 1),
+        (3, 1),
+        (4, 1);
 
--- Program 1
-INSERT INTO week_workouts (week_id, workout_id)
+-- Insert data into ProgramWeekWorkoutEntity
+INSERT INTO programs_weeks_workouts (id, program_week_id, workout_id, has_started, is_completed)
 VALUES
-    (1, 1), (1, 2), (1, 3), (1, 4),
-    (2, 2), (2, 1), (2, 4), (2, 3),
-    (3, 1), (3, 2), (3, 3), (3, 4),
-    (4, 2), (4, 4), (4, 1), (4, 3);
--- INSERT INTO week_workouts (week_id, workout_id) VALUES (
--- INSERT INTO week_workouts (week_id, workout_id) VALUES
--- INSERT INTO week_workouts (week_id, workout_id) VALUES
-
--- -- Program 2
--- INSERT INTO week_workouts (week_id, workout_id) VALUES (16, 1), (17, 2), (18, 3), (19, 4);
--- INSERT INTO week_workouts (week_id, workout_id) VALUES (21, 1), (22, 2), (23, 3), (24, 4);
--- INSERT INTO week_workouts (week_id, workout_id) VALUES (26, 1), (27, 2), (28, 3), (29, 4);
---
--- -- Program 3
--- INSERT INTO week_workouts (week_id, workout_id) VALUES (31, 1), (32, 2), (33, 3), (34, 4);
--- INSERT INTO week_workouts (week_id, workout_id) VALUES (36, 1), (37, 2), (38, 3), (39, 4);
--- INSERT INTO week_workouts (week_id, workout_id) VALUES (41, 1), (42, 2), (43, 3), (44, 4);
-
-
+        (1, 1, 1, 0, 0),
+        (2, 1, 2, 0, 0),
+        (3, 1, 3, 0, 0),
+        (4, 1, 4, 0, 0),
+        (5, 2, 2, 0, 0),
+        (6, 2, 4, 0, 0),
+        (7, 2, 1, 0, 0),
+        (8, 2, 3, 0, 0),
+        (9, 3, 3, 0, 0),
+        (10, 3, 4, 0, 0),
+        (11, 3, 1, 0, 0),
+        (12, 3, 2, 0, 0),
+        (13, 4, 1, 0, 0),
+        (14, 4, 2, 0, 0),
+        (15, 4, 3, 0, 0),
+        (16, 4, 4, 0, 0);
 
 
 

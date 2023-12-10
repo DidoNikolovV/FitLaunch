@@ -15,8 +15,6 @@ public class ProgramEntity extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "program", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<WeekEntity> weeks;
 
     public String getImgUrl() {
         return imgUrl;
@@ -36,17 +34,4 @@ public class ProgramEntity extends BaseEntity {
         return this;
     }
 
-    public List<WeekEntity> getWeeks() {
-        return weeks;
-    }
-
-    public ProgramEntity setWeeks(List<WeekEntity> weeks) {
-        this.weeks = weeks;
-        return this;
-    }
-
-    public void addWeek(WeekEntity week) {
-        this.weeks.add(week);
-        week.setProgram(this);
-    }
 }

@@ -26,24 +26,22 @@ public class WorkoutDetailsDTO {
 
     private List<UserDTO> usersLiked;
 
-
-
     private boolean hasStarted;
 
     private boolean isCompleted;
 
+    public WorkoutDetailsDTO() {
+    }
 
-
-    public WorkoutDetailsDTO(Long id, String name, LevelEnum level, String description, String imgUrl, List<WorkoutExerciseEntity> exercises,
-                             Integer likes, List<UserDTO> usersLiked, boolean hasStarted, boolean isCompleted) {
+    public WorkoutDetailsDTO(Long id, String name, LevelEnum level, String description, List<WorkoutExerciseEntity> exercises, Integer likes, boolean hasStarted, boolean isCompleted) {
         this.id = id;
         this.name = name;
         this.level = level;
         this.description = description;
-        this.imgUrl = imgUrl;
+//        this.imgUrl = imgUrl;
         this.exercises = exercises;
         this.likes = likes;
-        this.usersLiked = usersLiked;
+//        this.usersLiked = usersLiked;
         this.hasStarted = hasStarted;
         this.isCompleted = isCompleted;
     }
@@ -137,5 +135,4 @@ public class WorkoutDetailsDTO {
         isCompleted = completed;
         return this;
     }
-
 }

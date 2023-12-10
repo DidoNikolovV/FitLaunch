@@ -14,7 +14,13 @@ public class CommentEntity extends BaseEntity{
     private UserEntity author;
 
     @ManyToOne
-    private WorkoutEntity workout;
+    private ProgramWeekWorkoutEntity workout;
+
+    @ManyToOne
+    private ProgramEntity program;
+
+    @ManyToOne
+    private ProgramWeekEntity week;
 
     @Column(nullable = false)
     private String content;
@@ -37,12 +43,30 @@ public class CommentEntity extends BaseEntity{
         return this;
     }
 
-    public WorkoutEntity getWorkout() {
+    public ProgramWeekWorkoutEntity getWorkout() {
         return workout;
     }
 
-    public CommentEntity setWorkout(WorkoutEntity workout) {
+    public CommentEntity setWorkout(ProgramWeekWorkoutEntity workout) {
         this.workout = workout;
+        return this;
+    }
+
+    public ProgramEntity getProgram() {
+        return program;
+    }
+
+    public CommentEntity setProgram(ProgramEntity program) {
+        this.program = program;
+        return this;
+    }
+
+    public ProgramWeekEntity getWeek() {
+        return week;
+    }
+
+    public CommentEntity setWeek(ProgramWeekEntity week) {
+        this.week = week;
         return this;
     }
 }

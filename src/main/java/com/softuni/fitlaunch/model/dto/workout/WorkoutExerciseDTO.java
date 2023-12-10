@@ -2,29 +2,30 @@ package com.softuni.fitlaunch.model.dto.workout;
 
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
 import com.softuni.fitlaunch.model.entity.WorkoutEntity;
-
-import java.time.LocalDate;
+import jakarta.validation.constraints.NotNull;
 
 
 public class WorkoutExerciseDTO {
+
+    @NotNull
     private Long id;
 
+    @NotNull
     private WorkoutDTO workout;
+    @NotNull
     private ExerciseDTO exercise;
+
+    @NotNull
     private int sets;
+
+    @NotNull
     private int reps;
 
+    @NotNull
+    private String videoUrl;
 
-    public WorkoutExerciseDTO() {
-    }
-
-    public WorkoutExerciseDTO(Long id, WorkoutDTO workout, ExerciseDTO exercise, int sets, int reps) {
-        this.id = id;
-        this.workout = workout;
-        this.exercise = exercise;
-        this.sets = sets;
-        this.reps = reps;
-    }
+    @NotNull
+    private boolean isCompleted;
 
     public Long getId() {
         return id;
@@ -68,6 +69,24 @@ public class WorkoutExerciseDTO {
 
     public WorkoutExerciseDTO setReps(int reps) {
         this.reps = reps;
+        return this;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public WorkoutExerciseDTO setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+        return this;
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public WorkoutExerciseDTO setCompleted(boolean completed) {
+        isCompleted = completed;
         return this;
     }
 }

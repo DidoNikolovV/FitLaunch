@@ -10,7 +10,6 @@ import com.softuni.fitlaunch.model.enums.UserRoleEnum;
 import com.softuni.fitlaunch.service.CommentService;
 import com.softuni.fitlaunch.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -32,9 +31,15 @@ public class CommentsRestController {
         this.userService = userService;
     }
 
+
     @GetMapping("/{workoutId}/comments/{commentId}")
     public ResponseEntity<CommentView> getComment(@PathVariable("commentId") Long commentId) {
         return ResponseEntity.ok(mapToCommentView(commentService.getComment(commentId)));
+    }
+
+    @GetMapping("/{programId}/{weekId}/{workoutId}/comments")
+    public ResponseEntity<List<CommentView>> getAllCommentsForWorkout(@PathVariable("programId") Long programId, @PathVariable("weekId") Long weekId, @PathVariable("workoutId") Long workoutId) {
+        return ResponseEntity.ok(commentService.getAllCommentsForWorkout(programId, weekId, workoutId));
     }
 
     @GetMapping("/{workoutId}/comments")
@@ -51,7 +56,7 @@ public class CommentsRestController {
 
         CommentCreationDTO commentDTO = new CommentCreationDTO(
                 user.getUsername(),
-                commentMessageDTO.getMessage()
+                commentMessageDTO.getContent()
         );
 
         CommentEntity commentEntity = commentService.addComment(commentDTO, workoutId, user);

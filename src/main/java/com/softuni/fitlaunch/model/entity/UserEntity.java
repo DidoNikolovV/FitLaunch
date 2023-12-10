@@ -1,6 +1,5 @@
 package com.softuni.fitlaunch.model.entity;
 
-import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 
