@@ -7,9 +7,11 @@ import com.softuni.fitlaunch.model.dto.program.ProgramWeekWorkoutDTO;
 import com.softuni.fitlaunch.model.entity.ProgramEntity;
 import com.softuni.fitlaunch.model.entity.ProgramWeekEntity;
 import com.softuni.fitlaunch.model.entity.ProgramWeekWorkoutEntity;
+import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.repository.ProgramRepository;
 import com.softuni.fitlaunch.repository.ProgramWeekRepository;
 import com.softuni.fitlaunch.repository.ProgramWeekWorkoutRepository;
+import com.softuni.fitlaunch.repository.UserRepository;
 import com.softuni.fitlaunch.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -26,13 +28,16 @@ public class ProgramService {
 
     private final ProgramWeekWorkoutRepository programWeekWorkoutRepository;
 
+    private final UserRepository userRepository;
+
     private final ModelMapper modelMapper;
 
 
-    public ProgramService(ProgramRepository programRepository, ProgramWeekRepository programWeekRepository, ProgramWeekWorkoutRepository programWeekWorkoutRepository, ModelMapper modelMapper) {
+    public ProgramService(ProgramRepository programRepository, ProgramWeekRepository programWeekRepository, ProgramWeekWorkoutRepository programWeekWorkoutRepository, UserRepository userRepository, ModelMapper modelMapper) {
         this.programRepository = programRepository;
         this.programWeekRepository = programWeekRepository;
         this.programWeekWorkoutRepository = programWeekWorkoutRepository;
+        this.userRepository = userRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -67,5 +72,19 @@ public class ProgramService {
 
     public ProgramEntity getById(Long programId) {
         return programRepository.findById(programId).orElseThrow(() -> new ObjectNotFoundException("Program with id " + programId + " not found"));
+    }
+
+    public ProgramWeekWorkoutDTO getProgramWorkout(Long programId, Long weekId, Long workoutId, String loggedUserUsername) {
+        ProgramWeekWorkoutEntity programWeekWorkout = programWeekWorkoutRepository.findByProgramWeekIdAndWorkoutId(weekId, workoutId).orElseThrow(() -> new ObjectNotFoundException("Workout was not found"));
+        ProgramWeekWorkoutDTO programWeekWorkoutDTO = modelMapper.map(programWeekWorkout, ProgramWeekWorkoutDTO.class);
+
+        programWeekWorkout.setHasStarted(true);
+        UserEntity user = userRepository.findByUsername(loggedUserUsername).orElseThrow(() -> new ObjectNotFoundException("User with " + loggedUserUsername + " doesn't exist"));
+        user.getWorkoutsStarted().add(programWeekWorkout);
+
+        programWeekWorkoutRepository.save(programWeekWorkout);
+        userRepository.save(user);
+
+        return programWeekWorkoutDTO;
     }
 }

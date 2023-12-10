@@ -56,7 +56,7 @@ public class UserEntity extends BaseEntity {
             name = "workouts_started",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "workout_id"))
-    private List<WorkoutEntity> workoutsStarted = new ArrayList<>();
+    private List<ProgramWeekWorkoutEntity> workoutsStarted = new ArrayList<>();
 
 
     private boolean activated = false;
@@ -152,11 +152,11 @@ public class UserEntity extends BaseEntity {
         return this;
     }
 
-    public List<WorkoutEntity> getWorkoutsStarted() {
+    public List<ProgramWeekWorkoutEntity> getWorkoutsStarted() {
         return workoutsStarted;
     }
 
-    public UserEntity setWorkoutsStarted(List<WorkoutEntity> workoutsStarted) {
+    public UserEntity setWorkoutsStarted(List<ProgramWeekWorkoutEntity> workoutsStarted) {
         this.workoutsStarted = workoutsStarted;
         return this;
     }

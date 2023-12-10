@@ -108,15 +108,15 @@ public class WorkoutService {
         workoutRepository.save(workoutEntity);
     }
 
-    public void startWorkout(Long workoutId, String username) {
-        WorkoutEntity workoutEntity = workoutRepository.findById(workoutId).orElseThrow(() -> new RuntimeException("Workout not found"));
-        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
-
-        workoutEntity.setHasStarted(true);
-        userEntity.getWorkoutsStarted().add(workoutEntity);
-
-        workoutRepository.save(workoutEntity);
-    }
+//    public void startWorkout(Long workoutId, String username) {
+//        WorkoutEntity workoutEntity = workoutRepository.findById(workoutId).orElseThrow(() -> new RuntimeException("Workout not found"));
+//        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+//
+//        workoutEntity.setHasStarted(true);
+//        userEntity.getWorkoutsStarted().add(workoutEntity);
+//
+//        workoutRepository.save(workoutEntity);
+//    }
 
 
     @Transactional

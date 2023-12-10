@@ -1,19 +1,14 @@
 package com.softuni.fitlaunch.service;
 
 
+import com.softuni.fitlaunch.model.dto.program.ProgramWeekWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.dto.user.UserRegisterDTO;
 import com.softuni.fitlaunch.model.dto.user.UserRoleDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
-import com.softuni.fitlaunch.model.entity.UserActivationCodeEntity;
-import com.softuni.fitlaunch.model.entity.UserEntity;
-import com.softuni.fitlaunch.model.entity.UserRoleEntity;
-import com.softuni.fitlaunch.model.entity.WorkoutEntity;
+import com.softuni.fitlaunch.model.entity.*;
 import com.softuni.fitlaunch.model.events.UserRegisteredEvent;
-import com.softuni.fitlaunch.repository.RoleRepository;
-import com.softuni.fitlaunch.repository.UserActivationCodeRepository;
-import com.softuni.fitlaunch.repository.UserRepository;
-import com.softuni.fitlaunch.repository.WorkoutRepository;
+import com.softuni.fitlaunch.repository.*;
 import com.softuni.fitlaunch.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationEventPublisher;
@@ -40,6 +35,7 @@ public class UserService {
     private final ApplicationEventPublisher applicationEventPublisher;
 
     private final UserActivationCodeRepository userActivationCodeRepository;
+
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, WorkoutRepository workoutRepository, ModelMapper modelMapper, ApplicationEventPublisher applicationEventPublisher, UserActivationCodeRepository userActivationCodeRepository) {
         this.userRepository = userRepository;
@@ -96,7 +92,26 @@ public class UserService {
     }
 
     public UserEntity getUserByUsername(String username) {
-        return userRepository.findByUsername(username).orElse(null);
+        return userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User with " + username + " doesn't exist"));
+    }
+
+    public void startProgramWorkout(String username, ProgramWeekWorkoutDTO programWeekWorkoutDTO) {
+        UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User with " + username + " doesn't exist"));
+        ProgramWeekWorkoutEntity programWeekWorkoutEntity = modelMapper.map(programWeekWorkoutDTO, ProgramWeekWorkoutEntity.class);
+        user.getWorkoutsStarted().add(programWeekWorkoutEntity);
+        userRepository.save(user);
+    }
+
+    public boolean isWorkoutStarted(String username, ProgramWeekWorkoutDTO programWeekWorkoutDTO) {
+        UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User with " + username + " doesn't exist"));
+        ProgramWeekWorkoutEntity programWeekWorkoutEntity = modelMapper.map(programWeekWorkoutDTO, ProgramWeekWorkoutEntity.class);
+        for (ProgramWeekWorkoutEntity weekWorkoutEntity : user.getWorkoutsStarted()) {
+            if(weekWorkoutEntity.getId().equals(programWeekWorkoutDTO.getId())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void changeUserRole(Long userId, UserRoleEntity role) {

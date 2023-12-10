@@ -125,7 +125,7 @@ public class WorkoutController {
         boolean hasStarted = false;
 
 
-        for (WorkoutEntity workoutEntity : currentLoggedUser.getWorkoutsStarted()) {
+        for (ProgramWeekWorkoutEntity workoutEntity : currentLoggedUser.getWorkoutsStarted()) {
             if(workoutEntity.getId().equals(workout.getId())) {
                 hasStarted = true;
                 break;
@@ -184,13 +184,13 @@ public class WorkoutController {
         return "redirect:/workouts/" + id;
     }
 
-    @PostMapping("/workouts/start/{id}")
-    public String workoutStart(@PathVariable("id") Long id, Principal principal) {
-
-        workoutService.startWorkout(id, principal.getName());
-
-        return "redirect:/workouts/" + id;
-    }
+//    @PostMapping("/workouts/start/{id}")
+//    public String workoutStart(@PathVariable("id") Long id, Principal principal) {
+//
+//        workoutService.startWorkout(id, principal.getName());
+//
+//        return "redirect:/workouts/" + id;
+//    }
 
     @PostMapping("/workouts/complete/{id}")
     public String workoutComplete(@PathVariable("id") Long id, Principal principal) {
