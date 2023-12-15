@@ -10,8 +10,6 @@ import java.util.List;
 
 public class UserDTO {
 
-    private Long id;
-
     private String username;
 
     private String email;
@@ -23,35 +21,27 @@ public class UserDTO {
 
     private List<CommentCreationDTO> comments;
 
-    private List<WorkoutDTO> likedWorkouts;
+    private List<ProgramWeekWorkoutDTO> workoutsLiked;
 
     private List<ProgramWeekWorkoutDTO> workoutsCompleted;
 
     private List<ProgramWeekWorkoutDTO> workoutStarted;
 
+    private boolean activated = false;
+
     public UserDTO() {
     }
 
-    public UserDTO(Long id, String username, String email, List<UserRoleEntity> roles, String membership,
-                   List<CommentCreationDTO> comments, List<WorkoutDTO> likedWorkouts, List<ProgramWeekWorkoutDTO> workoutsCompleted, List<ProgramWeekWorkoutDTO> workoutStarted) {
-        this.id = id;
+    public UserDTO(String username, String email, List<UserRoleEntity> roles, String membership, List<CommentCreationDTO> comments, List<ProgramWeekWorkoutDTO> workoutsLiked, List<ProgramWeekWorkoutDTO> workoutsCompleted, List<ProgramWeekWorkoutDTO> workoutStarted, boolean activated) {
         this.username = username;
         this.email = email;
         this.roles = roles;
         this.membership = membership;
         this.comments = comments;
-        this.likedWorkouts = likedWorkouts;
+        this.workoutsLiked = workoutsLiked;
         this.workoutsCompleted = workoutsCompleted;
         this.workoutStarted = workoutStarted;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public UserDTO setId(Long id) {
-        this.id = id;
-        return this;
+        this.activated = activated;
     }
 
     public String getUsername() {
@@ -99,14 +89,6 @@ public class UserDTO {
         return this;
     }
 
-    public List<WorkoutDTO> getLikedWorkouts() {
-        return likedWorkouts;
-    }
-
-    public UserDTO setLikedWorkouts(List<WorkoutDTO> likedWorkouts) {
-        this.likedWorkouts = likedWorkouts;
-        return this;
-    }
 
     public List<ProgramWeekWorkoutDTO> getWorkoutsCompleted() {
         return workoutsCompleted;
@@ -123,6 +105,24 @@ public class UserDTO {
 
     public UserDTO setWorkoutStarted(List<ProgramWeekWorkoutDTO> workoutStarted) {
         this.workoutStarted = workoutStarted;
+        return this;
+    }
+
+    public List<ProgramWeekWorkoutDTO> getWorkoutsLiked() {
+        return workoutsLiked;
+    }
+
+    public UserDTO setWorkoutsLiked(List<ProgramWeekWorkoutDTO> workoutsLiked) {
+        this.workoutsLiked = workoutsLiked;
+        return this;
+    }
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public UserDTO setActivated(boolean activated) {
+        this.activated = activated;
         return this;
     }
 

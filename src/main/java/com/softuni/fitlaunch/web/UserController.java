@@ -1,5 +1,6 @@
 package com.softuni.fitlaunch.web;
 
+import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.dto.user.UserRegisterDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import com.softuni.fitlaunch.model.entity.UserEntity;
@@ -55,7 +56,7 @@ public class UserController {
     public String onFailure(@ModelAttribute("username") String username,
                             Model model) {
 
-        UserEntity user = userService.getUserByUsername(username);
+        UserDTO user = userService.getUserByUsername(username);
 
         if(user != null) {
             if(user.isActivated()) {
@@ -153,7 +154,7 @@ public class UserController {
 
     @PostMapping("/upgrade/{membership}")
     public String membershipPlans(@PathVariable("membership") String membership, Principal principal) {
-        UserEntity loggedUser = userService.getUserByUsername(principal.getName());
+        UserDTO loggedUser = userService.getUserByUsername(principal.getName());
 
         userService.changeMembership(loggedUser, membership);
 

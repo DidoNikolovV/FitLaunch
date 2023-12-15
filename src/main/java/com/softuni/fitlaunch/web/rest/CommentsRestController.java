@@ -3,6 +3,7 @@ package com.softuni.fitlaunch.web.rest;
 
 import com.softuni.fitlaunch.model.dto.comment.CommentCreationDTO;
 import com.softuni.fitlaunch.model.dto.comment.CommentMessageDTO;
+import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.dto.view.CommentView;
 import com.softuni.fitlaunch.model.entity.CommentEntity;
 import com.softuni.fitlaunch.model.entity.UserEntity;
@@ -47,24 +48,28 @@ public class CommentsRestController {
         return ResponseEntity.ok(commentService.getAllCommentsForWorkout(workoutId));
     }
 
-    @PostMapping(value = "/{workoutId}/comments", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<CommentView> postComment(@PathVariable("workoutId") Long workoutId,
+    @PostMapping(value = "/{programId}/{weekId}/{workoutId}/comments", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<CommentView> postComment(@PathVariable("programId") Long programId,
+                                                   @PathVariable("weekId") Long weekId,
+                                                    @PathVariable("workoutId") Long workoutId,
                                                    @RequestBody CommentMessageDTO commentMessageDTO,
                                                    Principal principal) {
 
-        UserEntity user = userService.getUserByUsername(principal.getName());
+        UserDTO user = userService.getUserByUsername(principal.getName());
 
         CommentCreationDTO commentDTO = new CommentCreationDTO(
                 user.getUsername(),
-                commentMessageDTO.getContent()
+                programId,
+                weekId,
+                workoutId,
+                commentMessageDTO.getMessage()
         );
 
-        CommentEntity commentEntity = commentService.addComment(commentDTO, workoutId, user);
+        CommentView commentView = commentService.addComment(commentDTO);
 
-        CommentView commentView = mapToCommentView(commentEntity);
 
         return ResponseEntity.created(
-                URI.create(String.format(("/api/%d/comments/%d"), workoutId, commentEntity.getId()))
+                URI.create(String.format("/api/%d/%d/%d/comments/%d", programId, weekId, workoutId, commentView.getId()))
         ).body(commentView);
     }
 
@@ -72,13 +77,13 @@ public class CommentsRestController {
     @DeleteMapping("/{workoutId}/comments/{commentId}")
     public ResponseEntity<CommentView> deleteCommentById(@PathVariable("commentId") Long commentId, Principal principal) {
 
-        UserEntity user = userService.getUserByUsername(principal.getName());
+        UserDTO user = userService.getUserByUsername(principal.getName());
 
         CommentEntity comment = commentService.getComment(commentId);
 
-        if(user.getRoles().stream().anyMatch(r -> r.getRole().equals(UserRoleEnum.ADMIN)) || user.getId() == comment.getAuthor().getId()) {
-            CommentEntity deleted = commentService.deleteCommentById(commentId);
-            return ResponseEntity.ok(mapToCommentView(deleted));
+        if(user.getRoles().stream().anyMatch(r -> r.getRole().equals(UserRoleEnum.ADMIN)) || user.getUsername().equals(comment.getAuthor().getUsername())) {
+            CommentView deleted = commentService.deleteCommentById(commentId);
+            return ResponseEntity.ok(deleted);
         }
 
         return ResponseEntity

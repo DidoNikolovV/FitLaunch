@@ -1,12 +1,7 @@
 package com.softuni.fitlaunch.model.dto.program;
 
 import com.softuni.fitlaunch.model.dto.comment.CommentCreationDTO;
-import com.softuni.fitlaunch.model.dto.user.UserDTO;
-import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
-import com.softuni.fitlaunch.model.entity.UserEntity;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
@@ -32,7 +27,8 @@ public class ProgramWeekWorkoutDTO {
 
     private List<CommentCreationDTO> comments;
 
-    private List<UserDTO> usersCompleted;
+    private Long likes = 0L;
+
     public Long getId() {
         return id;
     }
@@ -87,12 +83,13 @@ public class ProgramWeekWorkoutDTO {
         return this;
     }
 
-    public List<UserDTO> getUsersCompleted() {
-        return usersCompleted;
+
+    public Long getLikes() {
+        return likes;
     }
 
-    public ProgramWeekWorkoutDTO setUsersCompleted(List<UserDTO> usersCompleted) {
-        this.usersCompleted = usersCompleted;
+    public ProgramWeekWorkoutDTO setLikes(Long likes) {
+        this.likes = likes;
         return this;
     }
 }

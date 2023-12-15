@@ -30,6 +30,8 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final WorkoutRepository workoutRepository;
 
+    private final ProgramWeekWorkoutRepository programWeekWorkoutRepository;
+
     private final ModelMapper modelMapper;
 
     private final ApplicationEventPublisher applicationEventPublisher;
@@ -37,11 +39,12 @@ public class UserService {
     private final UserActivationCodeRepository userActivationCodeRepository;
 
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, WorkoutRepository workoutRepository, ModelMapper modelMapper, ApplicationEventPublisher applicationEventPublisher, UserActivationCodeRepository userActivationCodeRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, WorkoutRepository workoutRepository, ProgramWeekWorkoutRepository programWeekWorkoutRepository, ModelMapper modelMapper, ApplicationEventPublisher applicationEventPublisher, UserActivationCodeRepository userActivationCodeRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
         this.workoutRepository = workoutRepository;
+        this.programWeekWorkoutRepository = programWeekWorkoutRepository;
         this.modelMapper = modelMapper;
         this.applicationEventPublisher = applicationEventPublisher;
         this.userActivationCodeRepository = userActivationCodeRepository;
@@ -91,8 +94,10 @@ public class UserService {
         return userRepository.findById(id).get();
     }
 
-    public UserEntity getUserByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User with " + username + " doesn't exist"));
+    public UserDTO getUserByUsername(String username) {
+        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User with " + username + " doesn't exist"));
+        return modelMapper.map(userEntity, UserDTO.class);
+
     }
 
     public void startProgramWorkout(String username, ProgramWeekWorkoutDTO programWeekWorkoutDTO) {
@@ -125,6 +130,45 @@ public class UserService {
         UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User with " + username + " doesn't exist"));
         for (ProgramWeekWorkoutEntity weekWorkoutEntity : user.getWorkoutsCompleted()) {
             if(weekWorkoutEntity.getId().equals(programWeekWorkoutDTO.getId())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void like(UserDTO loggedUser, Long workoutId) {
+        UserEntity userEntity = userRepository.findByUsername(loggedUser.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
+        ProgramWeekWorkoutEntity workoutEntity = programWeekWorkoutRepository.findById(workoutId).orElseThrow(() -> new RuntimeException("Workout not found"));
+        Long oldLikes = workoutEntity.getLikes();
+        userEntity.getWorkoutsLiked().add(workoutEntity);
+        workoutEntity.setLikes(oldLikes + 1);
+
+
+        programWeekWorkoutRepository.save(workoutEntity);
+        userRepository.save(userEntity);
+    }
+
+    public void dislike(UserDTO loggedUser, Long workoutId) {
+        UserEntity userEntity = userRepository.findByUsername(loggedUser.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
+        ProgramWeekWorkoutEntity workoutEntity = programWeekWorkoutRepository.findById(workoutId).orElseThrow(() -> new RuntimeException("Workout not found"));
+
+        Long oldLikes = workoutEntity.getLikes();
+        userEntity.getWorkoutsLiked().remove(workoutEntity);
+        if(oldLikes - 1 < 0) {
+            workoutEntity.setLikes(0L);
+        } else {
+            workoutEntity.setLikes(oldLikes - 1);
+        }
+
+        programWeekWorkoutRepository.save(workoutEntity);
+        userRepository.save(userEntity);
+    }
+
+    public boolean isWorkoutLiked(UserDTO loggedUser, ProgramWeekWorkoutDTO programWeekWorkoutDTO) {
+        UserEntity user = userRepository.findByUsername(loggedUser.getUsername()).orElseThrow(() -> new ObjectNotFoundException("User with " + loggedUser.getUsername() + " doesn't exist"));
+        for (ProgramWeekWorkoutEntity likedWorkout : user.getWorkoutsLiked()) {
+            if(likedWorkout.getId().equals(programWeekWorkoutDTO.getId())) {
                 return true;
             }
         }
@@ -200,9 +244,10 @@ public class UserService {
     }
 
 
-    public void changeMembership(UserEntity loggedUser, String membership) {
-        loggedUser.setMembership(membership);
-        userRepository.save(loggedUser);
+    public void changeMembership(UserDTO loggedUser, String membership) {
+        UserEntity userEntity = userRepository.findByUsername(loggedUser.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User with username " + loggedUser.getUsername() + " was not found"));
+        userEntity.setMembership(membership);
+        userRepository.save(userEntity);
     }
 
 

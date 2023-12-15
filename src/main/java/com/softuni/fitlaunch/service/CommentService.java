@@ -2,12 +2,8 @@ package com.softuni.fitlaunch.service;
 
 import com.softuni.fitlaunch.model.dto.comment.CommentCreationDTO;
 import com.softuni.fitlaunch.model.dto.view.CommentView;
-import com.softuni.fitlaunch.model.entity.CommentEntity;
-import com.softuni.fitlaunch.model.entity.UserEntity;
-import com.softuni.fitlaunch.model.entity.WorkoutEntity;
-import com.softuni.fitlaunch.repository.CommentRepository;
-import com.softuni.fitlaunch.repository.ProgramWeekWorkoutRepository;
-import com.softuni.fitlaunch.repository.WorkoutRepository;
+import com.softuni.fitlaunch.model.entity.*;
+import com.softuni.fitlaunch.repository.*;
 import com.softuni.fitlaunch.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -20,13 +16,22 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     private final WorkoutRepository workoutRepository;
+
+    private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+
+    private final ProgramRepository programRepository;
+
+    private final ProgramWeekRepository programWeekRepository;
     private final ProgramWeekWorkoutRepository programWeekWorkoutRepository;
 
-    public CommentService(CommentRepository commentRepository, WorkoutRepository workoutRepository, ModelMapper modelMapper, ProgramWeekWorkoutRepository programWeekWorkoutRepository) {
+    public CommentService(CommentRepository commentRepository, WorkoutRepository workoutRepository, UserRepository userRepository, ModelMapper modelMapper, ProgramRepository programRepository, ProgramWeekRepository programWeekRepository, ProgramWeekWorkoutRepository programWeekWorkoutRepository) {
         this.commentRepository = commentRepository;
         this.workoutRepository = workoutRepository;
+        this.userRepository = userRepository;
         this.modelMapper = modelMapper;
+        this.programRepository = programRepository;
+        this.programWeekRepository = programWeekRepository;
         this.programWeekWorkoutRepository = programWeekWorkoutRepository;
     }
 
@@ -49,15 +54,24 @@ public class CommentService {
     }
 
 
-    public CommentEntity addComment(CommentCreationDTO commentDTO, Long workoutId, UserEntity author) {
+    public CommentView addComment(CommentCreationDTO commentDTO) {
+        UserEntity authorEntity = userRepository.findByUsername(commentDTO.getAuthorName()).get();
+
+        ProgramEntity programEntity = programRepository.findById(commentDTO.getProgramId()).orElseThrow(() -> new ObjectNotFoundException("Program with id " + commentDTO.getProgramId() + " was not found"));
+        ProgramWeekEntity programWeekEntity = programWeekRepository.findById(commentDTO.getWeekId()).orElseThrow(() -> new ObjectNotFoundException("Week with id " + commentDTO.getWeekId() + " was not found"));
+        ProgramWeekWorkoutEntity programWeekWorkoutEntity = programWeekWorkoutRepository.findById(commentDTO.getWorkoutId()).orElseThrow(() -> new ObjectNotFoundException("Workout with id " + commentDTO.getWorkoutId() + " was not found"));
+
 
         CommentEntity comment = new CommentEntity();
-        comment.setWorkout(programWeekWorkoutRepository.findById(workoutId).get());
-        comment.setAuthor(author);
-        comment.setContent(commentDTO.getContent());
+        comment.setProgram(programEntity);
+        comment.setWeek(programWeekEntity);
+        comment.setWorkout(programWeekWorkoutEntity);
+        comment.setAuthor(authorEntity);
+        comment.setContent(commentDTO.getMessage());
         commentRepository.save(comment);
 
-        return comment;
+        return new CommentView(comment.getId(), authorEntity.getUsername(), comment.getContent());
+
     }
 
     public CommentEntity getComment(Long id) {
@@ -65,11 +79,11 @@ public class CommentService {
     }
 
 
-    public CommentEntity deleteCommentById(Long id) {
+    public CommentView deleteCommentById(Long id) {
         CommentEntity comment = this.getComment(id);
         commentRepository.deleteById(comment.getId());
 
-        return comment;
+        return new CommentView(comment.getId(),comment.getAuthor().getUsername(), comment.getContent());
     }
 
 }

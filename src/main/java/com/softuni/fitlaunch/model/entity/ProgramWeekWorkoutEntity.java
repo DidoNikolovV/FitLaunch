@@ -2,6 +2,7 @@ package com.softuni.fitlaunch.model.entity;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Positive;
 
 import java.util.List;
 
@@ -27,9 +28,9 @@ public class ProgramWeekWorkoutEntity extends BaseEntity{
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL)
     private List<CommentEntity> comments;
 
+    @Column(columnDefinition = "BIGINT DEFAULT 0")
+    private Long likes;
 
-    @ManyToMany
-    private List<UserEntity> usersCompleted;
 
     public ProgramWeekEntity getProgramWeek() {
         return programWeek;
@@ -76,12 +77,12 @@ public class ProgramWeekWorkoutEntity extends BaseEntity{
         return this;
     }
 
-    public List<UserEntity> getUsersCompleted() {
-        return usersCompleted;
+    public Long getLikes() {
+        return likes;
     }
 
-    public ProgramWeekWorkoutEntity setUsersCompleted(List<UserEntity> usersCompleted) {
-        this.usersCompleted = usersCompleted;
+    public ProgramWeekWorkoutEntity setLikes(Long likes) {
+        this.likes = likes;
         return this;
     }
 }

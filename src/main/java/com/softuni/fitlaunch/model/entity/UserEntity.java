@@ -60,6 +60,14 @@ public class UserEntity extends BaseEntity {
     private List<ProgramWeekWorkoutEntity> workoutsStarted = new ArrayList<>();
 
 
+    @ManyToMany
+    @JoinTable(
+            name = "workouts_liked",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "workout_id"))
+    private List<ProgramWeekWorkoutEntity> workoutsLiked = new ArrayList<>();
+
+
     private boolean activated = false;
 
     @Column(name = "activation_code")
@@ -191,13 +199,13 @@ public class UserEntity extends BaseEntity {
         return this;
     }
 
-    public boolean workoutCompleted(ProgramWeekWorkoutEntity programWeekWorkoutEntity) {
-        for (ProgramWeekWorkoutEntity weekWorkoutEntity : workoutsCompleted) {
-            if(weekWorkoutEntity.getId().equals(programWeekWorkoutEntity.getId())) {
-                return true;
-            }
-        }
-        return false;
+    public List<ProgramWeekWorkoutEntity> getWorkoutsLiked() {
+        return workoutsLiked;
+    }
+
+    public UserEntity setWorkoutsLiked(List<ProgramWeekWorkoutEntity> workoutsLiked) {
+        this.workoutsLiked = workoutsLiked;
+        return this;
     }
 
 }

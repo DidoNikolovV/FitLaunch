@@ -38,10 +38,10 @@
 
             <div class="mt-2">
                 <span class="font-weight-bold text-primary">Likes: </span>
-                <span id="likesCount" class="text-primary" th:text="${workout.workout.likes}"></span>
+                <span id="likesCount" class="text-primary" th:text="${workout.likes}"></span>
             </div>
 
-            <form id="likesForm" method="POST" th:action="@{/workouts/{id}(id=*{id})}">
+            <form id="likesForm" method="POST" th:action="@{/workouts/like/{programId}/{weekId}/{id}(programId=${program.id}, weekId=${week.id}, id=${workout.id})}">
                 <button type="submit" class="btn btn-link">
                     <div th:if="${hasLiked}">
                         <i class="fa-solid fa-lg fa-thumbs-down text-primary"></i>
@@ -103,7 +103,7 @@
     <input type="hidden" name="programId" id="programId" th:value="${program.id}">
     <input type="hidden" name="weekId" id="weekId" th:value="${week.id}">
     <input type="hidden" name="workoutId" id="workoutId" th:value="${workout.id}">
-    <div class="comments my-4 bg-dark text-white" th:unless="${hasStarted}">
+    <div class="comments my-4 bg-dark text-white" th:if="${isCompleted}">
         <h1>Comments</h1>
         <div>
             <form id="commentForm" method="POST" action="/">

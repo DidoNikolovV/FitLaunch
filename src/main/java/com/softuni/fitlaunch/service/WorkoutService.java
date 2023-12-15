@@ -90,23 +90,23 @@ public class WorkoutService {
         );
     }
 
-    public void like(String username, Long workoutId) {
-        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
-        WorkoutEntity workoutEntity = workoutRepository.findById(workoutId).orElseThrow(() -> new RuntimeException("Workout not found"));
-
-        workoutEntity.getUsersLiked().add(userEntity);
-
-        workoutRepository.save(workoutEntity);
-    }
-
-    public void dislike(String username, Long workoutId) {
-        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
-        WorkoutEntity workoutEntity = workoutRepository.findById(workoutId).orElseThrow(() -> new RuntimeException("Workout not found"));
-
-        workoutEntity.getUsersLiked().remove(userEntity);
-
-        workoutRepository.save(workoutEntity);
-    }
+//    public void like(String username, Long workoutId) {
+//        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+//        WorkoutEntity workoutEntity = workoutRepository.findById(workoutId).orElseThrow(() -> new RuntimeException("Workout not found"));
+//
+//        workoutEntity.getUsersLiked().add(userEntity);
+//
+//        workoutRepository.save(workoutEntity);
+//    }
+//
+//    public void dislike(String username, Long workoutId) {
+//        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+//        WorkoutEntity workoutEntity = workoutRepository.findById(workoutId).orElseThrow(() -> new RuntimeException("Workout not found"));
+//
+//        workoutEntity.getUsersLiked().remove(userEntity);
+//
+//        workoutRepository.save(workoutEntity);
+//    }
 
 //    public void startWorkout(Long workoutId, String username) {
 //        WorkoutEntity workoutEntity = workoutRepository.findById(workoutId).orElseThrow(() -> new RuntimeException("Workout not found"));

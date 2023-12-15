@@ -20,7 +20,7 @@ async function postComment(e) {
 
     const messageValue = document.getElementById('message').value;
 
-    fetch(`${url}/api/${workoutId}/comments`, {
+    fetch(`${url}/api/${programId}/${weekId}/${workoutId}/comments`, {
         method: 'POST',
         headers: {
          'Content-Type': 'application/json',

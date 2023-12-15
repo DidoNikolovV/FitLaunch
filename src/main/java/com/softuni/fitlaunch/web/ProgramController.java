@@ -4,6 +4,7 @@ package com.softuni.fitlaunch.web;
 import com.softuni.fitlaunch.model.dto.program.ProgramWeekDTO;
 import com.softuni.fitlaunch.model.dto.program.ProgramWeekWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.user.UserDTO;
+import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
 import com.softuni.fitlaunch.model.entity.ProgramEntity;
 import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.service.ProgramService;
@@ -27,19 +28,17 @@ public class ProgramController {
 
     private final UserService userService;
 
-    private final ModelMapper modelMapper;
 
-    public ProgramController(ProgramService programService, UserService userService, ModelMapper modelMapper) {
+    public ProgramController(ProgramService programService, UserService userService) {
         this.programService = programService;
         this.userService = userService;
-        this.modelMapper = modelMapper;
     }
 
     @GetMapping("/programs")
     public String loadAllPrograms(Model model, Principal principal) {
 
         List<ProgramEntity> allPrograms = programService.loadAllPrograms();
-        UserEntity loggedUser = userService.getUserByUsername(principal.getName());
+        UserDTO loggedUser = userService.getUserByUsername(principal.getName());
 
         model.addAttribute("membership", loggedUser.getMembership());
         model.addAttribute("allPrograms", allPrograms);
@@ -52,7 +51,7 @@ public class ProgramController {
         ProgramEntity program = programService.getById(programId);
         List<ProgramWeekDTO> allWeeksByProgramId = programService.getAllWeeksByProgramId(programId);
 
-        UserDTO user = modelMapper.map(userService.getUserByUsername(principal.getName()), UserDTO.class);
+        UserDTO user = userService.getUserByUsername(principal.getName());
 
         model.addAttribute("program", program);
         model.addAttribute("allWeeks", allWeeksByProgramId);
@@ -68,18 +67,23 @@ public class ProgramController {
                                         @PathVariable("workoutId") Long workoutId,
                                         Model model,
                                         Principal principal) {
+
+        UserDTO loggedUser = userService.getUserByUsername(principal.getName());
         ProgramEntity program = programService.getById(programId);
         ProgramWeekDTO programWeekById = programService.getProgramWeekById(weekId);
         ProgramWeekWorkoutDTO programWeekWorkoutById = programService.getProgramWeekWorkoutById(workoutId);
 
         boolean hasStarted = userService.isWorkoutStarted(principal.getName(), programWeekWorkoutById);
         boolean isCompleted = userService.isWorkoutCompleted(principal.getName(), programWeekWorkoutById);
+        boolean hasLiked = userService.isWorkoutLiked(loggedUser, programWeekWorkoutById);
+
 
         model.addAttribute("workout", programWeekWorkoutById);
         model.addAttribute("program", program);
         model.addAttribute("week", programWeekById);
         model.addAttribute("hasStarted", hasStarted);
         model.addAttribute("isCompleted", isCompleted);
+        model.addAttribute("hasLiked", hasLiked);
 
 
         return "workout-details";
@@ -90,7 +94,8 @@ public class ProgramController {
     @PostMapping("/workouts/start/{programId}/{weekId}/{workoutId}")
     public String workoutStart(@PathVariable("programId") Long programId, @PathVariable("weekId") Long weekId, @PathVariable("workoutId") Long workoutId, Principal principal) {
 
-        ProgramWeekWorkoutDTO programWorkout = programService.getProgramWorkout(programId, weekId, workoutId, principal.getName());
+        UserDTO loggedUser = userService.getUserByUsername(principal.getName());
+        ProgramWeekWorkoutDTO programWorkout = programService.getProgramWorkout(programId, weekId, workoutId, loggedUser);
         userService.startProgramWorkout(principal.getName(), programWorkout);
 
         return String.format("redirect:/workouts/%d/%d/%d", programId, weekId, workoutId);
@@ -99,15 +104,41 @@ public class ProgramController {
 
     @PostMapping("/workouts/complete/{programId}/{weekId}/{workoutId}")
     public String workoutComplete(@PathVariable("programId") Long programId, @PathVariable("weekId") Long weekId, @PathVariable("workoutId") Long workoutId, Principal principal) {
-        String currentUserUsername = principal.getName();
 
-
-        ProgramWeekWorkoutDTO programWorkout = programService.getProgramWorkout(programId, weekId, workoutId, principal.getName());
+        UserDTO loggedUser = userService.getUserByUsername(principal.getName());
+        ProgramWeekWorkoutDTO programWorkout = programService.getProgramWorkout(programId, weekId, workoutId, loggedUser);
         userService.completeProgramWorkout(principal.getName(), programWorkout);
 
 
         return String.format("redirect:/workouts/%d/%d/%d", programId, weekId, workoutId);
 
+    }
+
+    @PostMapping("/workouts/like/{programId}/{weekId}/{workoutId}")
+    public String details(@PathVariable("programId") Long programId, @PathVariable("weekId") Long weekId, @PathVariable("workoutId") Long workoutId,
+                          Principal principal) {
+
+        UserDTO loggedUser = userService.getUserByUsername(principal.getName());
+        ProgramWeekWorkoutDTO programWorkout = programService.getProgramWorkout(programId, weekId, workoutId, loggedUser);
+
+        boolean hasLiked = false;
+
+        for (ProgramWeekWorkoutDTO likedWorkout : loggedUser.getWorkoutsLiked()) {
+            if(likedWorkout.getId().equals(programWorkout.getId())) {
+                hasLiked = true;
+                break;
+            }
+        }
+
+
+        if(hasLiked) {
+            userService.dislike(loggedUser, programWorkout.getId());
+        } else {
+            userService.like(loggedUser, programWorkout.getId());
+        }
+
+
+        return String.format("redirect:/workouts/%d/%d/%d", programId, weekId, workoutId);
     }
 
 }

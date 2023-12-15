@@ -1,5 +1,6 @@
 package com.softuni.fitlaunch.web;
 
+import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.dto.view.UserProfileView;
 import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.service.UserProfileService;
@@ -25,7 +26,7 @@ public class UserProfileController {
 
     @GetMapping("/users/profile")
     public String userProfile(Principal principal, Model model) {
-        UserEntity user = userService.getUserByUsername(principal.getName());
+        UserDTO user = userService.getUserByUsername(principal.getName());
         UserProfileView userProfileView = new UserProfileView(
                 user.getUsername(),
                 user.getEmail(),

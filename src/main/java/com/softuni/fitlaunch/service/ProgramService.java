@@ -4,6 +4,7 @@ package com.softuni.fitlaunch.service;
 
 import com.softuni.fitlaunch.model.dto.program.ProgramWeekDTO;
 import com.softuni.fitlaunch.model.dto.program.ProgramWeekWorkoutDTO;
+import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.entity.ProgramEntity;
 import com.softuni.fitlaunch.model.entity.ProgramWeekEntity;
 import com.softuni.fitlaunch.model.entity.ProgramWeekWorkoutEntity;
@@ -74,12 +75,12 @@ public class ProgramService {
         return programRepository.findById(programId).orElseThrow(() -> new ObjectNotFoundException("Program with id " + programId + " not found"));
     }
 
-    public ProgramWeekWorkoutDTO getProgramWorkout(Long programId, Long weekId, Long workoutId, String loggedUserUsername) {
+    public ProgramWeekWorkoutDTO getProgramWorkout(Long programId, Long weekId, Long workoutId, UserDTO userDTO) {
         ProgramWeekWorkoutEntity programWeekWorkout = programWeekWorkoutRepository.findByProgramWeekIdAndId(weekId, workoutId).orElseThrow(() -> new ObjectNotFoundException("Workout was not found"));
         ProgramWeekWorkoutDTO programWeekWorkoutDTO = modelMapper.map(programWeekWorkout, ProgramWeekWorkoutDTO.class);
 
         programWeekWorkout.setHasStarted(true);
-        UserEntity user = userRepository.findByUsername(loggedUserUsername).orElseThrow(() -> new ObjectNotFoundException("User with " + loggedUserUsername + " doesn't exist"));
+        UserEntity user = userRepository.findByUsername(userDTO.getUsername()).orElseThrow(() -> new ObjectNotFoundException("User with " + userDTO.getUsername() + " doesn't exist"));
         user.getWorkoutsStarted().add(programWeekWorkout);
 
         programWeekWorkoutRepository.save(programWeekWorkout);
