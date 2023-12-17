@@ -79,6 +79,7 @@ public class ProgramController {
 
 
         model.addAttribute("workout", programWeekWorkoutById);
+        model.addAttribute("user", loggedUser);
         model.addAttribute("program", program);
         model.addAttribute("week", programWeekById);
         model.addAttribute("hasStarted", hasStarted);
@@ -137,6 +138,18 @@ public class ProgramController {
             userService.like(loggedUser, programWorkout.getId());
         }
 
+
+        return String.format("redirect:/workouts/%d/%d/%d", programId, weekId, workoutId);
+    }
+
+    @PostMapping("/workouts/{programId}/{weekId}/{workoutId}/complete/{exerciseId}")
+    public String exerciseComplete(@PathVariable("programId") Long programId,
+                                   @PathVariable("weekId") Long weekId,
+                                   @PathVariable("workoutId") Long workoutId,
+                                   @PathVariable("exerciseId") Long exerciseId,
+                                   Principal principal) {
+        UserDTO loggedUser = userService.getUserByUsername(principal.getName());
+        userService.completeProgramWorkoutExercise(loggedUser, weekId, workoutId, exerciseId);
 
         return String.format("redirect:/workouts/%d/%d/%d", programId, weekId, workoutId);
     }

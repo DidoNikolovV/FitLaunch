@@ -2,8 +2,8 @@ package com.softuni.fitlaunch.model.dto.user;
 
 import com.softuni.fitlaunch.model.dto.comment.CommentCreationDTO;
 import com.softuni.fitlaunch.model.dto.program.ProgramWeekWorkoutDTO;
-import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
-import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
+import com.softuni.fitlaunch.model.dto.program.ProgramWorkoutExerciseDTO;
+import com.softuni.fitlaunch.model.dto.workout.WorkoutExerciseDTO;
 import com.softuni.fitlaunch.model.entity.UserRoleEntity;
 
 import java.util.List;
@@ -27,12 +27,14 @@ public class UserDTO {
 
     private List<ProgramWeekWorkoutDTO> workoutStarted;
 
+    private List<ProgramWorkoutExerciseDTO> exercisesCompleted;
+
     private boolean activated = false;
 
     public UserDTO() {
     }
 
-    public UserDTO(String username, String email, List<UserRoleEntity> roles, String membership, List<CommentCreationDTO> comments, List<ProgramWeekWorkoutDTO> workoutsLiked, List<ProgramWeekWorkoutDTO> workoutsCompleted, List<ProgramWeekWorkoutDTO> workoutStarted, boolean activated) {
+    public UserDTO(String username, String email, List<UserRoleEntity> roles, String membership, List<CommentCreationDTO> comments, List<ProgramWeekWorkoutDTO> workoutsLiked, List<ProgramWeekWorkoutDTO> workoutsCompleted, List<ProgramWeekWorkoutDTO> workoutStarted, List<ProgramWorkoutExerciseDTO> exercisesCompleted, boolean activated) {
         this.username = username;
         this.email = email;
         this.roles = roles;
@@ -41,6 +43,7 @@ public class UserDTO {
         this.workoutsLiked = workoutsLiked;
         this.workoutsCompleted = workoutsCompleted;
         this.workoutStarted = workoutStarted;
+        this.exercisesCompleted = exercisesCompleted;
         this.activated = activated;
     }
 
@@ -126,12 +129,31 @@ public class UserDTO {
         return this;
     }
 
+    public List<ProgramWorkoutExerciseDTO> getExercisesCompleted() {
+        return exercisesCompleted;
+    }
+
+    public UserDTO setExercisesCompleted(List<ProgramWorkoutExerciseDTO> exercisesCompleted) {
+        this.exercisesCompleted = exercisesCompleted;
+        return this;
+    }
+
     public boolean workoutCompleted(ProgramWeekWorkoutDTO programWeekWorkoutDTO) {
         for (ProgramWeekWorkoutDTO weekWorkoutDTO : workoutsCompleted) {
             if(weekWorkoutDTO.getId().equals(programWeekWorkoutDTO.getId())) {
                 return true;
             }
         }
+        return false;
+    }
+
+    public boolean exerciseCompleted(ProgramWorkoutExerciseDTO workoutExerciseDTO) {
+        for (ProgramWorkoutExerciseDTO exercise : exercisesCompleted) {
+            if(exercise.getId().equals(workoutExerciseDTO.getId())) {
+                return true;
+            }
+        }
+
         return false;
     }
 }

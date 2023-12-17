@@ -31,6 +31,11 @@ public class UserService {
     private final WorkoutRepository workoutRepository;
 
     private final ProgramWeekWorkoutRepository programWeekWorkoutRepository;
+    private final ProgramWeekRepository programWeekRepository;
+
+    private final WorkoutExerciseRepository workoutExerciseRepository;
+
+    private final ExerciseRepository exerciseRepository;
 
     private final ModelMapper modelMapper;
 
@@ -39,12 +44,15 @@ public class UserService {
     private final UserActivationCodeRepository userActivationCodeRepository;
 
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, WorkoutRepository workoutRepository, ProgramWeekWorkoutRepository programWeekWorkoutRepository, ModelMapper modelMapper, ApplicationEventPublisher applicationEventPublisher, UserActivationCodeRepository userActivationCodeRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, WorkoutRepository workoutRepository, ProgramWeekWorkoutRepository programWeekWorkoutRepository, ProgramWeekRepository programWeekRepository, WorkoutExerciseRepository workoutExerciseRepository, ExerciseRepository exerciseRepository, ModelMapper modelMapper, ApplicationEventPublisher applicationEventPublisher, UserActivationCodeRepository userActivationCodeRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
         this.workoutRepository = workoutRepository;
         this.programWeekWorkoutRepository = programWeekWorkoutRepository;
+        this.programWeekRepository = programWeekRepository;
+        this.workoutExerciseRepository = workoutExerciseRepository;
+        this.exerciseRepository = exerciseRepository;
         this.modelMapper = modelMapper;
         this.applicationEventPublisher = applicationEventPublisher;
         this.userActivationCodeRepository = userActivationCodeRepository;
@@ -102,7 +110,7 @@ public class UserService {
 
     public void startProgramWorkout(String username, ProgramWeekWorkoutDTO programWeekWorkoutDTO) {
         UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User with " + username + " doesn't exist"));
-        ProgramWeekWorkoutEntity programWeekWorkoutEntity = modelMapper.map(programWeekWorkoutDTO, ProgramWeekWorkoutEntity.class);
+        ProgramWeekWorkoutEntity programWeekWorkoutEntity = programWeekWorkoutRepository.findById(programWeekWorkoutDTO.getId()).orElseThrow(() -> new ObjectNotFoundException("Workout not found"));
         user.getWorkoutsStarted().add(programWeekWorkoutEntity);
         userRepository.save(user);
     }
@@ -121,7 +129,7 @@ public class UserService {
 
     public void completeProgramWorkout(String username, ProgramWeekWorkoutDTO programWeekWorkoutDTO) {
         UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User with " + username + " doesn't exist"));
-        ProgramWeekWorkoutEntity programWeekWorkoutEntity = modelMapper.map(programWeekWorkoutDTO, ProgramWeekWorkoutEntity.class);
+        ProgramWeekWorkoutEntity programWeekWorkoutEntity = programWeekWorkoutRepository.findById(programWeekWorkoutDTO.getId()).orElseThrow(() -> new ObjectNotFoundException("Workout not found"));
         user.getWorkoutsCompleted().add(programWeekWorkoutEntity);
         userRepository.save(user);
     }
@@ -251,5 +259,16 @@ public class UserService {
     }
 
 
+    public void completeProgramWorkoutExercise(UserDTO loggedUser, Long weekId, Long workoutId, Long exerciseId) {
+        UserEntity userEntity = userRepository.findByUsername(loggedUser.getUsername()).orElseThrow(() -> new ObjectNotFoundException("User not found"));
+        ProgramWeekWorkoutEntity programWeekWorkoutEntity = programWeekWorkoutRepository.findById(workoutId).orElseThrow(() -> new ObjectNotFoundException("Workout not found"));
 
+        for (ProgramWorkoutExerciseEntity exercise : programWeekWorkoutEntity.getExercises()) {
+            if(exercise.getId().equals(exerciseId)) {
+                userEntity.getProgramExercisesCompleted().add(exercise);
+                userRepository.save(userEntity);
+                return;
+            }
+        }
+    }
 }

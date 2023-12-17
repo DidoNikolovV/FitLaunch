@@ -1,7 +1,9 @@
 package com.softuni.fitlaunch.model.dto.program;
 
 import com.softuni.fitlaunch.model.dto.comment.CommentCreationDTO;
-import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
+import com.softuni.fitlaunch.model.enums.LevelEnum;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
@@ -14,10 +16,10 @@ public class ProgramWeekWorkoutDTO {
 
 
     @NotNull
-    private ProgramWeekDTO programWeek;
+    private String name;
 
     @NotNull
-    private WorkoutDetailsDTO workout;
+    private ProgramWeekDTO programWeek;
 
     @NotNull
     private boolean hasStarted;
@@ -27,7 +29,16 @@ public class ProgramWeekWorkoutDTO {
 
     private List<CommentCreationDTO> comments;
 
+    private List<ProgramWorkoutExerciseDTO> exercises;
+
     private Long likes = 0L;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private LevelEnum level;
+
+    @NotNull
+    private String description;
 
     public Long getId() {
         return id;
@@ -47,16 +58,8 @@ public class ProgramWeekWorkoutDTO {
         return this;
     }
 
-    public WorkoutDetailsDTO getWorkout() {
-        return workout;
-    }
 
-    public ProgramWeekWorkoutDTO setWorkout(WorkoutDetailsDTO workout) {
-        this.workout = workout;
-        return this;
-    }
-
-    public boolean isHasStarted() {
+    public boolean hasStarted() {
         return hasStarted;
     }
 
@@ -90,6 +93,46 @@ public class ProgramWeekWorkoutDTO {
 
     public ProgramWeekWorkoutDTO setLikes(Long likes) {
         this.likes = likes;
+        return this;
+    }
+
+    public LevelEnum getLevel() {
+        return level;
+    }
+
+    public ProgramWeekWorkoutDTO setLevel(LevelEnum level) {
+        this.level = level;
+        return this;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public ProgramWeekWorkoutDTO setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public boolean isHasStarted() {
+        return hasStarted;
+    }
+
+    public List<ProgramWorkoutExerciseDTO> getExercises() {
+        return exercises;
+    }
+
+    public ProgramWeekWorkoutDTO setExercises(List<ProgramWorkoutExerciseDTO> exercises) {
+        this.exercises = exercises;
+        return this;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public ProgramWeekWorkoutDTO setName(String name) {
+        this.name = name;
         return this;
     }
 }

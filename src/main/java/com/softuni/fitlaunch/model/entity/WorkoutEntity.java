@@ -29,8 +29,8 @@ public class WorkoutEntity extends BaseEntity {
     @Column(nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<WorkoutExerciseEntity> workoutExercises = new ArrayList<>();
+//    @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<WorkoutExerciseEntity> workoutExercises = new ArrayList<>();
 
 
     @Column(nullable = false)
@@ -52,6 +52,7 @@ public class WorkoutEntity extends BaseEntity {
     private List<ExerciseEntity> exercises;
 
 
+
     @Column(nullable = false)
     private boolean isCompleted = false;
 
@@ -60,10 +61,6 @@ public class WorkoutEntity extends BaseEntity {
 
     @Column(nullable = false)
     private boolean hasStarted = false;
-
-    @ManyToOne
-    @JoinColumn(name = "program_id")
-    private ProgramWeekEntity programWeek;
 
 
     public String getImgUrl() {
@@ -99,15 +96,6 @@ public class WorkoutEntity extends BaseEntity {
 
     public WorkoutEntity setDescription(String description) {
         this.description = description;
-        return this;
-    }
-
-    public List<WorkoutExerciseEntity> getWorkoutExercises() {
-        return workoutExercises;
-    }
-
-    public WorkoutEntity setWorkoutExercises(List<WorkoutExerciseEntity> workoutExercise) {
-        this.workoutExercises = workoutExercise;
         return this;
     }
 
@@ -181,12 +169,5 @@ public class WorkoutEntity extends BaseEntity {
         return hasStarted;
     }
 
-    public ProgramWeekEntity getProgramWeek() {
-        return programWeek;
-    }
 
-    public WorkoutEntity setProgramWeek(ProgramWeekEntity programWeek) {
-        this.programWeek = programWeek;
-        return this;
-    }
 }

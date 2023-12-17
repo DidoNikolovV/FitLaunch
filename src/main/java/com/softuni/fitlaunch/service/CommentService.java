@@ -7,6 +7,7 @@ import com.softuni.fitlaunch.repository.*;
 import com.softuni.fitlaunch.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -74,16 +75,18 @@ public class CommentService {
 
     }
 
-    public CommentEntity getComment(Long id) {
-        return commentRepository.findById(id).orElse(null);
+    public CommentView getComment(Long commentId) {
+        CommentEntity commentEntity = commentRepository.findById(commentId).orElseThrow(() -> new ObjectNotFoundException("Comment with id " + commentId + " was not found"));
+        return new CommentView(commentEntity.getId(), commentEntity.getAuthor().getUsername(), commentEntity.getContent());
     }
 
 
+    @Transactional
     public CommentView deleteCommentById(Long id) {
-        CommentEntity comment = this.getComment(id);
-        commentRepository.deleteById(comment.getId());
-
-        return new CommentView(comment.getId(),comment.getAuthor().getUsername(), comment.getContent());
+        CommentEntity comment = commentRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Comment with id " + id + " was not found"));
+        CommentView commentView = new CommentView(comment.getId(),comment.getAuthor().getUsername(), comment.getContent());
+        commentRepository.delete(comment);
+        return commentView;
     }
 
 }

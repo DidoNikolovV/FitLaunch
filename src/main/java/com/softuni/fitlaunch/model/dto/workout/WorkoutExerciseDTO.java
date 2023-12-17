@@ -27,6 +27,10 @@ public class WorkoutExerciseDTO {
     @NotNull
     private boolean isCompleted;
 
+    private Long programId;
+
+    private Long weekId;
+
     public Long getId() {
         return id;
     }
@@ -87,6 +91,24 @@ public class WorkoutExerciseDTO {
 
     public WorkoutExerciseDTO setCompleted(boolean completed) {
         isCompleted = completed;
+        return this;
+    }
+
+    public Long getProgramId() {
+        return programId;
+    }
+
+    public WorkoutExerciseDTO setProgramId(Long programId) {
+        this.programId = programId;
+        return this;
+    }
+
+    public Long getWeekId() {
+        return weekId;
+    }
+
+    public WorkoutExerciseDTO setWeekId(Long weekId) {
+        this.weekId = weekId;
         return this;
     }
 }

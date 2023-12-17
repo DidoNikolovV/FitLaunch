@@ -27,6 +27,7 @@ public class WorkoutExerciseEntity extends BaseEntity{
     private boolean isCompleted;
 
 
+
     public WorkoutEntity getWorkout() {
         return workout;
     }
@@ -73,9 +74,6 @@ public class WorkoutExerciseEntity extends BaseEntity{
     }
 
 
-
-
-
     public boolean isCompleted() {
         return isCompleted;
     }
@@ -84,4 +82,5 @@ public class WorkoutExerciseEntity extends BaseEntity{
         isCompleted = completed;
         return this;
     }
+
 }

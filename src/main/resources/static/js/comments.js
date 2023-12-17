@@ -13,8 +13,6 @@ const commentContainer = document.getElementById('commentCtnr');
 const showCommentsBtn = document.getElementById('showComments');
 
 
-
-
 async function postComment(e) {
     e.preventDefault();
 
@@ -38,24 +36,25 @@ async function postComment(e) {
 }
 
 function commentAsHTML(comment) {
-    let commentHTML = '<div>\n'
+    let commentHTML = `<div id="${comment.id}">\n`
     commentHTML += `<h4>${comment.authorName}</h4>\n`
     commentHTML += `<p>${comment.message}</p>\n`
-    commentHTML += `<button class="btn btn-danger" onClick="deleteComment(${comment.id})">Delete</button>\n`
+    commentHTML += `<button class="btn btn-danger" onclick="deleteComment(${comment.id})">Delete</button>\n`
     commentHTML += '</div>\n'
 
     return commentHTML;
 }
 
-async function deleteComment(commentId) {
-    fetch(`${url}/api/${workoutId}/comments/${commentId}`, {
+function deleteComment(commentId) {
+    fetch(`${url}/api/${programId}/${weekId}/${workoutId}/comments/${commentId}`, {
         method: 'DELETE',
         headers: {
             [csrfHeaderName]: csrfHeaderValue
         }
     }).then(res => res.json())
         .then(data => {
-            commentContainer.removeChild(data)
+            const commentId = data.id;
+            document.getElementById(commentId).remove();
         })
 }
 

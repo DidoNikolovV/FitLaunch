@@ -1,11 +1,9 @@
 package com.softuni.fitlaunch.model.dto.workout;
 
+import com.softuni.fitlaunch.model.dto.program.ProgramWorkoutExerciseDTO;
 import com.softuni.fitlaunch.model.dto.user.UserDTO;
-import com.softuni.fitlaunch.model.entity.UserEntity;
-import com.softuni.fitlaunch.model.entity.WorkoutExerciseEntity;
 import com.softuni.fitlaunch.model.enums.LevelEnum;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class WorkoutDetailsDTO {
@@ -20,9 +18,9 @@ public class WorkoutDetailsDTO {
 
     private String imgUrl;
 
-    private List<WorkoutExerciseEntity> exercises;
+    private List<ProgramWorkoutExerciseDTO> exercises;
 
-    private Integer likes;
+    private Long likes;
 
     private List<UserDTO> usersLiked;
 
@@ -33,15 +31,13 @@ public class WorkoutDetailsDTO {
     public WorkoutDetailsDTO() {
     }
 
-    public WorkoutDetailsDTO(Long id, String name, LevelEnum level, String description, List<WorkoutExerciseEntity> exercises, Integer likes, boolean hasStarted, boolean isCompleted) {
+    public WorkoutDetailsDTO(Long id, String name, LevelEnum level, String description, List<ProgramWorkoutExerciseDTO> exercises, Long likes, boolean hasStarted, boolean isCompleted) {
         this.id = id;
         this.name = name;
         this.level = level;
         this.description = description;
-//        this.imgUrl = imgUrl;
         this.exercises = exercises;
         this.likes = likes;
-//        this.usersLiked = usersLiked;
         this.hasStarted = hasStarted;
         this.isCompleted = isCompleted;
     }
@@ -91,20 +87,20 @@ public class WorkoutDetailsDTO {
         return this;
     }
 
-    public List<WorkoutExerciseEntity> getExercises() {
+    public List<ProgramWorkoutExerciseDTO> getExercises() {
         return exercises;
     }
 
-    public WorkoutDetailsDTO setExercises(List<WorkoutExerciseEntity> exercises) {
+    public WorkoutDetailsDTO setExercises(List<ProgramWorkoutExerciseDTO> exercises) {
         this.exercises = exercises;
         return this;
     }
 
-    public Integer getLikes() {
+    public Long getLikes() {
         return likes;
     }
 
-    public WorkoutDetailsDTO setLikes(Integer likes) {
+    public WorkoutDetailsDTO setLikes(Long likes) {
         this.likes = likes;
         return this;
     }

@@ -21,45 +21,34 @@ VALUES
     (3, 'Challenge yourself with our advanced workout programs.', '/images/advanced.jpg', 'ADVANCED', 'Pull', 0, 1, false, false),
     (4, 'Start your fitness journey with our beginner workouts.', '/images/beginner.jpg', 'BEGINNER', 'LEGS', 0, 1, false, false);
 
-INSERT INTO exercises(`id`, `name`, reps, sets, video_url)
-VALUES
-    (1, 'Shoulder Press', 12, 3, 'OLePvpxQEGk'),
-    (2, 'Squats', 8, 3, 'MLoZuAkIyZI'),
-    (3, 'Dumbbell Lateral Raise', 4, 20, 'JIhbYYA1Q90'),
-    (4, 'Chest Fly', 10, 4, 'g3T7LsEeDWQ'),
-    (5, 'Cable Row', 10, 3, 'G18ysBYu5Mw'),
-    (6, 'Pull-ups', 6, 4, 'dvG8B2OjfWk'),
-    (7, 'Dumbbell Curls', 12, 3, ''),
-    (8, 'RDL', 12, 3, '5rIqP63yWFg'),
-    (9, 'Deadlift', 5, 5, 'McCDaAsSeRc'),
-    (10, 'Bench Press', 5, 5, 'EdDqD4aKwxM');
 
-INSERT INTO workouts_exercises(`workout_id`, `exercise_id`)
-VALUES
-    (1, 1),
-    (1, 2),
-    (1, 3),
-    (2, 1),
-    (2, 2),
-    (2, 5),
-    (3, 10),
-    (3, 9),
-    (3, 5),
-    (3, 10),
-    (3, 2),
-    (4, 3),
-    (4, 1),
-    (4, 4);
 
-INSERT INTO workout_exercises (reps, sets, exercise_id, workout_id, is_completed)
-VALUES
-    (12, 3, 1, 1, 0),
-    (10, 4, 2, 1, 0),
-    (15, 3, 3, 2, 0),
-    (8, 5, 1, 2, 0),
-    (10, 3, 2, 3, 0),
-    (12, 4, 3, 3, 0),
-    (12, 4, 3, 3, 0);
+-- INSERT INTO workouts_exercises(`workout_id`, `exercise_id`)
+-- VALUES
+--     (1, 1),
+--     (1, 2),
+--     (1, 3),
+--     (2, 1),
+--     (2, 2),
+--     (2, 5),
+--     (3, 10),
+--     (3, 9),
+--     (3, 5),
+--     (3, 10),
+--     (3, 2),
+--     (4, 3),
+--     (4, 1),
+--     (4, 4);
+
+-- INSERT INTO workout_exercises (reps, sets, exercise_id, workout_id, is_completed)
+-- VALUES
+--     (12, 3, 1, 1, 0),
+--     (10, 4, 2, 1, 0),
+--     (15, 3, 3, 2, 0),
+--     (8, 5, 1, 2, 0),
+--     (10, 3, 2, 3, 0),
+--     (12, 4, 3, 3, 0),
+--     (12, 4, 3, 3, 0);
 
 
 INSERT INTO programs (img_url, name)
@@ -77,24 +66,46 @@ VALUES
         (4, 1);
 
 -- Insert data into ProgramWeekWorkoutEntity
-INSERT INTO programs_weeks_workouts (id, program_week_id, workout_id, has_started, is_completed)
+INSERT INTO programs_weeks_workouts (id, name, program_week_id, has_started, is_completed, level, description)
 VALUES
-        (1, 1, 1, 0, 0),
-        (2, 1, 2, 0, 0),
-        (3, 1, 3, 0, 0),
-        (4, 1, 4, 0, 0),
-        (5, 2, 2, 0, 0),
-        (6, 2, 4, 0, 0),
-        (7, 2, 1, 0, 0),
-        (8, 2, 3, 0, 0),
-        (9, 3, 3, 0, 0),
-        (10, 3, 4, 0, 0),
-        (11, 3, 1, 0, 0),
-        (12, 3, 2, 0, 0),
-        (13, 4, 1, 0, 0),
-        (14, 4, 2, 0, 0),
-        (15, 4, 3, 0, 0),
-        (16, 4, 4, 0, 0);
+        (1, 'Push', 1, 0, 0, 'Beginner', 'This workout is designed to hit Chest, Triceps and Shoulder effectively'),
+        (2, 'Pull', 1, 0, 0, 'Beginner', 'This workout is designed to hit Back, Biceps and Rear Delts effectively'),
+        (3, 'Legs', 1, 0, 0, 'Beginner', 'This workout is designed to hit Legs effectively'),
+        (4, 'Upper Body', 1, 0, 0, 'Beginner', 'This workout is designed to hit Upper Body effectively'),
+        (5, 'Lower Body', 2, 0, 0, 'Beginner', 'This workout is designed to hit Lower Body effectively'),
+        (6, 'Back & Back', 2, 0, 0, 'Beginner', 'This workout is designed to hit Back and Biceps effectively'),
+        (7, 'Chest & Triceps', 2, 0, 0, 'Beginner', 'This workout is designed to hit Chest and Triceps effectively'),
+        (8, 'ABS/Calves', 2, 0, 0, 'Beginner', 'This workout is designed to hit ABS and Calves effectively'),
+        (9, 'Full Body', 3, 0, 0, 'Beginner', 'This workout is designed to hit your whole body effectively'),
+        (10, 'HIIT ', 3, 0, 0, 'Beginner', 'This workout is designed to make your heart rate go up effectively'),
+        (11, 'Core', 3, 0, 0, 'Beginner', 'This workout is designed to hit your Core effectively'),
+        (12, 'Push', 3, 0, 0, 'Beginner', 'This workout is designed to hit Chest, Triceps and Shoulder  effectively'),
+        (13, 'Pull', 4, 0, 0, 'Beginner', 'This workout is designed to hit Back, Biceps and Rear Delts effectively'),
+        (14, 'Legs',4, 0, 0, 'Beginner', 'This workout is designed to hit Legs effectively effectively'),
+        (15, 'Arms', 4, 0, 0, 'Beginner', 'This workout is designed to hit your Arms effectively'),
+        (16, 'Shoulders', 4, 0, 0, 'Beginner', 'This workout is designed to hit your Shoulders effectively');
+
+INSERT INTO exercises(`id`, `name`, `video_url`, `program_workout_id`)
+VALUES
+    (1, 'Shoulder Press','OLePvpxQEGk', 1),
+    (2, 'Squats', 'MLoZuAkIyZI', 1),
+    (3, 'Dumbbell Lateral Raise', 'JIhbYYA1Q90', 2),
+    (4, 'Chest Fly',  'g3T7LsEeDWQ', 2),
+    (5, 'Cable Row', 'G18ysBYu5Mw', 3),
+    (6, 'Pull-ups', 'dvG8B2OjfWk', 3),
+    (7, 'Dumbbell Curls', '', 4),
+    (8, 'RDL', '5rIqP63yWFg', 4),
+    (9, 'Deadlift', 'McCDaAsSeRc', 5),
+    (10, 'Bench Press','EdDqD4aKwxM', 5);
+
+INSERT INTO program_workouts_exercises(id, workout_id, exercise_id, sets, reps, is_completed)
+VALUES
+    (1, 1, 1, 3, 12, 0),
+    (2, 1, 2, 4, 10, 0),
+    (3, 2, 3, 5, 5, 0),
+    (4, 2, 4, 2, 20, 0),
+    (5, 3, 2, 3, 12, 0),
+    (6, 3, 1, 4, 6, 0);
 
 
 

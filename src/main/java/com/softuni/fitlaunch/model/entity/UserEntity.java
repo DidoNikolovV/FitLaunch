@@ -46,7 +46,7 @@ public class UserEntity extends BaseEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "workouts_completed",
+            name = "program_workouts_completed",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "workout_id"))
     private List<ProgramWeekWorkoutEntity> workoutsCompleted = new ArrayList<>();
@@ -54,7 +54,7 @@ public class UserEntity extends BaseEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "workouts_started",
+            name = "program_workouts_started",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "workout_id"))
     private List<ProgramWeekWorkoutEntity> workoutsStarted = new ArrayList<>();
@@ -62,10 +62,17 @@ public class UserEntity extends BaseEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "workouts_liked",
+            name = "program_workouts_liked",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "workout_id"))
     private List<ProgramWeekWorkoutEntity> workoutsLiked = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "program_workout_exercises_completed",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "exercise_id"))
+    private List<ProgramWorkoutExerciseEntity> programExercisesCompleted = new ArrayList<>();
 
 
     private boolean activated = false;
@@ -208,6 +215,14 @@ public class UserEntity extends BaseEntity {
         return this;
     }
 
+    public List<ProgramWorkoutExerciseEntity> getProgramExercisesCompleted() {
+        return programExercisesCompleted;
+    }
+
+    public UserEntity setProgramExercisesCompleted(List<ProgramWorkoutExerciseEntity> programExercisesCompleted) {
+        this.programExercisesCompleted = programExercisesCompleted;
+        return this;
+    }
 }
 
 

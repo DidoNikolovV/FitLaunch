@@ -12,10 +12,6 @@ public class ExerciseDTO {
 
     private String name;
 
-    private Integer sets;
-
-    private Integer reps;
-
     @Pattern(regexp = "https:www\\.youtube\\.com/watch\\?v=.*", message = "Invalid youtube url provided")
     private String videoUrl;
 
@@ -26,11 +22,9 @@ public class ExerciseDTO {
     public ExerciseDTO() {
     }
 
-    public ExerciseDTO(Long id, String name, Integer sets, Integer reps, String videoUrl, boolean isCompleted) {
+    public ExerciseDTO(Long id, String name, String videoUrl, boolean isCompleted) {
         this.id = id;
         this.name = name;
-        this.sets = sets;
-        this.reps = reps;
         this.videoUrl = videoUrl;
         this.isCompleted = isCompleted;
     }
@@ -59,24 +53,6 @@ public class ExerciseDTO {
 
     public ExerciseDTO setWorkouts(List<WorkoutDTO> workouts) {
         this.workouts = workouts;
-        return this;
-    }
-
-    public Integer getSets() {
-        return sets;
-    }
-
-    public ExerciseDTO setSets(Integer sets) {
-        this.sets = sets;
-        return this;
-    }
-
-    public Integer getReps() {
-        return reps;
-    }
-
-    public ExerciseDTO setReps(Integer reps) {
-        this.reps = reps;
         return this;
     }
 

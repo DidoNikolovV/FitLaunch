@@ -1,8 +1,8 @@
 package com.softuni.fitlaunch.model.entity;
 
 
+import com.softuni.fitlaunch.model.enums.LevelEnum;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Positive;
 
 import java.util.List;
 
@@ -11,13 +11,12 @@ import java.util.List;
 public class ProgramWeekWorkoutEntity extends BaseEntity{
 
 
+    @Column(nullable = false)
+    private String name;
+
     @ManyToOne
     @JoinColumn(name = "program_week_id")
     private ProgramWeekEntity programWeek;
-
-    @ManyToOne
-    @JoinColumn(name = "workout_id")
-    private WorkoutEntity workout;
 
     @Column(name = "has_started")
     private boolean hasStarted;
@@ -28,8 +27,19 @@ public class ProgramWeekWorkoutEntity extends BaseEntity{
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL)
     private List<CommentEntity> comments;
 
+    @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL)
+    private List<ProgramWorkoutExerciseEntity> exercises;
+
     @Column(columnDefinition = "BIGINT DEFAULT 0")
     private Long likes;
+
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private LevelEnum level;
+
+    @Column(nullable = false)
+    private String description;
 
 
     public ProgramWeekEntity getProgramWeek() {
@@ -38,15 +48,6 @@ public class ProgramWeekWorkoutEntity extends BaseEntity{
 
     public ProgramWeekWorkoutEntity setProgramWeek(ProgramWeekEntity programWeek) {
         this.programWeek = programWeek;
-        return this;
-    }
-
-    public WorkoutEntity getWorkout() {
-        return workout;
-    }
-
-    public ProgramWeekWorkoutEntity setWorkout(WorkoutEntity workoutId) {
-        this.workout = workoutId;
         return this;
     }
 
@@ -85,4 +86,44 @@ public class ProgramWeekWorkoutEntity extends BaseEntity{
         this.likes = likes;
         return this;
     }
+
+    public List<ProgramWorkoutExerciseEntity> getExercises() {
+        return exercises;
+    }
+
+    public ProgramWeekWorkoutEntity setExercises(List<ProgramWorkoutExerciseEntity> exercises) {
+        this.exercises = exercises;
+        return this;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public ProgramWeekWorkoutEntity setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public LevelEnum getLevel() {
+        return level;
+    }
+
+    public ProgramWeekWorkoutEntity setLevel(LevelEnum level) {
+        this.level = level;
+        return this;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public ProgramWeekWorkoutEntity setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+
+
+
 }

@@ -19,21 +19,15 @@ public class ExerciseEntity{
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false)
-    private Integer sets;
-
-
-    @Column(nullable = false)
-    private Integer reps;
-
     @Column(name = "video_url")
     private String videoUrl;
 
-    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<WorkoutExerciseEntity> workoutExercise = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "program_workout_id")
+    private ProgramWeekWorkoutEntity program_week_workout;
 
-
-
+//    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<WorkoutExerciseEntity> workoutExercise = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -53,23 +47,6 @@ public class ExerciseEntity{
         return this;
     }
 
-    public Integer getSets() {
-        return sets;
-    }
-
-    public ExerciseEntity setSets(Integer sets) {
-        this.sets = sets;
-        return this;
-    }
-
-    public Integer getReps() {
-        return reps;
-    }
-
-    public ExerciseEntity setReps(Integer reps) {
-        this.reps = reps;
-        return this;
-    }
 
     public String getVideoUrl() {
         return videoUrl;
@@ -80,14 +57,12 @@ public class ExerciseEntity{
         return this;
     }
 
-    public List<WorkoutExerciseEntity> getWorkoutExercise() {
-        return workoutExercise;
+    public ProgramWeekWorkoutEntity getProgram_week_workout() {
+        return program_week_workout;
     }
 
-    public ExerciseEntity setWorkoutExercise(List<WorkoutExerciseEntity> workoutExercise) {
-        this.workoutExercise = workoutExercise;
+    public ExerciseEntity setProgram_week_workout(ProgramWeekWorkoutEntity program_week_workout) {
+        this.program_week_workout = program_week_workout;
         return this;
     }
-
-
 }

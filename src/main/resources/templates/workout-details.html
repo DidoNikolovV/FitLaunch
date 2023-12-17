@@ -15,7 +15,7 @@
 
     <div th:object="${workout}" class="card">
         <div class="card-body bg-dark text-center">
-            <h5 class="card-title text-primary" th:text="*{workout.name}"></h5>
+            <h5 class="card-title text-primary" th:text="*{name}"></h5>
             <div class="d-flex justify-content-center align-items-center mt-3">
                 <div th:if="${hasStarted}">
 <!--                    <form th:method="POST" th:action="@{/workouts/complete/{id}(id=*{id})}">-->
@@ -55,11 +55,11 @@
             <ul class="list-group list-group-flush mt-3text-white align-items-center">
                 <li class="list-group-item bg-dark text-white">
                     <span class="font-weight-bold">Level:</span>
-                    <span th:text="${workout.workout.level}">Beginner</span>
+                    <span th:text="${workout.level}">Beginner</span>
                 </li>
                 <li class="list-group-item bg-dark text-white">
                     <span class="font-weight-bold">Description:</span>
-                    <span th:text="${workout.workout.description}">This is a great workout for...</span>
+                    <span th:text="${workout.description}">This is a great workout for...</span>
                 </li>
             </ul>
         </div>
@@ -69,7 +69,7 @@
         <div class="card-body bg-dark primary">
             <h5 class="card-title primary">Exercises</h5>
             <ul class="list-group list-group-flush">
-                <li th:each="exercise: ${workout.workout.exercises}" class="list-group-item bg-dark">
+                <li th:each="exercise: ${workout.exercises}" class="list-group-item bg-dark">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="flex-grow-1">
                             <h6 class="font-weight-bold" th:text="${exercise.getExercise().name}"></h6>
@@ -84,11 +84,11 @@
                                     height="100" frameborder="0" allowfullscreen></iframe>
                         </div>
                         <div th:if="*{hasStarted}">
-                            <form th:method="POST" th:action="@{/workouts/{workoutId}/complete/{exerciseId}(workoutId=${workout.id}, exerciseId=${exercise.getId()})}">
-                                <button type="submit" class="btn btn-link" th:if="${exercise.isCompleted()}">
+                            <form th:method="POST" th:action="@{/workouts/{programId}/{weekId}/{workoutId}/complete/{exerciseId}(programId=${program.id}, weekId=${week.id}, workoutId=${workout.id}, exerciseId=${exercise.getId()})}">
+                                <button type="submit" class="btn btn-link" th:if="${user.exerciseCompleted(exercise)}">
                                     <i class="fa-solid fa-lg fa-circle-check text-success"></i>
                                 </button>
-                                <button type="submit" class="btn btn-link" th:unless="${exercise.isCompleted()}">
+                                <button type="submit" class="btn btn-link" th:unless="${user.exerciseCompleted(exercise)}">
                                     <i class="fa-regular fa-lg fa-circle-check text-muted"></i>
                                 </button>
                             </form>

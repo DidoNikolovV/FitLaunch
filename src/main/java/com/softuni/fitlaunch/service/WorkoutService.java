@@ -1,8 +1,9 @@
 package com.softuni.fitlaunch.service;
 
 
-import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
+import com.softuni.fitlaunch.model.dto.program.ProgramWeekWorkoutDTO;
+import com.softuni.fitlaunch.model.dto.program.ProgramWorkoutExerciseDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
 import com.softuni.fitlaunch.model.entity.*;
@@ -12,12 +13,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,14 +25,17 @@ public class WorkoutService {
     private final ExerciseRepository exerciseRepository;
     private final WorkoutExerciseRepository workoutExerciseRepository;
 
+    private final ProgramWeekWorkoutRepository programWeekWorkoutRepository;
+
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
 
-    public WorkoutService(WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, WorkoutExerciseRepository workoutExerciseRepository, UserRepository userRepository, ModelMapper modelMapper) {
+    public WorkoutService(WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, WorkoutExerciseRepository workoutExerciseRepository, ProgramWeekWorkoutRepository programWeekWorkoutRepository, UserRepository userRepository, ModelMapper modelMapper) {
         this.workoutRepository = workoutRepository;
         this.exerciseRepository = exerciseRepository;
         this.workoutExerciseRepository = workoutExerciseRepository;
+        this.programWeekWorkoutRepository = programWeekWorkoutRepository;
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
     }
@@ -63,30 +64,25 @@ public class WorkoutService {
         return Arrays.stream(LevelEnum.values()).collect(Collectors.toList());
     }
 
-    public Optional<WorkoutDetailsDTO> getWorkoutDetails(Long workoutId) {
-        Optional<WorkoutDetailsDTO> workoutDetailsDTO = workoutRepository.findById(workoutId)
-                .map(this::mapAsDetails);
-
-        return workoutDetailsDTO;
-    }
-
-
-    private WorkoutDetailsDTO mapAsDetails(WorkoutEntity workoutEntity) {
-        List<WorkoutExerciseEntity> exercises = workoutExerciseRepository.findByWorkoutId(workoutEntity.getId()).stream().toList();
-        List<UserEntity> usersLiked1 = workoutEntity.getUsersLiked();
-        System.out.println();
-        List<UserDTO> usersLiked = workoutEntity.getUsersLiked().stream().map(userEntity -> modelMapper.map(userEntity, UserDTO.class)).toList();
+//    public Optional<WorkoutDetailsDTO> getWorkoutDetails(Long workoutId) {
+//        Optional<WorkoutDetailsDTO> workoutDetailsDTO = workoutRepository.findById(workoutId)
+//                .map(this::mapAsDetails);
+//
+//        return workoutDetailsDTO;
+//    }
 
 
+    private WorkoutDetailsDTO mapAsDetails(ProgramWeekWorkoutDTO programWeekWorkoutDTO) {
+        List<ProgramWorkoutExerciseDTO> exercisesDTO = programWeekWorkoutDTO.getExercises();
         return new WorkoutDetailsDTO(
-                workoutEntity.getId(),
-                workoutEntity.getName(),
-                workoutEntity.getLevel(),
-                workoutEntity.getDescription(),
-                exercises,
-                workoutEntity.getLikes(),
-                workoutEntity.hasStarted(),
-                workoutEntity.isCompleted()
+                programWeekWorkoutDTO.getId(),
+                programWeekWorkoutDTO.getName(),
+                programWeekWorkoutDTO.getLevel(),
+                programWeekWorkoutDTO.getDescription(),
+                exercisesDTO,
+                programWeekWorkoutDTO.getLikes(),
+                programWeekWorkoutDTO.hasStarted(),
+                programWeekWorkoutDTO.isCompleted()
         );
     }
 

@@ -204,11 +204,11 @@ public class WorkoutController {
 //        return "redirect:/workouts/" + id;
 //    }
 
-    @PostMapping("/workouts/{workoutId}/complete/{exerciseId}")
-    public String exerciseComplete(@PathVariable("workoutId") Long workoutId, @PathVariable("exerciseId") Long exerciseId) {
-        workoutService.completeExercise(workoutId, exerciseId);
-
-        return "redirect:/workouts/" + workoutId;
-    }
+//    @PostMapping("/workouts/{workoutId}/complete/{exerciseId}")
+//    public String exerciseComplete(@PathVariable("workoutId") Long workoutId, @PathVariable("exerciseId") Long exerciseId) {
+//        workoutService.completeExercise(workoutId, exerciseId);
+//
+//        return "redirect:/workouts/" + workoutId;
+//    }
 
 }
