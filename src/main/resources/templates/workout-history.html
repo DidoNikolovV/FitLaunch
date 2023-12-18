@@ -14,11 +14,8 @@
       <tr>
         <th style="width: 25%;" th:text="${completedWorkout.name}"></th>
         <th style="width: 25%;" th:text="${completedWorkout.level}">Exercise</th>
-        <th style="width: 25%;" th:text="${completedWorkout.dateCompleted}"></th>
         <th style="width: 25%;">
-
-            <button id="show-details">Show Details</button>
-
+          <a th:href="@{/workouts/{programId}/{weekId}/{id}(programId=${completedWorkout.getProgramWeek().getProgram().id}, weekId=${completedWorkout.getProgramWeek().id}, id=${completedWorkout.id})}" class="text-white">Workout Details</a>
         </th>
       </tr>
       </thead>

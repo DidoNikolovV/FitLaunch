@@ -1,5 +1,6 @@
 package com.softuni.fitlaunch.web;
 
+import com.softuni.fitlaunch.model.dto.program.ProgramWeekWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.dto.user.UserRegisterDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
@@ -131,16 +132,6 @@ public class UserController {
         return "redirect:/users/all";
     }
 
-    @GetMapping("/workouts/history")
-    public String workoutHistory(Model model, Principal principal) {
-
-
-        List<WorkoutDTO> workoutsCompleted = userService.getCompletedWorkouts(principal.getName());
-
-        model.addAttribute("workoutsCompleted", workoutsCompleted);
-
-        return "workout-history";
-    }
 
     @GetMapping("/contact-us")
     public String contactUs() {
@@ -180,6 +171,16 @@ public class UserController {
             return "email/activation-failed";
         }
 
+    }
+
+    @GetMapping("/user/progress")
+    public String progress(Principal principal, Model model) {
+        UserDTO loggedUser = userService.getUserByUsername(principal.getName());
+
+        List<ProgramWeekWorkoutDTO> workoutsCompleted = loggedUser.getWorkoutsCompleted();
+
+        model.addAttribute("workoutsCompleted", workoutsCompleted);
+        return "workout-history";
     }
 
 }

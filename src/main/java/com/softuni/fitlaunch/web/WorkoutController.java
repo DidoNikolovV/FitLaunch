@@ -4,6 +4,7 @@ package com.softuni.fitlaunch.web;
 import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.dto.workout.CreateWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
+import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
 import com.softuni.fitlaunch.model.entity.*;
 import com.softuni.fitlaunch.service.*;
@@ -56,6 +57,15 @@ public class WorkoutController {
         model.addAttribute("exercises", allExercises);
 
         return "workout-add";
+    }
+
+    @GetMapping("/workouts/history")
+    public String workoutHistory(Model model, Principal principal) {
+        List<WorkoutDTO> workoutsCompleted = userService.getCompletedWorkouts(principal.getName());
+
+        model.addAttribute("workoutsCompleted", workoutsCompleted);
+
+        return "workout-history";
     }
 
 //    @PostMapping("/workouts/add")
