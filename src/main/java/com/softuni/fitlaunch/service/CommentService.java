@@ -41,7 +41,7 @@ public class CommentService {
 
         List<CommentEntity> comments = commentRepository.findAllByWorkout(workout).get();
 
-        return comments.stream().map(commentEntity -> new CommentView(commentEntity.getId(), commentEntity.getAuthor().getUsername(), commentEntity.getContent())).collect(Collectors.toList());
+        return comments.stream().map(commentEntity -> new CommentView(commentEntity.getId(), commentEntity.getAuthor().getUsername(), commentEntity.getMessage())).collect(Collectors.toList());
 
     }
 
@@ -49,14 +49,14 @@ public class CommentService {
 //        WorkoutEntity workout = workoutRepository.findById(workoutId).orElseThrow(() -> new ObjectNotFoundException("Workout not found"));
 
         List<CommentEntity> comments = commentRepository.findByProgramIdAndWeekIdAndWorkoutId(programId, weekId, workoutId).orElseThrow(() -> new ObjectNotFoundException("Comments not found"));
-        List<CommentView> commentsDTO = comments.stream().map(commentEntity -> new CommentView(commentEntity.getId(), commentEntity.getAuthor().getUsername(), commentEntity.getContent())).collect(Collectors.toList());
+        List<CommentView> commentsDTO = comments.stream().map(commentEntity -> new CommentView(commentEntity.getId(), commentEntity.getAuthor().getUsername(), commentEntity.getMessage())).collect(Collectors.toList());
 
         return commentsDTO;
     }
 
 
     public CommentView addComment(CommentCreationDTO commentDTO) {
-        UserEntity authorEntity = userRepository.findByUsername(commentDTO.getAuthorName()).get();
+        UserEntity authorEntity = userRepository.findByUsername(commentDTO.getAuthorUsername()).get();
 
         ProgramEntity programEntity = programRepository.findById(commentDTO.getProgramId()).orElseThrow(() -> new ObjectNotFoundException("Program with id " + commentDTO.getProgramId() + " was not found"));
         ProgramWeekEntity programWeekEntity = programWeekRepository.findById(commentDTO.getWeekId()).orElseThrow(() -> new ObjectNotFoundException("Week with id " + commentDTO.getWeekId() + " was not found"));
@@ -68,23 +68,22 @@ public class CommentService {
         comment.setWeek(programWeekEntity);
         comment.setWorkout(programWeekWorkoutEntity);
         comment.setAuthor(authorEntity);
-        comment.setContent(commentDTO.getMessage());
+        comment.setMessage(commentDTO.getMessage());
         commentRepository.save(comment);
 
-        return new CommentView(comment.getId(), authorEntity.getUsername(), comment.getContent());
+        return new CommentView(comment.getId(), authorEntity.getUsername(), comment.getMessage());
 
     }
 
     public CommentView getComment(Long commentId) {
         CommentEntity commentEntity = commentRepository.findById(commentId).orElseThrow(() -> new ObjectNotFoundException("Comment with id " + commentId + " was not found"));
-        return new CommentView(commentEntity.getId(), commentEntity.getAuthor().getUsername(), commentEntity.getContent());
+        return new CommentView(commentEntity.getId(), commentEntity.getAuthor().getUsername(), commentEntity.getMessage());
     }
 
 
-    @Transactional
     public CommentView deleteCommentById(Long id) {
         CommentEntity comment = commentRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Comment with id " + id + " was not found"));
-        CommentView commentView = new CommentView(comment.getId(),comment.getAuthor().getUsername(), comment.getContent());
+        CommentView commentView = new CommentView(comment.getId(),comment.getAuthor().getUsername(), comment.getMessage());
         commentRepository.delete(comment);
         return commentView;
     }

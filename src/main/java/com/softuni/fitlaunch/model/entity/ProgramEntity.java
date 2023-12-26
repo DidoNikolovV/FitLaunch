@@ -7,7 +7,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "programs")
-public class ProgramEntity extends BaseEntity {
+public class ProgramEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
     private String imgUrl;
@@ -15,6 +19,14 @@ public class ProgramEntity extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
+    public Long getId() {
+        return id;
+    }
+
+    public ProgramEntity setId(Long id) {
+        this.id = id;
+        return this;
+    }
 
     public String getImgUrl() {
         return imgUrl;

@@ -37,7 +37,7 @@ async function postComment(e) {
 
 function commentAsHTML(comment) {
     let commentHTML = `<div id="${comment.id}">\n`
-    commentHTML += `<h4>${comment.authorName}</h4>\n`
+    commentHTML += `<h4>${comment.authorUsername}</h4>\n`
     commentHTML += `<p>${comment.message}</p>\n`
     commentHTML += `<button class="btn btn-danger" onclick="deleteComment(${comment.id})">Delete</button>\n`
     commentHTML += '</div>\n'

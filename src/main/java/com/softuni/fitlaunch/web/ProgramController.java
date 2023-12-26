@@ -1,18 +1,13 @@
 package com.softuni.fitlaunch.web;
 
 
+import com.softuni.fitlaunch.model.dto.program.ProgramDTO;
 import com.softuni.fitlaunch.model.dto.program.ProgramWeekDTO;
 import com.softuni.fitlaunch.model.dto.program.ProgramWeekWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.user.UserDTO;
-import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
 import com.softuni.fitlaunch.model.entity.ProgramEntity;
-import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.service.ProgramService;
 import com.softuni.fitlaunch.service.UserService;
-import com.softuni.fitlaunch.service.WorkoutExerciseService;
-import com.softuni.fitlaunch.service.WorkoutService;
-import org.modelmapper.ModelMapper;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +33,7 @@ public class ProgramController {
     @GetMapping("/programs")
     public String loadAllPrograms(Model model, Principal principal) {
 
-        List<ProgramEntity> allPrograms = programService.loadAllPrograms();
+        List<ProgramDTO> allPrograms = programService.loadAllPrograms();
         UserDTO loggedUser = userService.getUserByUsername(principal.getName());
 
         model.addAttribute("membership", loggedUser.getMembership());
@@ -49,7 +44,7 @@ public class ProgramController {
 
     @GetMapping("/programs/{programId}")
     public String loadProgramById(@PathVariable("programId") Long programId, Model model, Principal principal) {
-        ProgramEntity program = programService.getById(programId);
+        ProgramDTO program = programService.getById(programId);
         List<ProgramWeekDTO> allWeeksByProgramId = programService.getAllWeeksByProgramId(programId);
 
         UserDTO user = userService.getUserByUsername(principal.getName());
@@ -70,7 +65,7 @@ public class ProgramController {
                                         Principal principal) {
 
         UserDTO loggedUser = userService.getUserByUsername(principal.getName());
-        ProgramEntity program = programService.getById(programId);
+        ProgramDTO program = programService.getById(programId);
         ProgramWeekDTO programWeekById = programService.getProgramWeekById(weekId);
         ProgramWeekWorkoutDTO programWeekWorkoutById = programService.getProgramWeekWorkoutById(workoutId);
 

@@ -3,13 +3,13 @@ package com.softuni.fitlaunch.model.dto.view;
 public class CommentView {
 
     private Long id;
-    private String authorName;
+    private String authorUsername;
     private String message;
 
 
-    public CommentView(Long id, String authorName, String message) {
+    public CommentView(Long id, String authorUsername, String message) {
         this.id = id;
-        this.authorName = authorName;
+        this.authorUsername = authorUsername;
         this.message = message;
     }
 
@@ -22,12 +22,12 @@ public class CommentView {
         return this;
     }
 
-    public String getAuthorName() {
-        return authorName;
+    public String getAuthorUsername() {
+        return authorUsername;
     }
 
-    public CommentView setAuthorName(String authorName) {
-        this.authorName = authorName;
+    public CommentView setAuthorUsername(String authorUsername) {
+        this.authorUsername = authorUsername;
         return this;
     }
 

@@ -1,7 +1,7 @@
-INSERT INTO users (id, email, username, password, membership, activated)
+INSERT INTO users (id, email, username, password, membership, activated, title)
 VALUES
-    (1, 'admin@example.com', 'Admin', '95c1933b8ffe84f085f2839899d1673260be58dbd9c2c787ac35515805502c996417596dae9a92880aaa50a046fc7151', 'Yearly', 1),
-    (2, 'user@example.com', 'User', '95c1933b8ffe84f085f2839899d1673260be58dbd9c2c787ac35515805502c996417596dae9a92880aaa50a046fc7151', 'Monthly', 1);
+    (1, 'admin@example.com', 'Admin', '95c1933b8ffe84f085f2839899d1673260be58dbd9c2c787ac35515805502c996417596dae9a92880aaa50a046fc7151', 'Yearly', 1, 'COACH'),
+    (2, 'user@example.com', 'User', '95c1933b8ffe84f085f2839899d1673260be58dbd9c2c787ac35515805502c996417596dae9a92880aaa50a046fc7151', 'Monthly', 1, 'CLIENT');
 
 INSERT INTO roles (`id`, `role`)
 VALUES
@@ -65,7 +65,7 @@ VALUES
         (3, 1),
         (4, 1);
 
--- Insert data into ProgramWeekWorkoutEntity
+
 INSERT INTO programs_weeks_workouts (id, name, program_week_id, has_started, is_completed, level, description)
 VALUES
         (1, 'Push', 1, 0, 0, 'Beginner', 'This workout is designed to hit Chest, Triceps and Shoulder effectively'),
@@ -85,18 +85,31 @@ VALUES
         (15, 'Arms', 4, 0, 0, 'Beginner', 'This workout is designed to hit your Arms effectively'),
         (16, 'Shoulders', 4, 0, 0, 'Beginner', 'This workout is designed to hit your Shoulders effectively');
 
-INSERT INTO exercises(`id`, `name`, `video_url`, `program_workout_id`)
+-- INSERT INTO exercises(`id`, `name`, `video_url`, `program_workout_id`)
+-- VALUES
+--     (1, 'Shoulder Press','OLePvpxQEGk', 1),
+--     (2, 'Squats', 'MLoZuAkIyZI', 1),
+--     (3, 'Dumbbell Lateral Raise', 'JIhbYYA1Q90', 2),
+--     (4, 'Chest Fly',  'g3T7LsEeDWQ', 2),
+--     (5, 'Cable Row', 'G18ysBYu5Mw', 3),
+--     (6, 'Pull-ups', 'dvG8B2OjfWk', 3),
+--     (7, 'Dumbbell Curls', '', 4),
+--     (8, 'RDL', '5rIqP63yWFg', 4),
+--     (9, 'Deadlift', 'McCDaAsSeRc', 5),
+--     (10, 'Bench Press','EdDqD4aKwxM', 5);
+
+INSERT INTO exercises(`id`, `name`, `video_url`)
 VALUES
-    (1, 'Shoulder Press','OLePvpxQEGk', 1),
-    (2, 'Squats', 'MLoZuAkIyZI', 1),
-    (3, 'Dumbbell Lateral Raise', 'JIhbYYA1Q90', 2),
-    (4, 'Chest Fly',  'g3T7LsEeDWQ', 2),
-    (5, 'Cable Row', 'G18ysBYu5Mw', 3),
-    (6, 'Pull-ups', 'dvG8B2OjfWk', 3),
-    (7, 'Dumbbell Curls', '', 4),
-    (8, 'RDL', '5rIqP63yWFg', 4),
-    (9, 'Deadlift', 'McCDaAsSeRc', 5),
-    (10, 'Bench Press','EdDqD4aKwxM', 5);
+    (1, 'Shoulder Press','OLePvpxQEGk'),
+    (2, 'Squats', 'MLoZuAkIyZI'),
+    (3, 'Dumbbell Lateral Raise', 'JIhbYYA1Q90'),
+    (4, 'Chest Fly',  'g3T7LsEeDWQ'),
+    (5, 'Cable Row', 'G18ysBYu5Mw'),
+    (6, 'Pull-ups', 'dvG8B2OjfWk'),
+    (7, 'Dumbbell Curls', ''),
+    (8, 'RDL', '5rIqP63yWFg'),
+    (9, 'Deadlift', 'McCDaAsSeRc'),
+    (10, 'Bench Press','EdDqD4aKwxM');
 
 INSERT INTO program_workouts_exercises(id, workout_id, exercise_id, sets, reps, is_completed)
 VALUES
@@ -106,6 +119,14 @@ VALUES
     (4, 2, 4, 2, 20, 0),
     (5, 3, 2, 3, 12, 0),
     (6, 3, 1, 4, 6, 0);
+
+
+INSERT INTO certificates (name, issuing_authority, issue_date)
+VALUES
+    ('Certified Fitness Trainer', 'Fitness Certification Authority', '2022-01-01'),
+    ('Advanced Yoga Instructor', 'Yoga Certification Institute', '2021-05-15'),
+    ('Professional Life Coach', 'Coaching Association', '2020-10-01');
+
 
 
 

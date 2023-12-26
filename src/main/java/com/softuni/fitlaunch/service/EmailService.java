@@ -1,9 +1,11 @@
 package com.softuni.fitlaunch.service;
 
 
+import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.entity.UserEntity;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -20,13 +22,16 @@ public class EmailService {
     private final JavaMailSender javaMailSender;
     private final String fitlaunch;
 
+    private final ModelMapper modelMapper;
+
     public EmailService(
             TemplateEngine templateEngine,
             JavaMailSender javaMailSender,
-            @Value("${spring.mail.fitlaunch}") String fitlaunch) {
+            @Value("${spring.mail.fitlaunch}") String fitlaunch, ModelMapper modelMapper) {
         this.templateEngine = templateEngine;
         this.javaMailSender = javaMailSender;
         this.fitlaunch = fitlaunch;
+        this.modelMapper = modelMapper;
     }
 
     public void sendRegistrationEmail(String userEmail, String username, String activationCode) {
@@ -49,12 +54,12 @@ public class EmailService {
         }
     }
 
-    public void sendReminderEmail(List<UserEntity> users) {
+    public void sendReminderEmail(List<UserDTO> users) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
-
-        for (UserEntity user : users) {
+        List<UserEntity> usersEntity = users.stream().map(userDTO -> modelMapper.map(userDTO, UserEntity.class)).toList();
+        for (UserEntity user : usersEntity) {
             try {
                 mimeMessageHelper.setFrom(fitlaunch);
                 mimeMessageHelper.setFrom(fitlaunch);

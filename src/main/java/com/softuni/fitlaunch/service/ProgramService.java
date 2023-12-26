@@ -2,6 +2,7 @@ package com.softuni.fitlaunch.service;
 
 
 
+import com.softuni.fitlaunch.model.dto.program.ProgramDTO;
 import com.softuni.fitlaunch.model.dto.program.ProgramWeekDTO;
 import com.softuni.fitlaunch.model.dto.program.ProgramWeekWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.user.UserDTO;
@@ -43,8 +44,8 @@ public class ProgramService {
     }
 
     @Transactional
-    public List<ProgramEntity> loadAllPrograms() {
-        return programRepository.findAll();
+    public List<ProgramDTO> loadAllPrograms() {
+        return programRepository.findAll().stream().map(programEntity -> modelMapper.map(programEntity, ProgramDTO.class)).toList();
     }
 
     public List<ProgramWeekDTO> getAllWeeksByProgramId(Long programId) {
@@ -71,8 +72,9 @@ public class ProgramService {
         return programWeekWorkoutDTO;
     }
 
-    public ProgramEntity getById(Long programId) {
-        return programRepository.findById(programId).orElseThrow(() -> new ObjectNotFoundException("Program with id " + programId + " not found"));
+    public ProgramDTO getById(Long programId) {
+        ProgramEntity programEntity = programRepository.findById(programId).orElseThrow(() -> new ObjectNotFoundException("Program with id " + programId + " not found"));
+        return modelMapper.map(programEntity, ProgramDTO.class);
     }
 
     public ProgramWeekWorkoutDTO getProgramWorkout(Long programId, Long weekId, Long workoutId, UserDTO userDTO) {
@@ -88,4 +90,6 @@ public class ProgramService {
 
         return programWeekWorkoutDTO;
     }
+
+
 }

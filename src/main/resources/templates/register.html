@@ -46,6 +46,16 @@
                            th:classappend="${#fields.hasErrors('password')} ? 'bg-danger'">
                 </div>
 
+
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <select id="title" class="custom-select" th:field="*{title}">
+                        <option value="CLIENT" selected>CLIENT</option>
+                        <option value="COACH">COACH</option>
+                    </select>
+                </div>
+
+
                 <div class="button-holder d-flex justify-content-center">
                     <button type="submit" class="button-primary btn btn-info btn-lg">Register</button>
                 </div>

@@ -12,7 +12,7 @@ public class WorkoutDetailsDTO {
 
     private String name;
 
-    private LevelEnum level;
+    private String level;
 
     private String description;
 
@@ -31,7 +31,7 @@ public class WorkoutDetailsDTO {
     public WorkoutDetailsDTO() {
     }
 
-    public WorkoutDetailsDTO(Long id, String name, LevelEnum level, String description, List<ProgramWorkoutExerciseDTO> exercises, Long likes, boolean hasStarted, boolean isCompleted) {
+    public WorkoutDetailsDTO(Long id, String name, String level, String description, List<ProgramWorkoutExerciseDTO> exercises, Long likes, boolean hasStarted, boolean isCompleted) {
         this.id = id;
         this.name = name;
         this.level = level;
@@ -60,11 +60,11 @@ public class WorkoutDetailsDTO {
         return this;
     }
 
-    public LevelEnum getLevel() {
+    public String getLevel() {
         return level;
     }
 
-    public WorkoutDetailsDTO setLevel(LevelEnum level) {
+    public WorkoutDetailsDTO setLevel(String level) {
         this.level = level;
         return this;
     }

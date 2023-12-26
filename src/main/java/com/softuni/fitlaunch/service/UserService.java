@@ -1,12 +1,18 @@
 package com.softuni.fitlaunch.service;
 
 
+import com.softuni.fitlaunch.model.dto.CertificateDTO;
+import com.softuni.fitlaunch.model.dto.comment.CommentCreationDTO;
 import com.softuni.fitlaunch.model.dto.program.ProgramWeekWorkoutDTO;
+import com.softuni.fitlaunch.model.dto.program.ProgramWorkoutExerciseDTO;
 import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.dto.user.UserRegisterDTO;
 import com.softuni.fitlaunch.model.dto.user.UserRoleDTO;
+import com.softuni.fitlaunch.model.dto.view.UserCoachDetailsView;
+import com.softuni.fitlaunch.model.dto.view.UserCoachView;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import com.softuni.fitlaunch.model.entity.*;
+import com.softuni.fitlaunch.model.enums.UserTitleEnum;
 import com.softuni.fitlaunch.model.events.UserRegisteredEvent;
 import com.softuni.fitlaunch.repository.*;
 import com.softuni.fitlaunch.service.exception.ObjectNotFoundException;
@@ -15,6 +21,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.time.Instant;
@@ -80,12 +87,16 @@ public class UserService {
         user.setEmail(userRegisterDTO.getEmail());
         user.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
         user.setRoles(List.of(role));
-        user.setMembership("Free");
 
 
+        if(userRegisterDTO.getTitle().equals((UserTitleEnum.CLIENT.name()))) {
+            user.setMembership("Free");
+        } else {
+            user.setMembership("Yearly");
+        }
+        user.setTitle(UserTitleEnum.valueOf(userRegisterDTO.getTitle()));
 
         userRepository.save(user);
-
 
         applicationEventPublisher.publishEvent(new UserRegisteredEvent(
                 "UserService", userRegisterDTO.getEmail(), userRegisterDTO.getUsername()
@@ -94,12 +105,13 @@ public class UserService {
         return true;
     }
 
-    public List<UserEntity> getAllUsers() {
-        return userRepository.findAll().stream().toList();
+    public List<UserDTO> getAllUsers() {
+        return userRepository.findAll().stream().map(userEntity -> modelMapper.map(userEntity, UserDTO.class)).toList();
     }
 
-    public UserEntity getUserById(Long id) {
-        return userRepository.findById(id).get();
+    public UserDTO getUserById(Long id) {
+        UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("User not found"));
+        return modelMapper.map(userEntity, UserDTO.class);
     }
 
     public UserDTO getUserByUsername(String username) {
@@ -184,8 +196,8 @@ public class UserService {
         return false;
     }
 
-    public void changeUserRole(Long userId, UserRoleEntity role) {
-        Optional<UserEntity> optUser = userRepository.findById(userId);
+    public void changeUserRole(String username, UserRoleEntity role) {
+        Optional<UserEntity> optUser = userRepository.findByUsername(username);
 
         if(optUser.isPresent()) {
             UserEntity user = optUser.get();
@@ -200,6 +212,8 @@ public class UserService {
         }
     }
 
+
+    @Transactional
     public List<WorkoutDTO> getCompletedWorkouts(String username) {
         UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
         List<WorkoutDTO> completedWorkouts = user.getWorkoutsCompleted().stream().map(workoutEntity -> modelMapper.map(workoutEntity, WorkoutDTO.class)).toList();
@@ -259,6 +273,7 @@ public class UserService {
     }
 
 
+
     public void completeProgramWorkoutExercise(UserDTO loggedUser, Long weekId, Long workoutId, Long exerciseId) {
         UserEntity userEntity = userRepository.findByUsername(loggedUser.getUsername()).orElseThrow(() -> new ObjectNotFoundException("User not found"));
         ProgramWeekWorkoutEntity programWeekWorkoutEntity = programWeekWorkoutRepository.findById(workoutId).orElseThrow(() -> new ObjectNotFoundException("Workout not found"));
@@ -270,5 +285,19 @@ public class UserService {
                 return;
             }
         }
+    }
+
+    public List<UserCoachView> getAllCoaches() {
+        List<UserEntity> coachesEntity = userRepository.findAllByTitle(UserTitleEnum.COACH).orElseThrow(() -> new ObjectNotFoundException("Coaches not found"));
+
+        List<UserCoachView> coachesView = coachesEntity.stream().map(coachEntity -> new UserCoachView(coachEntity.getId(), "/images/profile-avatar.jpg", coachEntity.getUsername(), coachEntity.getEmail(), "random desc")).toList();
+
+        return coachesView;
+    }
+
+    public UserCoachDetailsView getCoachById(Long id) {
+        UserEntity coachEntity = userRepository.findByIdAndTitle(id, UserTitleEnum.COACH).orElseThrow(() -> new ObjectNotFoundException("Coach not found"));
+        List<CertificateDTO> userCertificatesDTO = coachEntity.getCertificates().stream().map(certificateEntity -> modelMapper.map(certificateEntity, CertificateDTO.class)).toList();
+        return new UserCoachDetailsView(coachEntity.getId(), "/images/profile-avatar.jpg",  coachEntity.getUsername(), coachEntity.getEmail(), "random desc", userCertificatesDTO, 4.5);
     }
 }

@@ -81,7 +81,7 @@ public class WorkoutService {
                 programWeekWorkoutDTO.getDescription(),
                 exercisesDTO,
                 programWeekWorkoutDTO.getLikes(),
-                programWeekWorkoutDTO.hasStarted(),
+                programWeekWorkoutDTO.isHasStarted(),
                 programWeekWorkoutDTO.isCompleted()
         );
     }

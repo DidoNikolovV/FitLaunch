@@ -5,47 +5,39 @@ import com.softuni.fitlaunch.model.dto.program.ProgramWeekWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.program.ProgramWorkoutExerciseDTO;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutExerciseDTO;
 import com.softuni.fitlaunch.model.entity.UserRoleEntity;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO {
 
     private String username;
 
     private String email;
 
-    private List<UserRoleEntity> roles;
+    private List<UserRoleDTO> roles;
 
     private String membership;
 
 
     private List<CommentCreationDTO> comments;
 
-    private List<ProgramWeekWorkoutDTO> workoutsLiked;
-
     private List<ProgramWeekWorkoutDTO> workoutsCompleted;
 
     private List<ProgramWeekWorkoutDTO> workoutStarted;
+
+    private List<ProgramWeekWorkoutDTO> workoutsLiked;
+
 
     private List<ProgramWorkoutExerciseDTO> exercisesCompleted;
 
     private boolean activated = false;
 
-    public UserDTO() {
-    }
 
-    public UserDTO(String username, String email, List<UserRoleEntity> roles, String membership, List<CommentCreationDTO> comments, List<ProgramWeekWorkoutDTO> workoutsLiked, List<ProgramWeekWorkoutDTO> workoutsCompleted, List<ProgramWeekWorkoutDTO> workoutStarted, List<ProgramWorkoutExerciseDTO> exercisesCompleted, boolean activated) {
-        this.username = username;
-        this.email = email;
-        this.roles = roles;
-        this.membership = membership;
-        this.comments = comments;
-        this.workoutsLiked = workoutsLiked;
-        this.workoutsCompleted = workoutsCompleted;
-        this.workoutStarted = workoutStarted;
-        this.exercisesCompleted = exercisesCompleted;
-        this.activated = activated;
-    }
 
     public String getUsername() {
         return username;
@@ -65,11 +57,11 @@ public class UserDTO {
         return this;
     }
 
-    public List<UserRoleEntity> getRoles() {
+    public List<UserRoleDTO> getRoles() {
         return roles;
     }
 
-    public UserDTO setRoles(List<UserRoleEntity> roles) {
+    public UserDTO setRoles(List<UserRoleDTO> roles) {
         this.roles = roles;
         return this;
     }

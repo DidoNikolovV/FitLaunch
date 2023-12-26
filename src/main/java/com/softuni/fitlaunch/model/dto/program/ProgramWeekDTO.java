@@ -12,7 +12,7 @@ public class ProgramWeekDTO {
     @NotNull
     private ProgramDTO program;
 
-    @NotNull
+
     private List<ProgramWeekWorkoutDTO> weekWorkouts;
 
     public Long getId() {

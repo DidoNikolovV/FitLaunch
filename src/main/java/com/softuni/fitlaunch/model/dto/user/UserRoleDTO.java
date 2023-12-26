@@ -1,17 +1,18 @@
 package com.softuni.fitlaunch.model.dto.user;
 
 import com.softuni.fitlaunch.model.enums.UserRoleEnum;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserRoleDTO {
 
     private Long id;
 
     private UserRoleEnum role;
 
-    public UserRoleDTO(Long id, UserRoleEnum role) {
-        this.id = id;
-        this.role = role;
-    }
 
     public Long getId() {
         return id;

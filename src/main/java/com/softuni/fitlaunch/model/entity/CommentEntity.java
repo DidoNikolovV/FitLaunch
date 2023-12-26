@@ -5,7 +5,11 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "comments")
-public class CommentEntity extends BaseEntity{
+public class CommentEntity{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     private UserEntity author;
@@ -20,7 +24,16 @@ public class CommentEntity extends BaseEntity{
     private ProgramWeekEntity week;
 
     @Column(nullable = false)
-    private String content;
+    private String message;
+
+    public Long getId() {
+        return id;
+    }
+
+    public CommentEntity setId(Long id) {
+        this.id = id;
+        return this;
+    }
 
     public UserEntity getAuthor() {
         return author;
@@ -31,12 +44,12 @@ public class CommentEntity extends BaseEntity{
         return this;
     }
 
-    public String getContent() {
-        return content;
+    public String getMessage() {
+        return message;
     }
 
-    public CommentEntity setContent(String content) {
-        this.content = content;
+    public CommentEntity setMessage(String message) {
+        this.message = message;
         return this;
     }
 

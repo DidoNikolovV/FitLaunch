@@ -7,7 +7,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "programs_weeks")
-public class ProgramWeekEntity extends BaseEntity {
+public class ProgramWeekEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "program_id")
@@ -17,6 +21,15 @@ public class ProgramWeekEntity extends BaseEntity {
     @OneToMany(mappedBy = "programWeek", cascade = CascadeType.ALL)
     private List<ProgramWeekWorkoutEntity> weekWorkouts;
 
+
+    public Long getId() {
+        return id;
+    }
+
+    public ProgramWeekEntity setId(Long id) {
+        this.id = id;
+        return this;
+    }
 
     public ProgramEntity getProgram() {
         return program;

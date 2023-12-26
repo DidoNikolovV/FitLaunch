@@ -13,13 +13,10 @@ public class ProgramWeekWorkoutDTO {
 
     @NotNull
     private Long id;
-
-
     @NotNull
     private String name;
 
-    @NotNull
-    private ProgramWeekDTO programWeek;
+    private Long programWeekId;
 
     @NotNull
     private boolean hasStarted;
@@ -31,14 +28,13 @@ public class ProgramWeekWorkoutDTO {
 
     private List<ProgramWorkoutExerciseDTO> exercises;
 
-    private Long likes = 0L;
+    private Long likes;
 
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    private LevelEnum level;
+    private String level;
 
     @NotNull
     private String description;
+
 
     public Long getId() {
         return id;
@@ -49,17 +45,25 @@ public class ProgramWeekWorkoutDTO {
         return this;
     }
 
-    public ProgramWeekDTO getProgramWeek() {
-        return programWeek;
+    public String getName() {
+        return name;
     }
 
-    public ProgramWeekWorkoutDTO setProgramWeek(ProgramWeekDTO programWeek) {
-        this.programWeek = programWeek;
+    public ProgramWeekWorkoutDTO setName(String name) {
+        this.name = name;
         return this;
     }
 
+    public Long getProgramWeekId() {
+        return programWeekId;
+    }
 
-    public boolean hasStarted() {
+    public ProgramWeekWorkoutDTO setProgramWeekId(Long programWeekId) {
+        this.programWeekId = programWeekId;
+        return this;
+    }
+
+    public boolean isHasStarted() {
         return hasStarted;
     }
 
@@ -86,6 +90,14 @@ public class ProgramWeekWorkoutDTO {
         return this;
     }
 
+    public List<ProgramWorkoutExerciseDTO> getExercises() {
+        return exercises;
+    }
+
+    public ProgramWeekWorkoutDTO setExercises(List<ProgramWorkoutExerciseDTO> exercises) {
+        this.exercises = exercises;
+        return this;
+    }
 
     public Long getLikes() {
         return likes;
@@ -96,11 +108,11 @@ public class ProgramWeekWorkoutDTO {
         return this;
     }
 
-    public LevelEnum getLevel() {
+    public String getLevel() {
         return level;
     }
 
-    public ProgramWeekWorkoutDTO setLevel(LevelEnum level) {
+    public ProgramWeekWorkoutDTO setLevel(String level) {
         this.level = level;
         return this;
     }
@@ -111,28 +123,6 @@ public class ProgramWeekWorkoutDTO {
 
     public ProgramWeekWorkoutDTO setDescription(String description) {
         this.description = description;
-        return this;
-    }
-
-    public boolean isHasStarted() {
-        return hasStarted;
-    }
-
-    public List<ProgramWorkoutExerciseDTO> getExercises() {
-        return exercises;
-    }
-
-    public ProgramWeekWorkoutDTO setExercises(List<ProgramWorkoutExerciseDTO> exercises) {
-        this.exercises = exercises;
-        return this;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public ProgramWeekWorkoutDTO setName(String name) {
-        this.name = name;
         return this;
     }
 }

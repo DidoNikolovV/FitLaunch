@@ -11,6 +11,9 @@ import java.util.List;
 public class ProgramWeekWorkoutEntity extends BaseEntity{
 
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(nullable = false)
     private String name;
 
@@ -41,6 +44,16 @@ public class ProgramWeekWorkoutEntity extends BaseEntity{
     @Column(nullable = false)
     private String description;
 
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public ProgramWeekWorkoutEntity setId(Long id) {
+        this.id = id;
+        return this;
+    }
 
     public ProgramWeekEntity getProgramWeek() {
         return programWeek;

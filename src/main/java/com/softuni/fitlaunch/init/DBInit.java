@@ -2,6 +2,7 @@ package com.softuni.fitlaunch.init;
 
 
 import com.softuni.fitlaunch.model.entity.*;
+import com.softuni.fitlaunch.model.enums.LevelEnum;
 import com.softuni.fitlaunch.repository.*;
 import com.softuni.fitlaunch.service.exception.ObjectNotFoundException;
 import org.springframework.boot.CommandLineRunner;
@@ -21,14 +22,18 @@ public class DBInit implements CommandLineRunner {
     private final ProgramWeekRepository programWeekRepository;
     private final ProgramWeekWorkoutRepository programWeekWorkoutRepository;
 
+    private final ExerciseRepository exerciseRepository;
 
-    public DBInit(WorkoutRepository workoutRepository, CommentRepository commentRepository, UserRepository userRepository, ProgramRepository programRepository, ProgramWeekRepository programWeekRepository, ProgramWeekWorkoutRepository programWeekWorkoutRepository) {
+
+
+    public DBInit(WorkoutRepository workoutRepository, CommentRepository commentRepository, UserRepository userRepository, ProgramRepository programRepository, ProgramWeekRepository programWeekRepository, ProgramWeekWorkoutRepository programWeekWorkoutRepository, ExerciseRepository exerciseRepository) {
         this.workoutRepository = workoutRepository;
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
         this.programRepository = programRepository;
         this.programWeekRepository = programWeekRepository;
         this.programWeekWorkoutRepository = programWeekWorkoutRepository;
+        this.exerciseRepository = exerciseRepository;
     }
 
     @Override
@@ -37,12 +42,20 @@ public class DBInit implements CommandLineRunner {
             initComment("Admin", 1L, 1L, 1L, "Cool Workout", "I like it");
         }
 
+        List<ExerciseEntity> allExercises = exerciseRepository.findAll();
+
+
+//        if(programWeekWorkoutRepository.count() == 0) {
+//            initProgram(1L, 1L, allExercises);
+//            initProgram(2L, 1L, allExercises);
+//        }
+
 //        initData();
 
     }
 
-    private void initComment(String authorName, Long programId, Long weekId, Long workoutId, String... comments) {
-        UserEntity user = userRepository.findByUsername(authorName)
+    private void initComment(String authorUsername, Long programId, Long weekId, Long workoutId, String... comments) {
+        UserEntity user = userRepository.findByUsername(authorUsername)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         ProgramEntity program = programRepository.findById(programId).orElseThrow(() -> new ObjectNotFoundException("Program not found"));
@@ -60,15 +73,51 @@ public class DBInit implements CommandLineRunner {
             aComment.setProgram(program);
             aComment.setWeek(programWeek);
             aComment.setWorkout(programWorkout);
-            aComment.setContent(comment);
+            aComment.setMessage(comment);
             allComments.add(aComment);
         }
 
-//        user.setComments(allComments);
 
         commentRepository.saveAll(allComments);
+        user.setComments(allComments);
+
 
     }
+
+//    private void initProgram(Long programId, Long weekId, List<ExerciseEntity> exercises) {
+//        ProgramEntity program = programRepository.findById(programId)
+//                .orElseThrow(() -> new ObjectNotFoundException("Program not found"));
+//
+//        ProgramWeekEntity programWeekEntity = programWeekRepository.findByIdAndProgramId(weekId, programId).orElseThrow(() -> new ObjectNotFoundException("Week not found"));
+//        List<ProgramWeekWorkoutEntity> programWeekWorkouts = new ArrayList<>();
+//        while(programWeekWorkouts.size() < 4) {
+//            ProgramWeekWorkoutEntity programWeekWorkout = new ProgramWeekWorkoutEntity();
+//            programWeekWorkout.setHasStarted(false);
+//            programWeekWorkout.setLikes(0L);
+//            programWeekWorkout.setDescription("Cool Workout");
+//            programWeekWorkout.setLevel(LevelEnum.BEGINNER);
+//            programWeekWorkout.setLevel(LevelEnum.BEGINNER);
+//            programWeekWorkout.setCompleted(false);
+//            programWeekWorkout.setProgramWeek(programWeekEntity);
+//            for (ExerciseEntity exercise : exercises) {
+//                ProgramWorkoutExerciseEntity programWorkoutExerciseEntity = new ProgramWorkoutExerciseEntity();
+//                programWorkoutExerciseEntity.setExercise(exercise);
+//                programWorkoutExerciseEntity.setWorkout(programWeekWorkout);
+//                programWorkoutExerciseEntity.setSets(4);
+//                programWorkoutExerciseEntity.setReps(12);
+//            }
+//
+//            programWeekWorkouts.add(programWeekWorkout);
+//        }
+//
+//        programWeekWorkoutRepository.saveAll(programWeekWorkouts);
+//
+//        programWeekEntity.setProgram(program);
+//        programWeekEntity.setWeekWorkouts(programWeekWorkouts);
+//
+//        programRepository.save(program);
+//        programWeekRepository.save(programWeekEntity);
+//    }
 
 }
 

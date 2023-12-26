@@ -1,6 +1,7 @@
 package com.softuni.fitlaunch.service.schedulers;
 
 
+import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.service.EmailService;
 import com.softuni.fitlaunch.service.UserService;
@@ -23,7 +24,7 @@ public class DailyWorkoutReminderScheduler {
 
     @Scheduled(fixedRate = 24 * 60 * 60 * 1000) // 24 hours in milliseconds
     public void sendWorkoutReminders() throws InterruptedException {
-        List<UserEntity> allUsers = userService.getAllUsers();
+        List<UserDTO> allUsers = userService.getAllUsers();
 
         emailService.sendReminderEmail(allUsers);
     }

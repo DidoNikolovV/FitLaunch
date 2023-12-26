@@ -2,7 +2,7 @@ package com.softuni.fitlaunch.model.dto.comment;
 
 public class CommentCreationDTO {
 
-    private String authorName;
+    private String authorUsername;
 
     private Long programId;
 
@@ -15,20 +15,20 @@ public class CommentCreationDTO {
     public CommentCreationDTO() {
     }
 
-    public CommentCreationDTO(String authorName, Long programId, Long weekId, Long workoutId, String message) {
-        this.authorName = authorName;
+    public CommentCreationDTO(String authorUsername, Long programId, Long weekId, Long workoutId, String message) {
+        this.authorUsername = authorUsername;
         this.programId = programId;
         this.weekId = weekId;
         this.workoutId = workoutId;
         this.message = message;
     }
 
-    public String getAuthorName() {
-        return authorName;
+    public String getAuthorUsername() {
+        return authorUsername;
     }
 
-    public CommentCreationDTO setAuthorName(String authorName) {
-        this.authorName = authorName;
+    public CommentCreationDTO setAuthorUsername(String authorUsername) {
+        this.authorUsername = authorUsername;
         return this;
     }
 

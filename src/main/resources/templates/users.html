@@ -13,7 +13,6 @@
         <table class="table">
           <thead>
           <tr>
-            <th class="text-white">ID</th>
             <th class="text-white">Email</th>
             <th class="text-white">Username</th>
             <th class="text-white">Role</th>
@@ -22,18 +21,17 @@
           <tbody>
           <!-- Loop through your user data here -->
           <tr th:each="user : ${users}">
-            <td th:text="${user.id}" class="text-white"></td>
             <td th:text="${user.email}" class="text-white"></td>
             <td th:text="${user.username}" class="text-white"></td>
             <td>
               <form th:action="@{/users/all}" th:method="post">
-                <input type="hidden" th:name="userId" th:value="${user.id}" />
-                <select class="form-control" th:id="'roleSelect-' + ${user.id}" th:name="role">
+                <input type="hidden" th:name="username" th:value="${user.username}" />
+                <select class="form-control" th:id="'roleSelect-' + ${user.username}" th:name="role">
 
                   <option th:selected="${user.roles.get(0).getRole().name() == 'USER'}"  th:value="USER">User</option>
                   <option th:selected="${user.roles.get(0).getRole().name() == 'ADMIN'}" th:value="ADMIN">Admin</option>
                 </select>
-                <button type="submit" class="btn btn-primary">Change Role</button>
+                <input type="submit" name="changeRole" id="changeRole" class="btn btn-primary" value="Change Role">
               </form>
             </td>
 

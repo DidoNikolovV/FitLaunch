@@ -14,18 +14,6 @@ public class ProgramDTO {
     @NotNull
     private String name;
 
-    public ProgramDTO() {
-    }
-
-    public ProgramDTO(Long id) {
-        this.id = id;
-    }
-
-    public ProgramDTO(Long id, String imgUrl, String name) {
-        this.id = id;
-        this.imgUrl = imgUrl;
-        this.name = name;
-    }
 
     public Long getId() {
         return id;
