@@ -1,7 +1,7 @@
-INSERT INTO users (id, email, username, password, membership, activated, title)
+INSERT INTO users (id, email, username, password, membership, activated, title, img_url)
 VALUES
-    (1, 'admin@example.com', 'Admin', '95c1933b8ffe84f085f2839899d1673260be58dbd9c2c787ac35515805502c996417596dae9a92880aaa50a046fc7151', 'Yearly', 1, 'COACH'),
-    (2, 'user@example.com', 'User', '95c1933b8ffe84f085f2839899d1673260be58dbd9c2c787ac35515805502c996417596dae9a92880aaa50a046fc7151', 'Monthly', 1, 'CLIENT');
+    (1, 'admin@example.com', 'Admin', '95c1933b8ffe84f085f2839899d1673260be58dbd9c2c787ac35515805502c996417596dae9a92880aaa50a046fc7151', 'Yearly', 1, 'COACH', '/images/profile-avatar.jpg'),
+    (2, 'user@example.com', 'User', '95c1933b8ffe84f085f2839899d1673260be58dbd9c2c787ac35515805502c996417596dae9a92880aaa50a046fc7151', 'Monthly', 1, 'CLIENT', '/images/profile-avatar.jpg');
 
 INSERT INTO roles (`id`, `role`)
 VALUES

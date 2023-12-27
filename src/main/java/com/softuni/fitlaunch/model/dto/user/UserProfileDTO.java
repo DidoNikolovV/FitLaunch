@@ -1,4 +1,5 @@
-package com.softuni.fitlaunch.model.dto.view;
+package com.softuni.fitlaunch.model.dto.user;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,16 +7,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserProfileView {
+public class UserProfileDTO {
 
-    private String imgUrl;
+    private MultipartFile imgUrl;
     private String username;
     private String email;
     private String membership;
-
 }

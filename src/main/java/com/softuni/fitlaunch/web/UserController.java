@@ -2,30 +2,27 @@ package com.softuni.fitlaunch.web;
 
 import com.softuni.fitlaunch.model.dto.program.ProgramWeekWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.user.UserDTO;
+import com.softuni.fitlaunch.model.dto.user.UserProfileDTO;
 import com.softuni.fitlaunch.model.dto.user.UserRegisterDTO;
 import com.softuni.fitlaunch.model.dto.view.UserCoachDetailsView;
 import com.softuni.fitlaunch.model.dto.view.UserCoachView;
 import com.softuni.fitlaunch.model.dto.view.UserProfileView;
-import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
-import com.softuni.fitlaunch.model.entity.UserEntity;
 import com.softuni.fitlaunch.model.entity.UserRoleEntity;
 import com.softuni.fitlaunch.model.enums.UserRoleEnum;
 import com.softuni.fitlaunch.service.BlackListService;
-import com.softuni.fitlaunch.service.CustomUserDetails;
 import com.softuni.fitlaunch.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
+import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 
 @Controller()
 @RequestMapping("/users")
@@ -34,6 +31,8 @@ public class UserController {
     private final UserService userService;
 
     private final BlackListService blackListService;
+
+
 
     public UserController(UserService userService, BlackListService blackListService) {
         this.userService = userService;
@@ -47,16 +46,21 @@ public class UserController {
 
     @GetMapping("/profile")
     public String userProfile(Principal principal, Model model) {
-        UserDTO user = userService.getUserByUsername(principal.getName());
-        UserProfileView userProfileView = new UserProfileView(
-                user.getUsername(),
-                user.getEmail(),
-                user.getMembership()
-        );
+        UserProfileView userProfileView = userService.getUserProfileByUsername(principal.getName());
 
         model.addAttribute("user", userProfileView);
 
         return "profile";
+    }
+
+    @PostMapping("/profile")
+    public String userProfile(Principal principal, Model model, UserProfileDTO userProfileDTO) throws IOException {
+
+        UserProfileView userProfileView = userService.uploadProfilePicture(principal.getName(), userProfileDTO.getImgUrl());
+
+        model.addAttribute("user", userProfileView);
+
+        return "redirect:/users/profile";
     }
 
     @PostMapping("/login-error")

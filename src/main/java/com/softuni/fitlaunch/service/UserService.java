@@ -2,14 +2,13 @@ package com.softuni.fitlaunch.service;
 
 
 import com.softuni.fitlaunch.model.dto.CertificateDTO;
-import com.softuni.fitlaunch.model.dto.comment.CommentCreationDTO;
 import com.softuni.fitlaunch.model.dto.program.ProgramWeekWorkoutDTO;
-import com.softuni.fitlaunch.model.dto.program.ProgramWorkoutExerciseDTO;
 import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.dto.user.UserRegisterDTO;
 import com.softuni.fitlaunch.model.dto.user.UserRoleDTO;
 import com.softuni.fitlaunch.model.dto.view.UserCoachDetailsView;
 import com.softuni.fitlaunch.model.dto.view.UserCoachView;
+import com.softuni.fitlaunch.model.dto.view.UserProfileView;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import com.softuni.fitlaunch.model.entity.*;
 import com.softuni.fitlaunch.model.enums.UserTitleEnum;
@@ -22,8 +21,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +51,10 @@ public class UserService {
 
     private final UserActivationCodeRepository userActivationCodeRepository;
 
+    private final FileUpload fileUpload;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, WorkoutRepository workoutRepository, ProgramWeekWorkoutRepository programWeekWorkoutRepository, ProgramWeekRepository programWeekRepository, WorkoutExerciseRepository workoutExerciseRepository, ExerciseRepository exerciseRepository, ModelMapper modelMapper, ApplicationEventPublisher applicationEventPublisher, UserActivationCodeRepository userActivationCodeRepository) {
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, WorkoutRepository workoutRepository, ProgramWeekWorkoutRepository programWeekWorkoutRepository, ProgramWeekRepository programWeekRepository, WorkoutExerciseRepository workoutExerciseRepository, ExerciseRepository exerciseRepository, ModelMapper modelMapper, ApplicationEventPublisher applicationEventPublisher, UserActivationCodeRepository userActivationCodeRepository, FileUpload fileUpload) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
@@ -63,6 +66,7 @@ public class UserService {
         this.modelMapper = modelMapper;
         this.applicationEventPublisher = applicationEventPublisher;
         this.userActivationCodeRepository = userActivationCodeRepository;
+        this.fileUpload = fileUpload;
     }
 
     public boolean register(UserRegisterDTO userRegisterDTO) {
@@ -87,6 +91,7 @@ public class UserService {
         user.setEmail(userRegisterDTO.getEmail());
         user.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
         user.setRoles(List.of(role));
+        user.setImgUrl("/images/profile-avatar.jpg");
 
 
         if(userRegisterDTO.getTitle().equals((UserTitleEnum.CLIENT.name()))) {
@@ -290,14 +295,31 @@ public class UserService {
     public List<UserCoachView> getAllCoaches() {
         List<UserEntity> coachesEntity = userRepository.findAllByTitle(UserTitleEnum.COACH).orElseThrow(() -> new ObjectNotFoundException("Coaches not found"));
 
-        List<UserCoachView> coachesView = coachesEntity.stream().map(coachEntity -> new UserCoachView(coachEntity.getId(), "/images/profile-avatar.jpg", coachEntity.getUsername(), coachEntity.getEmail(), "random desc")).toList();
+        return coachesEntity.stream().map(coachEntity -> new UserCoachView(coachEntity.getId(), coachEntity.getImgUrl(), coachEntity.getUsername(), coachEntity.getEmail(), "random desc")).toList();
 
-        return coachesView;
     }
 
     public UserCoachDetailsView getCoachById(Long id) {
         UserEntity coachEntity = userRepository.findByIdAndTitle(id, UserTitleEnum.COACH).orElseThrow(() -> new ObjectNotFoundException("Coach not found"));
         List<CertificateDTO> userCertificatesDTO = coachEntity.getCertificates().stream().map(certificateEntity -> modelMapper.map(certificateEntity, CertificateDTO.class)).toList();
         return new UserCoachDetailsView(coachEntity.getId(), "/images/profile-avatar.jpg",  coachEntity.getUsername(), coachEntity.getEmail(), "random desc", userCertificatesDTO, 4.5);
+    }
+
+    public UserProfileView uploadProfilePicture(String username, MultipartFile profilePicture) throws IOException {
+        String picture = fileUpload.uploadFile(profilePicture);
+
+        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User not found"));
+        userEntity.setImgUrl(picture);
+
+        userRepository.save(userEntity);
+
+        UserProfileView profileView = modelMapper.map(userEntity, UserProfileView.class);
+        return profileView;
+
+    }
+
+    public UserProfileView getUserProfileByUsername(String username) {
+        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User with " + username + " doesn't exist"));
+        return modelMapper.map(userEntity, UserProfileView.class);
     }
 }
