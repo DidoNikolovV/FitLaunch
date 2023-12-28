@@ -17,5 +17,6 @@ public class UserCoachView {
     private String username;
     private String email;
     private String description;
+    private Double rating;
 
 }

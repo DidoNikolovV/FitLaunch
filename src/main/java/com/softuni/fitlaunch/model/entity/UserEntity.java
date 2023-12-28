@@ -73,8 +73,6 @@ public class UserEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "exercise_id"))
     private List<ProgramWorkoutExerciseEntity> programExercisesCompleted;
 
-    @OneToMany
-    private List<CertificateEntity> certificates;
 
     private boolean activated = false;
 

@@ -6,13 +6,13 @@ VALUES
 INSERT INTO roles (`id`, `role`)
 VALUES
     (1, 'ADMIN'),
-    (2, 'USER');
+    (2, 'COACH'),
+    (3, 'CLIENT');
 
 INSERT INTO users_roles(`user_id`,  `role_id`)
 VALUES
     (1, 1),
-    (1, 2),
-    (2, 2);
+    (2, 3);
 
 INSERT INTO workouts(`id`, `description`, `img_url`, `level`, `name`, `likes`, `author_id`, `has_started`, `is_completed`)
 VALUES

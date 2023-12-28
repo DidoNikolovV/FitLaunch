@@ -3,6 +3,7 @@ package com.softuni.fitlaunch.service;
 
 import com.softuni.fitlaunch.model.dto.CertificateDTO;
 import com.softuni.fitlaunch.model.dto.program.ProgramWeekWorkoutDTO;
+import com.softuni.fitlaunch.model.dto.user.ClientDTO;
 import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.dto.user.UserRegisterDTO;
 import com.softuni.fitlaunch.model.dto.user.UserRoleDTO;
@@ -11,6 +12,7 @@ import com.softuni.fitlaunch.model.dto.view.UserCoachView;
 import com.softuni.fitlaunch.model.dto.view.UserProfileView;
 import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
 import com.softuni.fitlaunch.model.entity.*;
+import com.softuni.fitlaunch.model.enums.UserRoleEnum;
 import com.softuni.fitlaunch.model.enums.UserTitleEnum;
 import com.softuni.fitlaunch.model.events.UserRegisteredEvent;
 import com.softuni.fitlaunch.repository.*;
@@ -22,7 +24,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 
 import java.io.IOException;
 import java.time.Instant;
@@ -44,6 +45,11 @@ public class UserService {
     private final WorkoutExerciseRepository workoutExerciseRepository;
 
     private final ExerciseRepository exerciseRepository;
+    
+    private final CoachRepository coachRepository;
+    private final ClientRepository clientRepository;
+
+    private final ProgramRepository programRepository;
 
     private final ModelMapper modelMapper;
 
@@ -54,7 +60,7 @@ public class UserService {
     private final FileUpload fileUpload;
 
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, WorkoutRepository workoutRepository, ProgramWeekWorkoutRepository programWeekWorkoutRepository, ProgramWeekRepository programWeekRepository, WorkoutExerciseRepository workoutExerciseRepository, ExerciseRepository exerciseRepository, ModelMapper modelMapper, ApplicationEventPublisher applicationEventPublisher, UserActivationCodeRepository userActivationCodeRepository, FileUpload fileUpload) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, WorkoutRepository workoutRepository, ProgramWeekWorkoutRepository programWeekWorkoutRepository, ProgramWeekRepository programWeekRepository, WorkoutExerciseRepository workoutExerciseRepository, ExerciseRepository exerciseRepository, CoachRepository coachRepository, ClientRepository clientRepository, ProgramRepository programRepository, ModelMapper modelMapper, ApplicationEventPublisher applicationEventPublisher, UserActivationCodeRepository userActivationCodeRepository, FileUpload fileUpload) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
@@ -63,6 +69,9 @@ public class UserService {
         this.programWeekRepository = programWeekRepository;
         this.workoutExerciseRepository = workoutExerciseRepository;
         this.exerciseRepository = exerciseRepository;
+        this.coachRepository = coachRepository;
+        this.clientRepository = clientRepository;
+        this.programRepository = programRepository;
         this.modelMapper = modelMapper;
         this.applicationEventPublisher = applicationEventPublisher;
         this.userActivationCodeRepository = userActivationCodeRepository;
@@ -100,7 +109,19 @@ public class UserService {
             user.setMembership("Yearly");
         }
         user.setTitle(UserTitleEnum.valueOf(userRegisterDTO.getTitle()));
-
+        
+        if(isClient(user)) {
+            ClientEntity clientEntity = modelMapper.map(user, ClientEntity.class);
+            clientEntity.setCoach(null);
+            clientRepository.save(clientEntity);
+        } else {
+            CoachEntity coachEntity = modelMapper.map(user, CoachEntity.class);
+            coachEntity.setRating(1.0);
+            coachEntity.setPrograms(programRepository.findAll());
+            coachEntity.setClients(new ArrayList<>());
+            coachEntity.setRole(UserRoleEnum.ADMIN);
+            coachRepository.save(coachEntity);
+        }
         userRepository.save(user);
 
         applicationEventPublisher.publishEvent(new UserRegisteredEvent(
@@ -108,6 +129,10 @@ public class UserService {
         ));
 
         return true;
+    }
+
+    private static boolean isClient(UserEntity user) {
+        return user.getTitle().equals(UserTitleEnum.CLIENT.name());
     }
 
     public List<UserDTO> getAllUsers() {
@@ -292,18 +317,7 @@ public class UserService {
         }
     }
 
-    public List<UserCoachView> getAllCoaches() {
-        List<UserEntity> coachesEntity = userRepository.findAllByTitle(UserTitleEnum.COACH).orElseThrow(() -> new ObjectNotFoundException("Coaches not found"));
 
-        return coachesEntity.stream().map(coachEntity -> new UserCoachView(coachEntity.getId(), coachEntity.getImgUrl(), coachEntity.getUsername(), coachEntity.getEmail(), "random desc")).toList();
-
-    }
-
-    public UserCoachDetailsView getCoachById(Long id) {
-        UserEntity coachEntity = userRepository.findByIdAndTitle(id, UserTitleEnum.COACH).orElseThrow(() -> new ObjectNotFoundException("Coach not found"));
-        List<CertificateDTO> userCertificatesDTO = coachEntity.getCertificates().stream().map(certificateEntity -> modelMapper.map(certificateEntity, CertificateDTO.class)).toList();
-        return new UserCoachDetailsView(coachEntity.getId(), "/images/profile-avatar.jpg",  coachEntity.getUsername(), coachEntity.getEmail(), "random desc", userCertificatesDTO, 4.5);
-    }
 
     public UserProfileView uploadProfilePicture(String username, MultipartFile profilePicture) throws IOException {
         String picture = fileUpload.uploadFile(profilePicture);
@@ -322,4 +336,6 @@ public class UserService {
         UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User with " + username + " doesn't exist"));
         return modelMapper.map(userEntity, UserProfileView.class);
     }
+
+
 }

@@ -16,7 +16,7 @@
             <span class="card-text" th:text="*{email}"></span>
             <p class="card-text" th:text="*{description}"></p>
           </div>
-          <a th:href="@{/users/coaches/{id}(id=*{id})}" type="submit" class="btn btn-info mt-2" style="width: 100%;">Coach Details</a>
+          <a th:href="@{/coaches/{id}(id=*{id})}" type="submit" class="btn btn-info mt-2" style="width: 100%;">Coach Details</a>
         </div>
       </div>
     </div>

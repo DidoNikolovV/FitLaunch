@@ -17,6 +17,7 @@
           <h4 class="card-title" th:text="${coachDetails.username}"></h4>
           <p class="card-text" th:text="${coachDetails.email}"></p>
           <p class="card-text" th:text="${coachDetails.description}"></p>
+          <span class="badge badge-pill badge-warning position-absolute top-0 end-0" th:text="${coachDetails.rating}"></span>
 
           <h5 class="mt-4">Certificates:</h5>
           <ul class="list-group">
@@ -32,6 +33,9 @@
           </ul>
         </div>
       </div>
+      <form th:method="POST" th:action="@{/coaches/{id}(id=*{id})}">
+        <input type="submit" th:value="'Start Training with ' + ${coachDetails.username}" class="btn btn-success my-3">
+      </form>
       </div>
     </div>
 

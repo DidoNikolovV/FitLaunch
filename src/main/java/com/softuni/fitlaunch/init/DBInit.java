@@ -2,9 +2,10 @@ package com.softuni.fitlaunch.init;
 
 
 import com.softuni.fitlaunch.model.entity.*;
-import com.softuni.fitlaunch.model.enums.LevelEnum;
+import com.softuni.fitlaunch.model.enums.UserRoleEnum;
 import com.softuni.fitlaunch.repository.*;
 import com.softuni.fitlaunch.service.exception.ObjectNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -18,22 +19,32 @@ public class DBInit implements CommandLineRunner {
     private final CommentRepository commentRepository;
 
     private final UserRepository userRepository;
+
+    private final ClientRepository clientRepository;
+    private final CoachRepository coachRepository;
+
     private final ProgramRepository programRepository;
     private final ProgramWeekRepository programWeekRepository;
     private final ProgramWeekWorkoutRepository programWeekWorkoutRepository;
 
     private final ExerciseRepository exerciseRepository;
 
+    private final ModelMapper modelMapper;
 
 
-    public DBInit(WorkoutRepository workoutRepository, CommentRepository commentRepository, UserRepository userRepository, ProgramRepository programRepository, ProgramWeekRepository programWeekRepository, ProgramWeekWorkoutRepository programWeekWorkoutRepository, ExerciseRepository exerciseRepository) {
+
+
+    public DBInit(WorkoutRepository workoutRepository, CommentRepository commentRepository, UserRepository userRepository, ClientRepository clientRepository, CoachRepository coachRepository, ProgramRepository programRepository, ProgramWeekRepository programWeekRepository, ProgramWeekWorkoutRepository programWeekWorkoutRepository, ExerciseRepository exerciseRepository, ModelMapper modelMapper) {
         this.workoutRepository = workoutRepository;
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
+        this.clientRepository = clientRepository;
+        this.coachRepository = coachRepository;
         this.programRepository = programRepository;
         this.programWeekRepository = programWeekRepository;
         this.programWeekWorkoutRepository = programWeekWorkoutRepository;
         this.exerciseRepository = exerciseRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -41,6 +52,17 @@ public class DBInit implements CommandLineRunner {
         if(commentRepository.count() == 0) {
             initComment("Admin", 1L, 1L, 1L, "Cool Workout", "I like it");
         }
+
+        if(clientRepository.count() == 0) {
+            List<ClientEntity> dbClients = userRepository.findAll()
+                    .stream()
+                    .filter(user -> user.getRoles().get(0).getRole().equals(UserRoleEnum.CLIENT))
+                            .map(user -> modelMapper.map(user, ClientEntity.class))
+                                    .toList();
+            clientRepository.saveAll(dbClients);
+        }
+
+
 
         List<ExerciseEntity> allExercises = exerciseRepository.findAll();
 

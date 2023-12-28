@@ -1,6 +1,7 @@
 package com.softuni.fitlaunch.web;
 
 import com.softuni.fitlaunch.model.dto.program.ProgramWeekWorkoutDTO;
+import com.softuni.fitlaunch.model.dto.user.ClientDTO;
 import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.dto.user.UserProfileDTO;
 import com.softuni.fitlaunch.model.dto.user.UserRegisterDTO;
@@ -134,23 +135,7 @@ public class UserController {
         return "redirect:/users/all";
     }
 
-    @GetMapping("/coaches/all")
-    public String allCoaches(Model model) {
-        List<UserCoachView> allCoaches = userService.getAllCoaches();
 
-        model.addAttribute("allCoaches", allCoaches);
-
-        return "coaches";
-    }
-
-    @GetMapping("/coaches/{id}")
-    public String coachDetails(@PathVariable("id") Long id, Model model) {
-        UserCoachDetailsView coachDetailsView = userService.getCoachById(id);
-
-        model.addAttribute("coachDetails", coachDetailsView);
-
-        return "coach-details";
-    }
 
     @PostMapping("/ban")
     @Secured("ROLE_ADMIN")
