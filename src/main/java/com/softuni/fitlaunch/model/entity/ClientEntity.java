@@ -19,12 +19,18 @@ public class ClientEntity extends BaseEntity {
     @Column(unique = true)
     private String username;
 
-
     @Email
     private String email;
 
     @Column(name = "img_url")
     private String imgUrl;
+
+
+    private Double weight;
+    private Double height;
+    private String targetGoals;
+
+    private String dietaryPreferences;
 
     @ManyToOne
     private CoachEntity coach;

@@ -3,6 +3,7 @@ package com.softuni.fitlaunch.service;
 
 import com.softuni.fitlaunch.model.dto.CertificateDTO;
 import com.softuni.fitlaunch.model.dto.user.ClientDTO;
+import com.softuni.fitlaunch.model.dto.user.ClientDetailsDTO;
 import com.softuni.fitlaunch.model.dto.user.CoachDTO;
 import com.softuni.fitlaunch.model.dto.view.UserCoachDetailsView;
 import com.softuni.fitlaunch.model.dto.view.UserCoachView;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CoachService {
@@ -43,7 +45,7 @@ public class CoachService {
         CoachEntity coachEntity = coachRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Coach not found"));
         List<CertificateDTO> coachCertificatesDTO = coachEntity.getCertificates().stream().map(certificateEntity -> modelMapper.map(certificateEntity, CertificateDTO.class)).toList();
         List<ClientDTO> coachClients = coachEntity.getClients().stream().map(clientEntity -> modelMapper.map(clientEntity, ClientDTO.class)).toList();
-        return new CoachDTO(coachEntity.getUsername(), coachEntity.getEmail(), coachEntity.getImgUrl(), coachEntity.getRating(), coachEntity.getDescription(), coachEntity.getRole(), coachCertificatesDTO, new ArrayList<>(), coachClients);
+        return new CoachDTO(coachEntity.getId(), coachEntity.getUsername(), coachEntity.getEmail(), coachEntity.getImgUrl(), coachEntity.getRating(), coachEntity.getDescription(), coachEntity.getRole(), coachCertificatesDTO, new ArrayList<>(), coachClients);
     }
 
     public ClientDTO getClientByUsername(String username) {
@@ -73,5 +75,23 @@ public class CoachService {
     public CoachDTO getCoachByUsername(String username) {
         CoachEntity coachEntity = coachRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("Coach not found"));
         return modelMapper.map(coachEntity, CoachDTO.class);
+    }
+
+    public ClientDTO getCoachClientById(CoachDTO coach, Long clientId) {
+        CoachEntity coachEntity = modelMapper.map(coach, CoachEntity.class);
+
+        Optional<ClientEntity> optionalClient = coachEntity.getClients().stream().filter(client -> client.getId().equals(clientId)).findFirst();
+
+        return optionalClient.map(client -> modelMapper.map(client, ClientDTO.class)).orElseThrow(() -> new ObjectNotFoundException("Client not found"));
+    }
+
+    public void setClientDetails(String username, ClientDetailsDTO clientDetailsDTO) {
+        ClientEntity clientEntity = clientRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("Client not found"));
+        clientEntity.setWeight(clientDetailsDTO.getWeight());
+        clientEntity.setHeight(clientDetailsDTO.getHeight());
+        clientEntity.setTargetGoals(clientDetailsDTO.getTargetGoals());
+        clientEntity.setDietaryPreferences(clientDetailsDTO.getDietaryPreferences());
+
+        clientRepository.save(clientEntity);
     }
 }

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragments/head}">
+
+</head>
+<nav th:replace="~{fragments/navbar}"></nav>
+<body>
+
+
+<div class="container" th:object="${client}">
+  <h2 class="my-4 text-center text-white" th:text="*{username} + ' Data'">Client Details</h2>
+
+  <!-- Health and Fitness Stats -->
+  <div class="card">
+    <div class="card-header">
+      Health and Fitness Stats
+    </div>
+    <div class="card-body">
+      <p><strong>Weight: </strong><span th:text="*{weight} + ' lbs'"></span></p>
+      <p><strong>Height:</strong> <span class="card-text" th:text="*{height} + ' ft'"></span></p>
+      <p><strong>Target Goals:</strong> <span class="card-text" th:text="*{targetGoals}"></span></p>
+    </div>
+  </div>
+
+  <!-- Progress Tracking -->
+  <div class="card">
+    <div class="card-header">
+      Progress Tracking
+    </div>
+    <div class="card-body">
+      <p class="card-text"><strong>Weight Loss/Gain Progress:</strong> Currently on track</p>
+    </div>
+  </div>
+
+  <!-- Nutritional Information -->
+  <div class="card">
+    <div class="card-header">
+      Nutritional Information
+    </div>
+    <div class="card-body">
+      <p><strong>Dietary Preferences:</strong> <span class="card-text" th:text="*{dietaryPreferences}"></span></p>
+      <p><strong>Caloric Intake Goals:</strong> 2000 calories per day</p>
+    </div>
+  </div>
+
+  <!-- Appointments and Schedule -->
+  <div class="card">
+    <div class="card-header">
+      Appointments and Schedule
+    </div>
+    <div class="card-body">
+      <p><strong>Upcoming Sessions:</strong> Yoga - Tomorrow, 10 AM</p>
+      <p><strong>Appointment History:</strong> Previous session - Cardio - 2 weeks ago</p>
+    </div>
+  </div>
+
+  <!-- Achievements -->
+  <div class="card">
+    <div class="card-header">
+      Achievements
+    </div>
+    <div class="card-body">
+      <p><strong>Fitness Achievements:</strong> Completed 5K run</p>
+      <p><strong>Completed Programs:</strong> Weight Loss Program - 3 months</p>
+    </div>
+  </div>
+
+</div>
+  <footer th:replace="~{fragments/footer}"></footer>
+
+</body>
+</html>

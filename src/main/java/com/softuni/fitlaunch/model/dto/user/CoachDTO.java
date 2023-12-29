@@ -17,6 +17,8 @@ import java.util.List;
 @Setter
 public class CoachDTO {
 
+    private Long id;
+
     private String username;
 
     private String email;

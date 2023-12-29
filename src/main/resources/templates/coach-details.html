@@ -33,7 +33,7 @@
           </ul>
         </div>
       </div>
-      <form th:method="POST" th:action="@{/coaches/{id}(id=*{id})}">
+      <form th:action="@{/coaches/{id}/client/information(id=*{id})}">
         <input type="submit" th:value="'Start Training with ' + ${coachDetails.username}" class="btn btn-success my-3">
       </form>
       </div>
