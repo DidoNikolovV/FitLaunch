@@ -35,6 +35,7 @@ public class CoachController {
         return "coaches";
     }
 
+
     @GetMapping("/{id}")
     public String coachDetails(@PathVariable("id") Long id, Model model) {
         UserCoachDetailsView coachDetailsView = coachService.getCoachDetailsById(id);
@@ -52,5 +53,14 @@ public class CoachController {
 
 
         return "redirect:/";
+    }
+
+    @GetMapping("/clients/all")
+    public String coachAllClients(Model model, Principal principal) {
+        CoachDTO coach = coachService.getCoachByUsername(principal.getName());
+
+        model.addAttribute("coach", coach);
+
+        return "clients";
     }
 }

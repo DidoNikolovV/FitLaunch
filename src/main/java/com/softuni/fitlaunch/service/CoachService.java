@@ -69,4 +69,9 @@ public class CoachService {
         List<CertificateDTO> coachCertificatesDTO = coachEntity.getCertificates().stream().map(certificateEntity -> modelMapper.map(certificateEntity, CertificateDTO.class)).toList();
         return new UserCoachDetailsView(coachEntity.getUsername(), coachEntity.getEmail(), coachEntity.getImgUrl(), coachEntity.getRating(), coachEntity.getDescription(), coachCertificatesDTO);
     }
+
+    public CoachDTO getCoachByUsername(String username) {
+        CoachEntity coachEntity = coachRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("Coach not found"));
+        return modelMapper.map(coachEntity, CoachDTO.class);
+    }
 }
