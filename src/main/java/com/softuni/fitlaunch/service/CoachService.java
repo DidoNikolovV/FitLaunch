@@ -7,6 +7,7 @@ import com.softuni.fitlaunch.model.dto.user.ClientDetailsDTO;
 import com.softuni.fitlaunch.model.dto.user.CoachDTO;
 import com.softuni.fitlaunch.model.dto.view.UserCoachDetailsView;
 import com.softuni.fitlaunch.model.dto.view.UserCoachView;
+import com.softuni.fitlaunch.model.dto.workout.ScheduledWorkoutDTO;
 import com.softuni.fitlaunch.model.entity.ClientEntity;
 import com.softuni.fitlaunch.model.entity.CoachEntity;
 import com.softuni.fitlaunch.repository.ClientRepository;
@@ -45,7 +46,8 @@ public class CoachService {
         CoachEntity coachEntity = coachRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Coach not found"));
         List<CertificateDTO> coachCertificatesDTO = coachEntity.getCertificates().stream().map(certificateEntity -> modelMapper.map(certificateEntity, CertificateDTO.class)).toList();
         List<ClientDTO> coachClients = coachEntity.getClients().stream().map(clientEntity -> modelMapper.map(clientEntity, ClientDTO.class)).toList();
-        return new CoachDTO(coachEntity.getId(), coachEntity.getUsername(), coachEntity.getEmail(), coachEntity.getImgUrl(), coachEntity.getRating(), coachEntity.getDescription(), coachEntity.getRole(), coachCertificatesDTO, new ArrayList<>(), coachClients);
+        List<ScheduledWorkoutDTO> scheduledWorkoutsDTO = coachEntity.getScheduledWorkouts().stream().map(scheduledWorkoutEntity -> modelMapper.map(scheduledWorkoutEntity, ScheduledWorkoutDTO.class)).toList();
+        return new CoachDTO(coachEntity.getId(), coachEntity.getUsername(), coachEntity.getEmail(), coachEntity.getImgUrl(), coachEntity.getRating(), coachEntity.getDescription(), coachEntity.getRole(), coachCertificatesDTO, new ArrayList<>(), coachClients, scheduledWorkoutsDTO);
     }
 
     public ClientDTO getClientByUsername(String username) {

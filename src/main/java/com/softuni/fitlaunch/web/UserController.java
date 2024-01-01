@@ -1,16 +1,17 @@
 package com.softuni.fitlaunch.web;
 
 import com.softuni.fitlaunch.model.dto.program.ProgramWeekWorkoutDTO;
-import com.softuni.fitlaunch.model.dto.user.ClientDTO;
+import com.softuni.fitlaunch.model.dto.user.CoachDTO;
 import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.dto.user.UserProfileDTO;
 import com.softuni.fitlaunch.model.dto.user.UserRegisterDTO;
-import com.softuni.fitlaunch.model.dto.view.UserCoachDetailsView;
-import com.softuni.fitlaunch.model.dto.view.UserCoachView;
 import com.softuni.fitlaunch.model.dto.view.UserProfileView;
+import com.softuni.fitlaunch.model.dto.workout.ScheduledWorkoutDTO;
 import com.softuni.fitlaunch.model.entity.UserRoleEntity;
 import com.softuni.fitlaunch.model.enums.UserRoleEnum;
 import com.softuni.fitlaunch.service.BlackListService;
+import com.softuni.fitlaunch.service.CoachService;
+import com.softuni.fitlaunch.service.ScheduleWorkoutService;
 import com.softuni.fitlaunch.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -25,19 +26,24 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
-@Controller()
+@Controller
 @RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
+    private final CoachService coachService;
 
     private final BlackListService blackListService;
 
+    private final ScheduleWorkoutService scheduleWorkoutService;
 
 
-    public UserController(UserService userService, BlackListService blackListService) {
+
+    public UserController(UserService userService, CoachService coachService, BlackListService blackListService, ScheduleWorkoutService scheduleWorkoutService) {
         this.userService = userService;
+        this.coachService = coachService;
         this.blackListService = blackListService;
+        this.scheduleWorkoutService = scheduleWorkoutService;
     }
 
     @GetMapping("/login")
@@ -133,6 +139,19 @@ public class UserController {
         userService.changeUserRole(username, newRole);
 
         return "redirect:/users/all";
+    }
+
+    @GetMapping("/{username}/calendar")
+    public String myCalendar(@PathVariable("username") String username, Model model) {
+//        CoachDTO coachByUsername = coachService.getCoachByUsername(username);
+//        List<ScheduledWorkoutDTO> allCoachScheduledWorkouts = scheduleWorkoutService.getAllCoachScheduledWorkouts(coachByUsername);
+//
+//
+//        UserDTO userByUsername = userService.getUserByUsername(username);
+//
+//        model.addAttribute("scheduledWorkouts", allCoachScheduledWorkouts);
+//        model.addAttribute("user", userByUsername);
+        return "my-calendar";
     }
 
 

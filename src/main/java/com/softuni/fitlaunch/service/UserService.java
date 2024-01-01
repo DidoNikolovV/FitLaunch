@@ -132,7 +132,7 @@ public class UserService {
     }
 
     private static boolean isClient(UserEntity user) {
-        return user.getTitle().equals(UserTitleEnum.CLIENT.name());
+        return user.getTitle().equals(UserTitleEnum.CLIENT);
     }
 
     public List<UserDTO> getAllUsers() {

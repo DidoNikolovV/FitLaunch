@@ -1,13 +1,12 @@
 package com.softuni.fitlaunch.model.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 
 @Getter
@@ -34,5 +33,8 @@ public class ClientEntity extends BaseEntity {
 
     @ManyToOne
     private CoachEntity coach;
+
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    private List<ScheduledWorkoutEntity> scheduledWorkouts;
 
 }

@@ -12,7 +12,6 @@ import java.util.List;
 @Table(name = "workouts")
 public class WorkoutEntity extends BaseEntity {
 
-
     @ManyToOne
     private UserEntity author;
 

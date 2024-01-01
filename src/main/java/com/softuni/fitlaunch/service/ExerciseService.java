@@ -36,4 +36,8 @@ public class ExerciseService {
     }
 
 
+    public List<ExerciseDTO> getAllExercises() {
+        List<ExerciseEntity> exercises = exerciseRepository.findAll();
+        return exercises.stream().map(exerciseEntity -> modelMapper.map(exerciseEntity, ExerciseDTO.class)).toList();
+    }
 }
