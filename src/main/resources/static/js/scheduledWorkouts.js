@@ -43,12 +43,49 @@ function updateCalendarEvents() {
                     onYearChange: updateCalendarEvents,
                     calendarEvents: calendarEvents
                 });
+
+                $(calendar).on('selectEvent', function(event, activeEvent) {
+                    var selectedIndex = activeEvent.id;
+
+                    console.log("Selected Event Index: " + selectedIndex);
+
+                    if(confirm("Do you want to delete this event?")) {
+                        deleteCalendarEvent(selectedIndex);
+                    }
+
+                })
             }else {
+                $('#calendar').evoCalendar({
+                    theme: 'Default',
+                    format: 'MM dd, yyyy',
+                    titleFormat: 'MM yyyy',
+                    eventHeaderFormat: 'MM dd, yyyy',
+                    firstDayOfWeek: 0
+                });
                 console.log("No scheduled workouts found.");
             }
         })
         .catch(error => console.error('Error fetching data:', error));
 }
+
+function deleteCalendarEvent(eventId) {
+    fetch(`${url}/api/users/${username}/calendar/scheduledWorkouts/${eventId}`, {
+        method: 'DELETE',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            [csrfHeaderName]: csrfHeaderValue
+        }
+    }).then(res => {
+        if(res.ok) {
+            $(calendar).evoCalendar('removeCalendarEvent', eventId);
+        } else {
+            console.error('Failed to delete event: ', res.statusText);
+        }
+    }).catch(error => console.error('Error deleting event:', error));
+}
+
+
 updateCalendarEvents();
 
 
