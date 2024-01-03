@@ -6,6 +6,7 @@ const csrfHeaderValue = document.head.querySelector('[name=_csrf]').content
 
 const calendar = document.getElementById('calendar');
 const username = document.getElementById("username").value
+const userTitle = document.getElementById("userTitle").value
 
 // function scheduledWorkoutAsHTML(workout) {
 //     let scheduledWorkoutHTML = `<div id="${workout.id}">\n`
@@ -24,17 +25,16 @@ function updateCalendarEvents() {
     }).then(res => res.json())
         .then(data => {
             if (data && data.length > 0) {
-                // console.log(data);
-
-                let calendarEvents = data.map(workout => ({
-                    id: workout.id,
-                    name: workout.clientName,
-                    date: moment(workout.scheduledDateTime).format('MM-DD-YYYY'),
-                    description: "Random desc",
-                    type: "event"
-                }));
-
-                console.log(calendarEvents);
+                let calendarEvents = data.map(workout => {
+                    const isClient = userTitle === 'CLIENT';
+                    return {
+                        id: workout.id,
+                        name: isClient ? `Coach: ${workout.coachName}` : `Client: ${workout.clientName}`,
+                        date: moment(workout.scheduledDateTime).format('MM-DD-YYYY'),
+                        description: "Workout",
+                        type: "event"
+                    };
+                });
 
 
                 // Use setCalendarEvents to update the calendar events
@@ -62,7 +62,6 @@ function updateCalendarEvents() {
                     eventHeaderFormat: 'MM dd, yyyy',
                     firstDayOfWeek: 0
                 });
-                console.log("No scheduled workouts found.");
             }
         })
         .catch(error => console.error('Error fetching data:', error));

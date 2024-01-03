@@ -21,4 +21,8 @@ public class ClientService {
     }
 
 
+    public ClientDTO getClientByUsername(String username) {
+        ClientEntity clientEntity = clientRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("Client with " + username + " not found"));
+        return modelMapper.map(clientEntity, ClientDTO.class);
+    }
 }

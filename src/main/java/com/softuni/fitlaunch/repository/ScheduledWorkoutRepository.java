@@ -12,4 +12,7 @@ import java.util.List;
 public interface ScheduledWorkoutRepository extends JpaRepository<ScheduledWorkoutEntity, Long> {
 
     List<ScheduledWorkoutEntity> findAllByCoachId(Long id);
+
+    List<ScheduledWorkoutEntity> findAllByClientId(Long id);
+
 }

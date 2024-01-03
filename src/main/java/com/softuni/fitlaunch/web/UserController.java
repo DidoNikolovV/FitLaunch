@@ -151,6 +151,8 @@ public class UserController {
 //
 //        model.addAttribute("scheduledWorkouts", allCoachScheduledWorkouts);
 //        model.addAttribute("user", userByUsername);
+        UserDTO userByUsername = userService.getUserByUsername(username);
+        model.addAttribute("userTitle", userByUsername.getTitle().name());
         return "my-calendar";
     }
 

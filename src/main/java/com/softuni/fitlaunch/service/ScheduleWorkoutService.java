@@ -49,9 +49,12 @@ public class ScheduleWorkoutService {
 
     public List<ScheduledWorkoutView> getAllCoachScheduledWorkouts(CoachDTO coachDTO) {
         List<ScheduledWorkoutEntity> allByCoachId = scheduledWorkoutRepository.findAllByCoachId(coachDTO.getId());
-        List<ScheduledWorkoutView> scheduledWorkoutsView = allByCoachId.stream().map(scheduledWorkoutEntity -> new ScheduledWorkoutView(scheduledWorkoutEntity.getId(), scheduledWorkoutEntity.getClient().getUsername(), scheduledWorkoutEntity.getScheduledDateTime().toString())).toList();
+        return allByCoachId.stream().map(scheduledWorkoutEntity -> new ScheduledWorkoutView(scheduledWorkoutEntity.getId(), scheduledWorkoutEntity.getClient().getUsername(), scheduledWorkoutEntity.getCoach().getUsername(), scheduledWorkoutEntity.getScheduledDateTime().toString())).toList();
+    }
 
-        return scheduledWorkoutsView;
+    public List<ScheduledWorkoutView> getAllClientScheduledWorkouts(ClientDTO clientDTO) {
+        List<ScheduledWorkoutEntity> allByClientId = scheduledWorkoutRepository.findAllByClientId(clientDTO.getId());
+        return allByClientId.stream().map(scheduledWorkoutEntity -> new ScheduledWorkoutView(scheduledWorkoutEntity.getId(), scheduledWorkoutEntity.getClient().getUsername(), scheduledWorkoutEntity.getCoach().getUsername(), scheduledWorkoutEntity.getScheduledDateTime().toString())).toList();
     }
 
     @Transactional
@@ -72,4 +75,5 @@ public class ScheduleWorkoutService {
         clientRepository.save(clientEntity);
         scheduledWorkoutRepository.deleteById(eventId);
     }
+
 }

@@ -6,12 +6,16 @@ public class ScheduledWorkoutView {
 
     private Long id;
     private String clientName;
+
+    private String coachName;
+
     private String scheduledDateTime;
 
 
-    public ScheduledWorkoutView(Long id, String clientName, String scheduledDateTime) {
+    public ScheduledWorkoutView(Long id, String clientName, String coachName, String scheduledDateTime) {
         this.id = id;
         this.clientName = clientName;
+        this.coachName = coachName;
         this.scheduledDateTime = scheduledDateTime;
     }
 
@@ -39,6 +43,15 @@ public class ScheduledWorkoutView {
 
     public ScheduledWorkoutView setScheduledDateTime(String scheduledDateTime) {
         this.scheduledDateTime = scheduledDateTime;
+        return this;
+    }
+
+    public String getCoachName() {
+        return coachName;
+    }
+
+    public ScheduledWorkoutView setCoachName(String coachName) {
+        this.coachName = coachName;
         return this;
     }
 }
