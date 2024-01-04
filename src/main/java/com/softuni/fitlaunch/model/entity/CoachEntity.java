@@ -39,7 +39,7 @@ public class CoachEntity extends BaseEntity{
     @OneToMany(cascade = CascadeType.ALL)
     private List<CertificateEntity> certificates;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "coach", cascade = CascadeType.ALL)
     private List<ProgramEntity> programs;
 
     @OneToMany(mappedBy = "coach", cascade = CascadeType.ALL)

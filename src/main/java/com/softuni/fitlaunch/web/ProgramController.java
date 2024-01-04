@@ -4,8 +4,10 @@ package com.softuni.fitlaunch.web;
 import com.softuni.fitlaunch.model.dto.program.ProgramDTO;
 import com.softuni.fitlaunch.model.dto.program.ProgramWeekDTO;
 import com.softuni.fitlaunch.model.dto.program.ProgramWeekWorkoutDTO;
+import com.softuni.fitlaunch.model.dto.user.ClientDTO;
 import com.softuni.fitlaunch.model.dto.user.UserDTO;
-import com.softuni.fitlaunch.model.entity.ProgramEntity;
+import com.softuni.fitlaunch.model.enums.UserTitleEnum;
+import com.softuni.fitlaunch.service.ClientService;
 import com.softuni.fitlaunch.service.ProgramService;
 import com.softuni.fitlaunch.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -24,20 +26,28 @@ public class ProgramController {
 
     private final UserService userService;
 
+    private final ClientService clientService;
 
-    public ProgramController(ProgramService programService, UserService userService) {
+
+    public ProgramController(ProgramService programService, UserService userService, ClientService clientService) {
         this.programService = programService;
         this.userService = userService;
+        this.clientService = clientService;
     }
 
-    @GetMapping("/programs")
+    @GetMapping("/programs/all")
     public String loadAllPrograms(Model model, Principal principal) {
 
-        List<ProgramDTO> allPrograms = programService.loadAllPrograms();
+        UserDTO userByUsername = userService.getUserByUsername(principal.getName());
+        if(userByUsername.getTitle().equals(UserTitleEnum.CLIENT)) {
+            ClientDTO clientDTO = clientService.getClientByUsername(userByUsername.getUsername());
+            List<ProgramDTO> allPrograms = programService.loadAllProgramsByCoachId(clientDTO.getCoach().getId());
+            model.addAttribute("allPrograms", allPrograms);
+        }
+
         UserDTO loggedUser = userService.getUserByUsername(principal.getName());
 
         model.addAttribute("membership", loggedUser.getMembership());
-        model.addAttribute("allPrograms", allPrograms);
 
         return "programs";
     }
@@ -45,9 +55,15 @@ public class ProgramController {
     @GetMapping("/programs/{programId}")
     public String loadProgramById(@PathVariable("programId") Long programId, Model model, Principal principal) {
         ProgramDTO program = programService.getById(programId);
-        List<ProgramWeekDTO> allWeeksByProgramId = programService.getAllWeeksByProgramId(programId);
 
         UserDTO user = userService.getUserByUsername(principal.getName());
+
+//        List<ProgramWeekWorkoutDTO> allWorkoutsByProgramId = programService.getAllWorkoutsByProgramId(programId);
+//        for (ProgramWeekWorkoutDTO programWeekWorkoutDTO : allWorkoutsByProgramId) {
+//            programWeekWorkoutDTO.setCompleted(userService.hasCompletedWorkout(user, programWeekWorkoutDTO));
+//        }
+
+        List<ProgramWeekDTO> allWeeksByProgramId = programService.getAllWeeksByProgramId(programId, user);
 
         model.addAttribute("program", program);
         model.addAttribute("allWeeks", allWeeksByProgramId);
@@ -67,7 +83,7 @@ public class ProgramController {
         UserDTO loggedUser = userService.getUserByUsername(principal.getName());
         ProgramDTO program = programService.getById(programId);
         ProgramWeekDTO programWeekById = programService.getProgramWeekById(weekId);
-        ProgramWeekWorkoutDTO programWeekWorkoutById = programService.getProgramWeekWorkoutById(workoutId);
+        ProgramWeekWorkoutDTO programWeekWorkoutById = programService.getProgramWeekWorkoutById(workoutId, loggedUser);
 
         boolean hasStarted = userService.isWorkoutStarted(principal.getName(), programWeekWorkoutById);
         boolean isCompleted = userService.isWorkoutCompleted(principal.getName(), programWeekWorkoutById);

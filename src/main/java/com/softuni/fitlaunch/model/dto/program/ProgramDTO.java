@@ -1,5 +1,6 @@
 package com.softuni.fitlaunch.model.dto.program;
 
+import com.softuni.fitlaunch.model.dto.user.CoachDTO;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 

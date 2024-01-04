@@ -85,10 +85,10 @@
                         </div>
                         <div th:if="*{hasStarted}">
                             <form th:method="POST" th:action="@{/workouts/{programId}/{weekId}/{workoutId}/complete/{exerciseId}(programId=${program.id}, weekId=${week.id}, workoutId=${workout.id}, exerciseId=${exercise.getId()})}">
-                                <button type="submit" class="btn btn-link" th:if="${user.exerciseCompleted(exercise)}">
+                                <button type="submit" class="btn btn-link" th:if="${exercise.completed}">
                                     <i class="fa-solid fa-lg fa-circle-check text-success"></i>
                                 </button>
-                                <button type="submit" class="btn btn-link" th:unless="${user.exerciseCompleted(exercise)}">
+                                <button type="submit" class="btn btn-link" th:unless="${exercise.completed}">
                                     <i class="fa-regular fa-lg fa-circle-check text-muted"></i>
                                 </button>
                             </form>

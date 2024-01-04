@@ -6,14 +6,8 @@ import com.softuni.fitlaunch.model.dto.program.ProgramDTO;
 import com.softuni.fitlaunch.model.dto.program.ProgramWeekDTO;
 import com.softuni.fitlaunch.model.dto.program.ProgramWeekWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.user.UserDTO;
-import com.softuni.fitlaunch.model.entity.ProgramEntity;
-import com.softuni.fitlaunch.model.entity.ProgramWeekEntity;
-import com.softuni.fitlaunch.model.entity.ProgramWeekWorkoutEntity;
-import com.softuni.fitlaunch.model.entity.UserEntity;
-import com.softuni.fitlaunch.repository.ProgramRepository;
-import com.softuni.fitlaunch.repository.ProgramWeekRepository;
-import com.softuni.fitlaunch.repository.ProgramWeekWorkoutRepository;
-import com.softuni.fitlaunch.repository.UserRepository;
+import com.softuni.fitlaunch.model.entity.*;
+import com.softuni.fitlaunch.repository.*;
 import com.softuni.fitlaunch.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -32,14 +26,17 @@ public class ProgramService {
 
     private final UserRepository userRepository;
 
+    private final CoachRepository coachRepository;
+
     private final ModelMapper modelMapper;
 
 
-    public ProgramService(ProgramRepository programRepository, ProgramWeekRepository programWeekRepository, ProgramWeekWorkoutRepository programWeekWorkoutRepository, UserRepository userRepository, ModelMapper modelMapper) {
+    public ProgramService(ProgramRepository programRepository, ProgramWeekRepository programWeekRepository, ProgramWeekWorkoutRepository programWeekWorkoutRepository, UserRepository userRepository, CoachRepository coachRepository, ModelMapper modelMapper) {
         this.programRepository = programRepository;
         this.programWeekRepository = programWeekRepository;
         this.programWeekWorkoutRepository = programWeekWorkoutRepository;
         this.userRepository = userRepository;
+        this.coachRepository = coachRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -48,8 +45,21 @@ public class ProgramService {
         return programRepository.findAll().stream().map(programEntity -> modelMapper.map(programEntity, ProgramDTO.class)).toList();
     }
 
-    public List<ProgramWeekDTO> getAllWeeksByProgramId(Long programId) {
+    public List<ProgramWeekDTO> getAllWeeksByProgramId(Long programId, UserDTO userDTO) {
         List<ProgramWeekEntity> programWeeks = programWeekRepository.findAllByProgramId(programId).orElseThrow(() -> new ObjectNotFoundException("Program with id " + programId + " was not found"));
+        UserEntity userEntity = userRepository.findByUsername(userDTO.getUsername()).orElseThrow(() -> new ObjectNotFoundException("User with " + userDTO.getUsername() + " not found"));
+
+        List<ProgramWeekWorkoutEntity> workoutsCompleted = userEntity.getWorkoutsCompleted();
+
+
+        for (ProgramWeekEntity programWeek : programWeeks) {
+            for (ProgramWeekWorkoutEntity weekWorkout : programWeek.getWeekWorkouts()) {
+                if(workoutsCompleted.contains(weekWorkout)) {
+                    weekWorkout.setCompleted(true);
+                }
+            }
+        }
+
 
         List<ProgramWeekDTO> programWeeksDTO = programWeeks.stream().map(programWeekEntity -> modelMapper.map(programWeekEntity, ProgramWeekDTO.class)).toList();
 
@@ -65,8 +75,19 @@ public class ProgramService {
 
     }
 
-    public ProgramWeekWorkoutDTO getProgramWeekWorkoutById(Long id) {
+    public ProgramWeekWorkoutDTO getProgramWeekWorkoutById(Long id, UserDTO userDTO) {
         ProgramWeekWorkoutEntity programWeekWorkoutEntity = programWeekWorkoutRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Workout not found"));
+        UserEntity userEntity = userRepository.findByUsername(userDTO.getUsername()).orElseThrow(() -> new ObjectNotFoundException("User with " + userDTO.getUsername() + " not found"));
+
+        List<ProgramWorkoutExerciseEntity> userProgramExercisesCompleted = userEntity.getProgramExercisesCompleted();
+        List<ProgramWorkoutExerciseEntity> programExercises = programWeekWorkoutEntity.getExercises();
+
+        for (ProgramWorkoutExerciseEntity programExercise : programExercises) {
+            if(userProgramExercisesCompleted.contains(programExercise)) {
+                programExercise.setCompleted(true);
+            }
+        }
+
         ProgramWeekWorkoutDTO programWeekWorkoutDTO = modelMapper.map(programWeekWorkoutEntity, ProgramWeekWorkoutDTO.class);
 
         return programWeekWorkoutDTO;
@@ -92,4 +113,15 @@ public class ProgramService {
     }
 
 
+    public List<ProgramDTO> loadAllProgramsByCoachId(Long coachId) {
+        List<ProgramEntity> programEntities = programRepository.findAllByCoachId(coachId).orElseThrow(() -> new ObjectNotFoundException("Programs with coachId " + coachId + " not found"));
+        List<ProgramDTO> programDTOS = programEntities.stream().map(programEntity -> modelMapper.map(programEntity, ProgramDTO.class)).toList();
+        return programDTOS;
+    }
+
+    public List<ProgramWeekWorkoutDTO> getAllWorkoutsByProgramId(Long programId) {
+        List<ProgramWeekWorkoutEntity> programWeekWorkoutEntities = programWeekWorkoutRepository.findAllByProgramId(programId).orElseThrow(() -> new ObjectNotFoundException("Program with id " + programId + " not found"));
+        List<ProgramWeekWorkoutDTO> programWeekWorkoutDTOs = programWeekWorkoutEntities.stream().map(programWeekWorkoutEntity -> modelMapper.map(programWeekWorkoutEntity, ProgramWeekWorkoutDTO.class)).toList();
+        return programWeekWorkoutDTOs;
+    }
 }

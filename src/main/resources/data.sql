@@ -51,11 +51,15 @@ VALUES
 --     (12, 4, 3, 3, 0);
 
 
-INSERT INTO programs (img_url, name)
+INSERT INTO coaches (description, email, img_url, rating, role, username)
 VALUES
-    ('/images/beginner-program.jpg', 'Beginner'),
-    ('/images/intermediate-program.jpg', 'Intermediate'),
-    ('/images/advanced-program.jpg', 'Advanced');
+    ('Random Desc', 'dido_nikolov01@abv.bg', '/images/profile-avatar.jpg', 5.8, 'COACH', 'DidoNikolov');
+
+INSERT INTO programs (img_url, name, coach_id)
+VALUES
+    ('/images/beginner-program.jpg', 'Beginner', 1),
+    ('/images/intermediate-program.jpg', 'Intermediate', 1),
+    ('/images/advanced-program.jpg', 'Advanced', 1);
 
 -- Insert data into ProgramWeekEntity
 INSERT INTO programs_weeks (id, program_id)

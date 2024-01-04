@@ -32,7 +32,8 @@ function updateCalendarEvents() {
                         name: isClient ? `Coach: ${workout.coachName}` : `Client: ${workout.clientName}`,
                         date: moment(workout.scheduledDateTime).format('MM-DD-YYYY'),
                         description: "Workout",
-                        type: "event"
+                        type: "event",
+                        allowReschedule: true
                     };
                 });
 
@@ -41,7 +42,7 @@ function updateCalendarEvents() {
                 $(calendar).evoCalendar({
                     onMonthChange: updateCalendarEvents,
                     onYearChange: updateCalendarEvents,
-                    calendarEvents: calendarEvents
+                    calendarEvents: calendarEvents,
                 });
 
                 $(calendar).on('selectEvent', function(event, activeEvent) {

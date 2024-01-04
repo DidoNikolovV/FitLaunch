@@ -337,5 +337,16 @@ public class UserService {
         return modelMapper.map(userEntity, UserProfileView.class);
     }
 
+    public boolean hasCompletedWorkout(UserDTO user, ProgramWeekWorkoutDTO programWeekWorkoutDTO) {
+        UserEntity userEntity = userRepository.findByUsername(user.getUsername()).orElseThrow(() -> new ObjectNotFoundException("User with + " + user.getUsername() + " not found"));
+        for (ProgramWeekWorkoutEntity programWeekWorkoutEntity : userEntity.getWorkoutsCompleted()) {
+            if(programWeekWorkoutEntity.getId().equals(programWeekWorkoutDTO.getId())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
 }
