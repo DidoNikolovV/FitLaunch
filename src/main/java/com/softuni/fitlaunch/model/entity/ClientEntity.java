@@ -37,4 +37,7 @@ public class ClientEntity extends BaseEntity {
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<ScheduledWorkoutEntity> scheduledWorkouts;
 
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    private List<ProgramEntity> completedPrograms;
+
 }

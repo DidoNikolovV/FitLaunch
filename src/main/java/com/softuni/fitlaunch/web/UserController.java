@@ -61,6 +61,7 @@ public class UserController {
 
 
         model.addAttribute("user", userProfileView);
+        model.addAttribute("client", clientByUsername);
         model.addAttribute("upcomingSessions", upcomingSessions);
 
         return "profile";

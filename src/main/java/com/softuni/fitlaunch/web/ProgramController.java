@@ -71,9 +71,12 @@ public class ProgramController {
 //        }
 
         List<ProgramWeekDTO> allWeeksByProgramId = programService.getAllWeeksByProgramId(programId, user);
+        List<ProgramWeekWorkoutDTO> allProgramWorkouts = programService.getAllWorkoutsByProgramId(programId);
 
         model.addAttribute("program", program);
         model.addAttribute("allWeeks", allWeeksByProgramId);
+        model.addAttribute("allWorkouts", allWeeksByProgramId);
+        model.addAttribute("allProgramWorkouts", allProgramWorkouts);
         model.addAttribute("user", user);
 
 

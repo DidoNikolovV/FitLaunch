@@ -73,11 +73,13 @@
             </ul>
             <p th:unless="${upcomingSessions.size() > 0}">No upcoming sessions</p>
             <a class="btn btn-info mt-2" th:href="@{/users/{username}/calendar(username=${user.username})}">Check Your Calendar To See More</a>
+
           </div>
+
         </div>
       </div>
     </div>
   </div>
-    <footer th:replace="~{fragments/footer}"></footer>
+    <footer th:include="~{fragments/footer}" class="fixed-bottom"></footer>
 </body>
 </html>

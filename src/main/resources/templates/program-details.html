@@ -30,6 +30,20 @@
             </div>
         </li>
     </ul>
+
+    <div class="d-flex justify-content-center mt-4">
+        <div>
+            <h5>Total Completed Workouts: <span th:text="${user.getWorkoutsCompleted.size()} + '/'"></span> <span th:text="${allProgramWorkouts.size()}"></span></h5>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center my-2">
+        <div>
+            <form method="POST" th:action="@{/programs/{programId}/completed(programId=${programId})}">
+                <button th:class="${user.workoutsCompleted == allProgramWorkouts ? 'btn btn-success' : 'btn btn-success disabled'}">Completed Program</button>
+            </form>
+        </div>
+    </div>
 </div>
 
     <footer th:replace="~{fragments/footer}"></footer>

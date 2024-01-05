@@ -27,4 +27,8 @@ public class ProgramEntity {
     @JoinColumn(name = "coach_id")
     private CoachEntity coach;
 
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private ClientEntity client;
+
 }
