@@ -5,11 +5,12 @@ import com.softuni.fitlaunch.model.dto.program.ProgramDTO;
 import com.softuni.fitlaunch.model.dto.program.ProgramWeekDTO;
 import com.softuni.fitlaunch.model.dto.program.ProgramWeekWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.user.ClientDTO;
+import com.softuni.fitlaunch.model.dto.user.CoachDTO;
 import com.softuni.fitlaunch.model.dto.user.UserDTO;
+import com.softuni.fitlaunch.model.dto.workout.ScheduledWorkoutDTO;
 import com.softuni.fitlaunch.model.enums.UserTitleEnum;
-import com.softuni.fitlaunch.service.ClientService;
-import com.softuni.fitlaunch.service.ProgramService;
-import com.softuni.fitlaunch.service.UserService;
+import com.softuni.fitlaunch.service.*;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,11 +29,17 @@ public class ProgramController {
 
     private final ClientService clientService;
 
+    private final CoachService coachService;
 
-    public ProgramController(ProgramService programService, UserService userService, ClientService clientService) {
+    private final ScheduleWorkoutService scheduleWorkoutService;
+
+
+    public ProgramController(ProgramService programService, UserService userService, ClientService clientService, CoachService coachService, ScheduleWorkoutService scheduleWorkoutService) {
         this.programService = programService;
         this.userService = userService;
         this.clientService = clientService;
+        this.coachService = coachService;
+        this.scheduleWorkoutService = scheduleWorkoutService;
     }
 
     @GetMapping("/programs/all")
@@ -85,10 +92,10 @@ public class ProgramController {
         ProgramWeekDTO programWeekById = programService.getProgramWeekById(weekId);
         ProgramWeekWorkoutDTO programWeekWorkoutById = programService.getProgramWeekWorkoutById(workoutId, loggedUser);
 
+
         boolean hasStarted = userService.isWorkoutStarted(principal.getName(), programWeekWorkoutById);
         boolean isCompleted = userService.isWorkoutCompleted(principal.getName(), programWeekWorkoutById);
         boolean hasLiked = userService.isWorkoutLiked(loggedUser, programWeekWorkoutById);
-
 
         model.addAttribute("workout", programWeekWorkoutById);
         model.addAttribute("user", loggedUser);
@@ -101,6 +108,7 @@ public class ProgramController {
 
         return "workout-details";
     }
+
 
 
 

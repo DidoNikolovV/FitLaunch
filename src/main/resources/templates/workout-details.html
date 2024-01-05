@@ -3,7 +3,6 @@
 
 <head th:replace="~{fragments/head}">
     <!-- Add Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -13,12 +12,11 @@
 <div class="container my-2">
     <h2 class="text-center text-white mb-4">Workout Details</h2>
 
-    <div th:object="${workout}" class="card">
-        <div class="card-body bg-dark text-center">
+    <div th:object="${workout}" class="card d-flex">
+        <div class="card-body bg-dark text-center flex-grow-1">
             <h5 class="card-title text-primary" th:text="*{name}"></h5>
             <div class="d-flex justify-content-center align-items-center mt-3">
                 <div th:if="${hasStarted}">
-<!--                    <form th:method="POST" th:action="@{/workouts/complete/{id}(id=*{id})}">-->
                     <form th:method="POST" th:action="@{/workouts/complete/{programId}/{weekId}/{id}(programId=${program.id}, weekId=${week.id}, id=${workout.id})}">
                         <div th:unless="${isCompleted}">
                             <input type="submit" name="completeWorkout" id="completeWorkout" class="btn btn-primary" value="Complete Workout">
@@ -29,7 +27,6 @@
                     </form>
                 </div>
                 <div th:unless="${hasStarted}">
-<!--                    <form th:method="POST" th:action="@{/workouts/start/{id}(id=*{id})}">-->
                     <form th:method="POST" th:action="@{/workouts/start/{programId}/{weekId}/{id}(programId=${program.id}, weekId=${week.id}, id=${workout.id})}">
                         <input type="submit" name="startWorkout" id="startWorkout" class="btn btn-success" value="Start Workout">
                     </form>
@@ -52,7 +49,7 @@
                 </button>
             </form>
 
-            <ul class="list-group list-group-flush mt-3text-white align-items-center">
+            <ul class="list-group list-group-flush mt-3 text-white align-items-center">
                 <li class="list-group-item bg-dark text-white">
                     <span class="font-weight-bold">Level:</span>
                     <span th:text="${workout.level}">Beginner</span>
@@ -63,6 +60,7 @@
                 </li>
             </ul>
         </div>
+
     </div>
 
     <div class="card mt-4">
@@ -93,7 +91,6 @@
                                 </button>
                             </form>
                         </div>
-
                     </div>
                 </li>
             </ul>
@@ -126,7 +123,29 @@
 <footer th:replace="~{fragments/footer}"></footer>
 
 
-<script th:src="@{/js/comments.js}"></script>
+    <script th:src="@{/js/comments.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#datetimePickerInput').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm:ss',
+                sideBySide: true,
+                icons: {
+                    time: 'far fa-clock',
+                    date: 'far fa-calendar-alt',
+                    up: 'fas fa-chevron-up',
+                    down: 'fas fa-chevron-down',
+                    previous: 'fas fa-chevron-left',
+                    next: 'fas fa-chevron-right',
+                    today: 'fas fa-calendar-check',
+                    clear: 'fas fa-trash',
+                    close: 'fas fa-times'
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>

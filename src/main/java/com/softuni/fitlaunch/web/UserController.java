@@ -1,18 +1,16 @@
 package com.softuni.fitlaunch.web;
 
 import com.softuni.fitlaunch.model.dto.program.ProgramWeekWorkoutDTO;
-import com.softuni.fitlaunch.model.dto.user.CoachDTO;
+import com.softuni.fitlaunch.model.dto.user.ClientDTO;
 import com.softuni.fitlaunch.model.dto.user.UserDTO;
 import com.softuni.fitlaunch.model.dto.user.UserProfileDTO;
 import com.softuni.fitlaunch.model.dto.user.UserRegisterDTO;
+import com.softuni.fitlaunch.model.dto.view.ScheduledWorkoutView;
 import com.softuni.fitlaunch.model.dto.view.UserProfileView;
 import com.softuni.fitlaunch.model.dto.workout.ScheduledWorkoutDTO;
 import com.softuni.fitlaunch.model.entity.UserRoleEntity;
 import com.softuni.fitlaunch.model.enums.UserRoleEnum;
-import com.softuni.fitlaunch.service.BlackListService;
-import com.softuni.fitlaunch.service.CoachService;
-import com.softuni.fitlaunch.service.ScheduleWorkoutService;
-import com.softuni.fitlaunch.service.UserService;
+import com.softuni.fitlaunch.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.security.access.annotation.Secured;
@@ -33,15 +31,18 @@ public class UserController {
     private final UserService userService;
     private final CoachService coachService;
 
+    private final ClientService clientService;
+
     private final BlackListService blackListService;
 
     private final ScheduleWorkoutService scheduleWorkoutService;
 
 
 
-    public UserController(UserService userService, CoachService coachService, BlackListService blackListService, ScheduleWorkoutService scheduleWorkoutService) {
+    public UserController(UserService userService, CoachService coachService, ClientService clientService, BlackListService blackListService, ScheduleWorkoutService scheduleWorkoutService) {
         this.userService = userService;
         this.coachService = coachService;
+        this.clientService = clientService;
         this.blackListService = blackListService;
         this.scheduleWorkoutService = scheduleWorkoutService;
     }
@@ -55,7 +56,12 @@ public class UserController {
     public String userProfile(Principal principal, Model model) {
         UserProfileView userProfileView = userService.getUserProfileByUsername(principal.getName());
 
+        ClientDTO clientByUsername = clientService.getClientByUsername(principal.getName());
+        List<ScheduledWorkoutView> upcomingSessions = scheduleWorkoutService.getAllClientScheduledWorkouts(clientByUsername);
+
+
         model.addAttribute("user", userProfileView);
+        model.addAttribute("upcomingSessions", upcomingSessions);
 
         return "profile";
     }
