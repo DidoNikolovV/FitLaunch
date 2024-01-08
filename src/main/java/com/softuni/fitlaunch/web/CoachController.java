@@ -23,7 +23,6 @@ public class CoachController {
 
     private final CoachService coachService;
 
-
     private final ScheduleWorkoutService scheduleWorkoutService;
 
     public CoachController(CoachService coachService, ScheduleWorkoutService scheduleWorkoutService) {

@@ -1,7 +1,8 @@
 INSERT INTO users (id, email, username, password, membership, activated, title, img_url)
 VALUES
     (1, 'admin@example.com', 'Admin', '95c1933b8ffe84f085f2839899d1673260be58dbd9c2c787ac35515805502c996417596dae9a92880aaa50a046fc7151', 'Yearly', 1, 'COACH', '/images/profile-avatar.jpg'),
-    (2, 'user@example.com', 'User', '95c1933b8ffe84f085f2839899d1673260be58dbd9c2c787ac35515805502c996417596dae9a92880aaa50a046fc7151', 'Monthly', 1, 'CLIENT', '/images/profile-avatar.jpg');
+    (2, 'user@example.com', 'User', '95c1933b8ffe84f085f2839899d1673260be58dbd9c2c787ac35515805502c996417596dae9a92880aaa50a046fc7151', 'Monthly', 1, 'CLIENT', '/images/profile-avatar.jpg'),
+    (3, 'didaka@example.com', 'DidoNikolov', '95c1933b8ffe84f085f2839899d1673260be58dbd9c2c787ac35515805502c996417596dae9a92880aaa50a046fc7151', 'Monthly', 1, 'COACH', '/images/profile-avatar.jpg');
 
 INSERT INTO roles (`id`, `role`)
 VALUES
@@ -12,7 +13,8 @@ VALUES
 INSERT INTO users_roles(`user_id`,  `role_id`)
 VALUES
     (1, 1),
-    (2, 3);
+    (2, 3),
+    (3, 2);
 
 INSERT INTO workouts(`id`, `description`, `img_url`, `level`, `name`, `likes`, `author_id`, `has_started`, `is_completed`)
 VALUES
@@ -53,7 +55,7 @@ VALUES
 
 INSERT INTO coaches (description, email, img_url, rating, role, username)
 VALUES
-    ('Random Desc', 'dido_nikolov01@abv.bg', '/images/profile-avatar.jpg', 5.8, 'COACH', 'DidoNikolov');
+    ('Random Desc', 'didaka@example.com', '/images/profile-avatar.jpg', 5.8, 'COACH', 'DidoNikolov');
 
 INSERT INTO programs (img_url, name, coach_id)
 VALUES

@@ -92,7 +92,7 @@ public class UserService {
             return false;
         }
 
-        UserRoleEntity role = roleRepository.findById(isFirst ? 1L : 2L).orElse(null);
+        UserRoleEntity role = roleRepository.findById(isFirst ? 1L : UserTitleEnum.valueOf(userRegisterDTO.getTitle()).ordinal()).orElse(null);
 
 
         UserEntity user = new UserEntity();
@@ -170,15 +170,16 @@ public class UserService {
     }
 
     public void completeProgramWorkout(String username, ProgramWeekWorkoutDTO programWeekWorkoutDTO) {
-        UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User with " + username + " doesn't exist"));
+        ClientEntity clientEntity = clientRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("Client with " + username + " was not found"));
+
         ProgramWeekWorkoutEntity programWeekWorkoutEntity = programWeekWorkoutRepository.findById(programWeekWorkoutDTO.getId()).orElseThrow(() -> new ObjectNotFoundException("Workout not found"));
-        user.getWorkoutsCompleted().add(programWeekWorkoutEntity);
-        userRepository.save(user);
+        clientEntity.getCompletedWorkouts().add(programWeekWorkoutEntity);
+        clientRepository.save(clientEntity);
     }
 
     public boolean isWorkoutCompleted(String username, ProgramWeekWorkoutDTO programWeekWorkoutDTO) {
-        UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User with " + username + " doesn't exist"));
-        for (ProgramWeekWorkoutEntity weekWorkoutEntity : user.getWorkoutsCompleted()) {
+        ClientEntity clientEntity = clientRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("Client with " + username + " was not found"));
+        for (ProgramWeekWorkoutEntity weekWorkoutEntity : clientEntity.getCompletedWorkouts()) {
             if(weekWorkoutEntity.getId().equals(programWeekWorkoutDTO.getId())) {
                 return true;
             }
@@ -245,8 +246,8 @@ public class UserService {
 
     @Transactional
     public List<WorkoutDTO> getCompletedWorkouts(String username) {
-        UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
-        List<WorkoutDTO> completedWorkouts = user.getWorkoutsCompleted().stream().map(workoutEntity -> modelMapper.map(workoutEntity, WorkoutDTO.class)).toList();
+        ClientEntity clientEntity = clientRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        List<WorkoutDTO> completedWorkouts = clientEntity.getCompletedWorkouts().stream().map(workoutEntity -> modelMapper.map(workoutEntity, WorkoutDTO.class)).toList();
 
         return completedWorkouts;
     }
@@ -337,9 +338,9 @@ public class UserService {
         return modelMapper.map(userEntity, UserProfileView.class);
     }
 
-    public boolean hasCompletedWorkout(UserDTO user, ProgramWeekWorkoutDTO programWeekWorkoutDTO) {
-        UserEntity userEntity = userRepository.findByUsername(user.getUsername()).orElseThrow(() -> new ObjectNotFoundException("User with + " + user.getUsername() + " not found"));
-        for (ProgramWeekWorkoutEntity programWeekWorkoutEntity : userEntity.getWorkoutsCompleted()) {
+    public boolean hasCompletedWorkout(ClientDTO clientDTO, ProgramWeekWorkoutDTO programWeekWorkoutDTO) {
+        ClientEntity clientEntity = clientRepository.findByUsername(clientDTO.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
+        for (ProgramWeekWorkoutEntity programWeekWorkoutEntity : clientEntity.getCompletedWorkouts()) {
             if(programWeekWorkoutEntity.getId().equals(programWeekWorkoutDTO.getId())) {
                 return true;
             }

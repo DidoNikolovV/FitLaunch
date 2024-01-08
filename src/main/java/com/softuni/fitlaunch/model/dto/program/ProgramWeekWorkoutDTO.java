@@ -11,7 +11,6 @@ import java.util.List;
 
 public class ProgramWeekWorkoutDTO {
 
-    @NotNull
     private Long id;
     @NotNull
     private String name;

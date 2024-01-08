@@ -1,11 +1,14 @@
 package com.softuni.fitlaunch.model.dto.user;
 
+import com.softuni.fitlaunch.model.dto.program.ProgramWeekWorkoutDTO;
 import com.softuni.fitlaunch.model.entity.CoachEntity;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 
 @NoArgsConstructor
@@ -29,4 +32,6 @@ public class ClientDTO {
     private String dietaryPreferences;
 
     private CoachDTO coach;
+
+    private List<ProgramWeekWorkoutDTO> completedWorkouts;
 }

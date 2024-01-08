@@ -81,11 +81,15 @@ public class CoachService {
     }
 
     public ClientDTO getCoachClientById(CoachDTO coach, Long clientId) {
-        CoachEntity coachEntity = modelMapper.map(coach, CoachEntity.class);
+        CoachEntity coachEntity = coachRepository.findByUsername(coach.getUsername()).orElseThrow(() -> new ObjectNotFoundException("Coach with username " + coach.getUsername() + " was not found"));
 
         Optional<ClientEntity> optionalClient = coachEntity.getClients().stream().filter(client -> client.getId().equals(clientId)).findFirst();
-
-        return optionalClient.map(client -> modelMapper.map(client, ClientDTO.class)).orElseThrow(() -> new ObjectNotFoundException("Client not found"));
+        if(optionalClient.isPresent()) {
+            ClientEntity clientEntity = clientRepository.findByUsername(optionalClient.get().getUsername()).get();
+            return modelMapper.map(clientEntity, ClientDTO.class);
+        } else {
+            throw new ObjectNotFoundException("Client was not found");
+        }
     }
 
     public void setClientDetails(String username, ClientDetailsDTO clientDetailsDTO) {

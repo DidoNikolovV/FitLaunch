@@ -31,7 +31,6 @@ public class UserDTO {
 
     private List<CommentCreationDTO> comments;
 
-    private List<ProgramWeekWorkoutDTO> workoutsCompleted;
 
     private List<ProgramWeekWorkoutDTO> workoutStarted;
 

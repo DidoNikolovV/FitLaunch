@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{fragments/head}">
-</head>
-<body>
-<nav th:fragment="~{fragments/navbar}" class="navbar navbar-expand-lg navbar-dark">
+<nav th:fragment="~{fragments/navbar}" class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
     <div class="container">
-        <a class="logo text-white" href="/">Fit Launch</a>
+        <a class="logo text-warning" href="/">FindACoach</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -16,7 +13,7 @@
                 <li class="nav-item" sec:authorize="hasAnyRole('ADMIN', 'CLIENT', 'COACH')">
                     <a class="nav-link text-white h6" th:href="@{/users/{username}/calendar(username=${#authentication.principal.username})}">My Calendar</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" sec:authorize="hasAnyRole('ADMIN', 'COACH', 'CLIENT')">
                     <a class="nav-link text-white h6" href="/programs/all">Programs</a>
                 </li>
 <!--                <li class="nav-item">-->
@@ -65,24 +62,15 @@
                 </li>
 
                 <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <a class="nav-link" href="/upgrade">Buy Membership</a>
-                </li>
-
-                <li class="nav-item" sec:authorize="isAuthenticated()">
                     <a class="nav-link" href="/contact-us">Contact Us</a>
                 </li>
-
-
             </ul>
         </div>
     </div>
 </nav>
-
     <script>
         $(document).ready(function() {
             $('.dropdown-toggle').dropdown();
         });
     </script>
-
-</body>
 </html>

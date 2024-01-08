@@ -16,8 +16,8 @@
       Health and Fitness Stats
     </div>
     <div class="card-body">
-      <p><strong>Weight: </strong><span th:text="*{weight} + ' lbs'"></span></p>
-      <p><strong>Height:</strong> <span class="card-text" th:text="*{height} + ' ft'"></span></p>
+      <p><strong>Weight: </strong><span th:text="*{weight} + ' kg'"></span></p>
+      <p><strong>Height:</strong> <span class="card-text" th:text="*{height} + ' cm'"></span></p>
       <p><strong>Target Goals:</strong> <span class="card-text" th:text="*{targetGoals}"></span></p>
     </div>
   </div>
@@ -28,7 +28,30 @@
       Progress Tracking
     </div>
     <div class="card-body">
-      <p class="card-text"><strong>Weight Loss/Gain Progress:</strong> Currently on track</p>
+      <p class="card-text"><strong>Last Completed Workout: </strong><span th:text="*{completedWorkouts.get(completedWorkouts.size() - 1).name}"></span></p>
+      <div class="d-flex align-items-center gap-1">
+        <!-- Progress Bar for Current Bodyweight and Goal -->
+        <span>Bodyweight</span> <i class="fas fa-star text-warning"></i>
+        <div class="progress ms-3" style="height: 10px; width: 100%;">
+          <div class="progress-bar bg-warning" style="width: 80%;" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
+
+      <!-- Second Progress Bar for Fitness Goal 1 -->
+      <div class="d-flex align-items-center gap-1 mt-3">
+        <span>Strength Development</span> <i class="fas fa-star text-info"></i>
+        <div class="progress ms-3" style="height: 10px; width: 100%;">
+          <div class="progress-bar bg-info" style="width: 60%;" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
+
+      <!-- Third Progress Bar for Fitness Goal 2 -->
+      <div class="d-flex align-items-center gap-1 mt-3">
+        <span>Endurance Improvement</span> <i class="fas fa-star text-success"></i>
+        <div class="progress ms-3" style="height: 10px; width: 100%;">
+          <div class="progress-bar bg-success" style="width: 75%;" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
     </div>
   </div>
 

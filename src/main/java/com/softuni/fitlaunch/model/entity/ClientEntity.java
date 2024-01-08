@@ -40,4 +40,12 @@ public class ClientEntity extends BaseEntity {
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<ProgramEntity> completedPrograms;
 
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "program_workouts_completed",
+            joinColumns = @JoinColumn(name = "client_id"),
+            inverseJoinColumns = @JoinColumn(name = "workout_id"))
+    private List<ProgramWeekWorkoutEntity> completedWorkouts;
+
 }

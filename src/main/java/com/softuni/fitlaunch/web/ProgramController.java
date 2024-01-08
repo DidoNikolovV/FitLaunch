@@ -61,23 +61,23 @@ public class ProgramController {
 
     @GetMapping("/programs/{programId}")
     public String loadProgramById(@PathVariable("programId") Long programId, Model model, Principal principal) {
-        ProgramDTO program = programService.getById(programId);
+        ProgramDTO programDTO = programService.getById(programId);
 
-        UserDTO user = userService.getUserByUsername(principal.getName());
+        ClientDTO clientDTO = clientService.getClientByUsername(principal.getName());
 
 //        List<ProgramWeekWorkoutDTO> allWorkoutsByProgramId = programService.getAllWorkoutsByProgramId(programId);
 //        for (ProgramWeekWorkoutDTO programWeekWorkoutDTO : allWorkoutsByProgramId) {
 //            programWeekWorkoutDTO.setCompleted(userService.hasCompletedWorkout(user, programWeekWorkoutDTO));
 //        }
 
-        List<ProgramWeekDTO> allWeeksByProgramId = programService.getAllWeeksByProgramId(programId, user);
+        List<ProgramWeekDTO> allWeeksByProgramId = programService.getAllWeeksByProgramId(programId, clientDTO);
         List<ProgramWeekWorkoutDTO> allProgramWorkouts = programService.getAllWorkoutsByProgramId(programId);
 
-        model.addAttribute("program", program);
+        model.addAttribute("program", programDTO);
         model.addAttribute("allWeeks", allWeeksByProgramId);
         model.addAttribute("allWorkouts", allWeeksByProgramId);
         model.addAttribute("allProgramWorkouts", allProgramWorkouts);
-        model.addAttribute("user", user);
+        model.addAttribute("user", clientDTO);
 
 
         return "program-details";
@@ -130,8 +130,11 @@ public class ProgramController {
     public String workoutComplete(@PathVariable("programId") Long programId, @PathVariable("weekId") Long weekId, @PathVariable("workoutId") Long workoutId, Principal principal) {
 
         UserDTO loggedUser = userService.getUserByUsername(principal.getName());
+        ClientDTO client = clientService.getClientByUsername(principal.getName());
+
+
         ProgramWeekWorkoutDTO programWorkout = programService.getProgramWorkout(programId, weekId, workoutId, loggedUser);
-        userService.completeProgramWorkout(principal.getName(), programWorkout);
+        clientService.completedProgramWorkout(client, programWorkout);
 
 
         return String.format("redirect:/workouts/%d/%d/%d", programId, weekId, workoutId);

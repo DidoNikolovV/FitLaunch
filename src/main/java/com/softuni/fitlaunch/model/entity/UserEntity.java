@@ -43,13 +43,6 @@ public class UserEntity extends BaseEntity {
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
     private List<CommentEntity> comments;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "program_workouts_completed",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "workout_id"))
-    private List<ProgramWeekWorkoutEntity> workoutsCompleted;
-
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

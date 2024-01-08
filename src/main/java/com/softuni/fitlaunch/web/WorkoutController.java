@@ -1,22 +1,17 @@
 package com.softuni.fitlaunch.web;
 
 
-import com.softuni.fitlaunch.model.dto.user.UserDTO;
+import com.softuni.fitlaunch.model.dto.program.ProgramWeekWorkoutDTO;
+import com.softuni.fitlaunch.model.dto.user.ClientDTO;
 import com.softuni.fitlaunch.model.dto.workout.CreateWorkoutDTO;
 import com.softuni.fitlaunch.model.dto.ExerciseDTO;
-import com.softuni.fitlaunch.model.dto.workout.WorkoutDTO;
-import com.softuni.fitlaunch.model.dto.workout.WorkoutDetailsDTO;
 import com.softuni.fitlaunch.model.entity.*;
 import com.softuni.fitlaunch.service.*;
-import com.softuni.fitlaunch.service.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -29,6 +24,8 @@ public class WorkoutController {
 
     private final UserService userService;
 
+    private final ClientService clientService;
+
 
     private final WorkoutExerciseService workoutExerciseService;
 
@@ -36,10 +33,12 @@ public class WorkoutController {
 
     private final FileUpload fileUpload;
 
-    public WorkoutController(WorkoutService workoutService, ExerciseService exerciseService, UserService userService,WorkoutExerciseService workoutExerciseService, ModelMapper modelMapper, FileUpload fileUpload) {
+
+    public WorkoutController(WorkoutService workoutService, ExerciseService exerciseService, UserService userService, ClientService clientService, WorkoutExerciseService workoutExerciseService, ModelMapper modelMapper, FileUpload fileUpload) {
         this.workoutService = workoutService;
         this.exerciseService = exerciseService;
         this.userService = userService;
+        this.clientService = clientService;
         this.workoutExerciseService = workoutExerciseService;
         this.modelMapper = modelMapper;
         this.fileUpload = fileUpload;
@@ -61,11 +60,12 @@ public class WorkoutController {
 
     @GetMapping("/workouts/history")
     public String workoutHistory(Model model, Principal principal) {
-        List<WorkoutDTO> workoutsCompleted = userService.getCompletedWorkouts(principal.getName());
+        ClientDTO clientByUsername = clientService.getClientByUsername(principal.getName());
+        List<ProgramWeekWorkoutDTO> completedWorkouts = clientByUsername.getCompletedWorkouts();
 
-        model.addAttribute("workoutsCompleted", workoutsCompleted);
+        model.addAttribute("completedWorkouts", completedWorkouts);
 
-        return "workout-history";
+        return "workouts-log";
     }
 
 //    @PostMapping("/workouts/add")

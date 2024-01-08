@@ -213,14 +213,14 @@ public class UserController {
 
     }
 
-    @GetMapping("/progress")
-    public String progress(Principal principal, Model model) {
-        UserDTO loggedUser = userService.getUserByUsername(principal.getName());
-
-        List<ProgramWeekWorkoutDTO> workoutsCompleted = loggedUser.getWorkoutsCompleted();
-
-        model.addAttribute("workoutsCompleted", workoutsCompleted);
-        return "workout-history";
-    }
+//    @GetMapping("/progress")
+//    public String progress(Principal principal, Model model) {
+//        UserDTO loggedUser = userService.getUserByUsername(principal.getName());
+//
+//        List<ProgramWeekWorkoutDTO> workoutsCompleted = loggedUser.getWorkoutsCompleted();
+//
+//        model.addAttribute("workoutsCompleted", workoutsCompleted);
+//        return "workout-history";
+//    }
 
 }
