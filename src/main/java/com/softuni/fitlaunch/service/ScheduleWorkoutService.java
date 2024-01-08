@@ -35,8 +35,8 @@ public class ScheduleWorkoutService {
     }
 
     public void scheduleWorkout(ClientDTO clientDTO, CoachDTO coachDTO, LocalDateTime scheduledTime) {
-        ClientEntity clientEntity = modelMapper.map(clientDTO, ClientEntity.class);
-        CoachEntity coachEntity = modelMapper.map(coachDTO, CoachEntity.class);
+        ClientEntity clientEntity = clientRepository.findByUsername(clientDTO.getUsername()).orElseThrow(() -> new ObjectNotFoundException("Client with username " + clientDTO.getUsername() + " not found"));
+        CoachEntity coachEntity = coachRepository.findByUsername(coachDTO.getUsername()).orElseThrow(() -> new ObjectNotFoundException("Coach with username " + coachDTO.getUsername() + " not found"));
 
         ScheduledWorkoutEntity scheduledWorkoutEntity = new ScheduledWorkoutEntity();
         scheduledWorkoutEntity.setClient(clientEntity);
